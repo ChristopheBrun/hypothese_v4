@@ -1,0 +1,18 @@
+.label-red {
+    color: #fff;
+    background: #c92020;
+    padding: 0 7px;
+    border-radius: 4px;
+}
+
+.label-blue {
+    color: #fff;
+    background: #3875d7;
+    padding: 0 7px;
+    border-radius: 4px;
+}
+
+.floating-image-container {
+    float: left;
+    margin-right: 10px;
+}

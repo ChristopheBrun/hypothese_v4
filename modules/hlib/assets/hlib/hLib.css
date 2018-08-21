@@ -1,0 +1,159 @@
+/**
+ * Styles de la librairie HLib
+ * todo_cbn Pas exploités pour l'instant. Voir comment on peut intégrer les assets d'un module dans ceux de l'application
+ */
+
+.backend {
+    background-color: blanchedalmond;
+    border: 2px solid blanchedalmond;
+}
+
+.frontend {
+}
+
+/*noinspection CssInvalidHtmlTagReference*/
+info {
+    margin-right: 20px;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/*noinspection CssInvalidHtmlTagReference*/
+clear {
+    clear: both;
+}
+
+/*noinspection CssInvalidHtmlTagReference*/
+note {
+    font-size: 0.6em;
+}
+
+.header-note {
+    padding: 10px;
+    font-style: italic;
+}
+
+.object-actions {
+    /*float: right;*/
+}
+
+.global-actions {
+    margin-bottom: 15px;
+    margin-right: 10px;
+}
+
+.object-actions form {
+    display: inline-block;
+}
+
+.footer {
+    font-size: 0.8em;
+    color: #9d9d9d;
+    margin: 1px;
+    padding: 5px;
+    background-color: #080808;
+    border-radius: 3px;
+}
+
+.field-label {
+    font-weight: bold;
+}
+
+.field-content-name {
+}
+
+.field-content-date {
+    font-style: italic;
+}
+
+/* module utilisateurs */
+.user-super-admin {
+    color: blue;
+    font-weight: bold;
+}
+
+.user-enabled {
+}
+
+.user-disabled {
+    color: silver;
+    font-style: italic;
+}
+
+#brand-image {
+    margin-top: -5px;
+    display: inline;
+}
+
+.view-buttons {
+    margin-bottom: 10px;
+    float: right;
+}
+
+.filters-string {
+    padding-top: 5px;
+    font-style: italic;
+}
+
+.hint-block {
+    font-style: italic;
+    color: grey;
+}
+
+li.grid-list-header {
+    background-color: #0088e4;
+}
+
+li.grid-list-header a {
+    color: black;
+    text-decoration: underline;
+}
+
+li.grid-list-header .date {
+    display: inline-block;
+    width: 10%;
+}
+
+li.grid-list-header .label {
+    display: inline-block;
+    width: 50%;
+    text-align: left;
+}
+
+li.grid-list-header .tags {
+    display: inline-block;
+}
+
+.backend-form {
+    padding: 10px;
+    background-color: #c7ddef;
+    border-radius: 15px;
+}
+
+.backend-form label {
+    color: #8c8c8c;
+}
+
+.backend-form .required label {
+    color: #000000;
+}
+
+.list-group-item:hover {
+    background-color: #c7ddef;
+}
+
+#base-model-display .backend-form {
+    background-color: #d9edf7;
+    margin-bottom: 15px;
+    border: 1px dashed navy;
+}
+
+li.menu-separator {
+    border: 1px solid silver;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.no-padding-right {
+    padding-right: 0;
+}
