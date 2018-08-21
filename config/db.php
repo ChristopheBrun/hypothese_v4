@@ -1,8 +1,9 @@
 <?php
 
 return [
+    // dev
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+    'dsn' => 'mysql:host=localhost;dbname=hypothese_v4',
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',

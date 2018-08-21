@@ -10,9 +10,23 @@ $config = [
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
+//    'controllerMap' => [
+//        'fixture' => [ // Fixture generation command line.
+//            'class' => 'yii\faker\FixtureController',
+//        ],
+//    ],
+    'params' => $params,
+    //
     'components' => [
+        'db' => $db,
+        //
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+//        'cache' => Yii::$app->cache,
+//        'cacheKey' => '654fgrgerg',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -24,16 +38,16 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
     ],
-    'params' => $params,
-    /*
-    'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
+    //
+    'modules' => [
+        'user' => [
+            'class' => 'app\modules\user\UserModule',
+            //
+            'rememberConfirmationTokenFor' => 259200, // 72h = 72 * 3600 secondes
+            'resetPasswordAfterEmailChange' => false,
         ],
     ],
-    */
 ];
 
 if (YII_ENV_DEV) {

@@ -1,28 +1,25 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Christophe
- * Date: 15/12/2017
- * Time: 17:33
- */
 
 namespace app\modules\user\helpers;
-
 
 use app\modules\user\models\Profile;
 use app\modules\user\models\User;
 use Yii;
 
-class DefaultFixturesHelper
+/**
+ * Class FixturesHelper
+ * @package app\modules\user\helpers
+ */
+class FixturesHelper
 {
     /**
      * @throws \yii\base\Exception
      */
-    public static function createSuperadmin()
+    public function createSuperadmin()
     {
         $data = [
             'scenario' => User::SCENARIO_REGISTER,
-            'email' => 'superadmin@inadvans.com',
+            'email' => 'superadmin@hypothese.net',
             'password_hash' => '',
             'auth_key' => '',
             'registered_from' => '',
@@ -40,7 +37,7 @@ class DefaultFixturesHelper
         $profile->save();
 
         $user->scenario = User::SCENARIO_PASSWORD;
-        $user->password_hash = Yii::$app->getSecurity()->generatePasswordHash('AaaaBbbbaa11!!');
+        $user->password_hash = Yii::$app->getSecurity()->generatePasswordHash('ght4519');
         $user->password_updated_at = date('Y:m:d H:i:s');
         $user->password_usage = 0;
         $user->confirmed_at = date('Y-m-d H:i:s');
@@ -50,11 +47,11 @@ class DefaultFixturesHelper
     /**
      *
      */
-    public static function removeSuperadmin()
+    public function removeSuperadmin()
     {
         $auth = Yii::$app->getAuthManager();
 
-        $user = User::find()->byEmail('superadmin@inadvans.com')->one();
+        $user = User::find()->byEmail('superadmin@hypothese.net')->one();
         $role = $auth->getRole('superadmin');
 
         if ($user) {
@@ -67,33 +64,28 @@ class DefaultFixturesHelper
     /**
      * @throws \Exception
      */
-    public static function createSuperadminPrivilege()
+    public function createSuperadminRole()
     {
         $auth = Yii::$app->getAuthManager();
-        $user = User::find()->byEmail('superadmin@inadvans.com')->one();
-
-        // Création du rôle 'superadmin'
         $role = $auth->createRole('superadmin');
         $role->description = 'Super administrateur';
         $auth->add($role);
-
-        // Affectation du rôle au superadmin
-        $auth->assign($role, $user->id);
     }
 
-    public static function removeSuperadminPrivilege()
+    /**
+     *
+     */
+    public function removeSuperadminRole()
     {
         $auth = Yii::$app->getAuthManager();
-
         $role = $auth->getRole('superadmin');
         $auth->remove($role);
-
     }
 
     /**
      * @throws \Exception
      */
-    public static function createUserManagementPrivileges()
+    public function createUserManagementPermissions()
     {
         $auth = Yii::$app->getAuthManager();
 
@@ -115,18 +107,14 @@ class DefaultFixturesHelper
         $permission->description = 'Supprimer un utilisateur';
         $auth->add($permission);
         $auth->addChild($manageUsers, $permission);
-
-        $role = $auth->getRole('superadmin');
-        $auth->addChild($role, $manageUsers);
     }
 
     /**
      *
      */
-    public static function removeUserManagementPrivileges()
+    public function removeUserManagementPermissions()
     {
         $auth = Yii::$app->getAuthManager();
-
         $permission = $auth->getPermission('createUser');
         $auth->remove($permission);
         $permission = $auth->getPermission('updateUser');
@@ -140,24 +128,20 @@ class DefaultFixturesHelper
     /**
      * @throws \Exception
      */
-    public static function createPrivilegesManagementPrivileges()
+    public function createPrivilegesManagementPermissions()
     {
         $auth = Yii::$app->getAuthManager();
 
         $permission = $auth->createPermission('managePrivileges');
         $permission->description = 'Gérer les droits';
         $auth->add($permission);
-
-        $role = $auth->getRole('superadmin');
-        $auth->addChild($role, $permission);
     }
 
     /**
      */
-    public static function removePrivilegesManagementPrivileges()
+    public function removePrivilegesManagementPermissions()
     {
         $auth = Yii::$app->getAuthManager();
-
         $permission = $auth->getPermission('managePrivileges');
         $auth->remove($permission);
     }
@@ -165,12 +149,19 @@ class DefaultFixturesHelper
     /**
      * @throws \Exception
      */
-    public static function setRoles()
+    public function setSuperadminPrivileges()
     {
         $auth = Yii::$app->getAuthManager();
-        $role = $auth->getRole('superadmin');
         $user = User::find()->byEmail('superadmin@inadvans.com')->one();
+
+        $role = $auth->getRole('superadmin');
         $auth->assign($role, $user->id);
+
+        $permission = $auth->getPermission('manageUsers');
+        $auth->addChild($role, $permission);
+
+        $permission = $auth->getPermission('managePrivileges');
+        $auth->addChild($role, $permission);
     }
 
 }

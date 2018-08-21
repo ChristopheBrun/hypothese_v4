@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11dc19ae1bd8fd0737fec254fc20f7de",
+    "content-hash": "c29a25e257cd0d41f2c06f42ebcce7b2",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -68,6 +68,48 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "bower-asset/jquery-ui",
+            "version": "1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/components/jqueryui.git",
+                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/components/jqueryui/zipball/44ecf3794cc56b65954cc19737234a3119d036cc",
+                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.6"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/patternfly-bootstrap-treeview",
+            "version": "v2.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/patternfly/patternfly-bootstrap-treeview.git",
+                "reference": "c8f1603317c3ba50196a86796806ece226413b1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/patternfly/patternfly-bootstrap-treeview/zipball/c8f1603317c3ba50196a86796806ece226413b1e",
+                "reference": "c8f1603317c3ba50196a86796806ece226413b1e",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/bootstrap": ">=3.0.0",
+                "bower-asset/jquery": ">=1.9.0"
+            },
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/punycode",
@@ -166,6 +208,94 @@
                 "markdown-extra"
             ],
             "time": "2017-07-16T21:13:23+00:00"
+        },
+        {
+            "name": "execut/yii2-base",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/execut/yii2-base.git",
+                "reference": "13226586684ba5d7367f99e3770100bbee05c7d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/execut/yii2-base/zipball/13226586684ba5d7367f99e3770100bbee05c7d9",
+                "reference": "13226586684ba5d7367f99e3770100bbee05c7d9",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": ">=2.0.13",
+                "yiisoft/yii2-jui": "@dev"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "execut\\yii\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "eXeCUT"
+                }
+            ],
+            "description": "My base classes for yii2",
+            "homepage": "https://github.com/execut/yii2-base",
+            "keywords": [
+                "yii2"
+            ],
+            "time": "2018-08-01T11:59:09+00:00"
+        },
+        {
+            "name": "execut/yii2-widget-bootstraptreeview",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/execut/yii2-widget-bootstraptreeview.git",
+                "reference": "63140b371096be5b5b392fa846247ac149f3111d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/execut/yii2-widget-bootstraptreeview/zipball/63140b371096be5b5b392fa846247ac149f3111d",
+                "reference": "63140b371096be5b5b392fa846247ac149f3111d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/patternfly-bootstrap-treeview": "@dev",
+                "execut/yii2-base": "*",
+                "yiisoft/yii2-jui": "@dev"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "execut\\widget\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "eXeCUT"
+                }
+            ],
+            "description": "Bootstrap Tree View widget wrapper for yii2",
+            "homepage": "https://github.com/execut/yii2-widget-bootstraptreeview",
+            "keywords": [
+                "bootstrap",
+                "extension",
+                "form",
+                "input",
+                "jquery",
+                "plugin",
+                "tree",
+                "yii2"
+            ],
+            "time": "2018-04-02T12:32:21+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -481,6 +611,52 @@
                 "yii2"
             ],
             "time": "2018-07-05T15:44:47+00:00"
+        },
+        {
+            "name": "yiisoft/yii2-jui",
+            "version": "2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-jui.git",
+                "reference": "ce45c16d4fbbe7d1c516d8d0e8311e07f6138eed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-jui/zipball/ce45c16d4fbbe7d1c516d8d0e8311e07f6138eed",
+                "reference": "ce45c16d4fbbe7d1c516d8d0e8311e07f6138eed",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery-ui": "~1.12.1",
+                "yiisoft/yii2": "~2.0.4"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii\\jui\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Qiang Xue",
+                    "email": "qiang.xue@gmail.com"
+                }
+            ],
+            "description": "The Jquery UI extension for the Yii framework",
+            "keywords": [
+                "jQuery UI",
+                "yii2"
+            ],
+            "time": "2017-11-25T15:32:29+00:00"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -3131,7 +3307,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "execut/yii2-widget-bootstraptreeview": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
