@@ -5,7 +5,6 @@ namespace app\modules\cms\models;
 use app\modules\cms\HCms;
 use app\modules\cms\queries\WebTagsQuery;
 use app\modules\hlib\HLib;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -81,7 +80,7 @@ class WebTag extends ActiveRecord
      */
     public function getBase()
     {
-        return $this->hasOne(BaseTag::className(), ['id' => 'base_id']);
+        return $this->hasOne(BaseTag::class, ['id' => 'base_id']);
     }
 
     /**
@@ -89,7 +88,7 @@ class WebTag extends ActiveRecord
      */
     public function getLanguage()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language_id']);
+        return $this->hasOne(Language::class, ['id' => 'language_id']);
     }
 
     /**

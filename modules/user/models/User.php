@@ -8,7 +8,7 @@ use app\modules\user\models\query\AuthAssignmentQuery;
 use app\modules\user\models\query\UserQuery;
 use Yii;
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -116,8 +116,8 @@ class User extends ActiveRecord implements IdentityInterface
             'registered_from' => UserModule::t('labels', 'Registered From'),
             'logged_in_from' => UserModule::t('labels', 'Logged In From'),
             'logged_in_at' => UserModule::t('labels', 'Logged In At'),
-            'created_at' => IA::t('labels', 'Created At'),
-            'updated_at' => IA::t('labels', 'Updated At'),
+            'created_at' => HLib::t('labels', 'Created At'),
+            'updated_at' => HLib::t('labels', 'Updated At'),
         ];
     }
 
@@ -278,6 +278,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      *
+     * @throws \yii\db\Exception
      */
     public function afterDelete()
     {

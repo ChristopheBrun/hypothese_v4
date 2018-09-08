@@ -7,7 +7,6 @@ use app\modules\cms\HCms;
 use app\modules\cms\queries\BasePagesQuery;
 use app\modules\hlib\HLib;
 use SimpleXMLElement;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -137,7 +136,7 @@ class BasePage extends ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(BasePage::className(), ['id' => 'parent_page_id']);
+        return $this->hasOne(BasePage::class, ['id' => 'parent_page_id']);
     }
 
     /**

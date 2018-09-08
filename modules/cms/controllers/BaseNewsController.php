@@ -53,6 +53,7 @@ class BaseNewsController extends BaseController
      * Displays a single BaseNews model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -65,13 +66,14 @@ class BaseNewsController extends BaseController
      * Creates a new BaseNews model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws \yii\db\Exception
      */
     public function actionCreate()
     {
         $model = new BaseNews();
         if(Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            if (!($model->updateBaseTagsFromRequest($post) && $model->load($post) && $model->save(true, null, true))) {
+            if (!($model->updateBaseTagsFromRequest($post) && $model->load($post) && $model->save())) {
                 Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'There are errors in your form'));
             }
             else {
@@ -88,13 +90,15 @@ class BaseNewsController extends BaseController
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
         if(Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            if (!($model->updateBaseTagsFromRequest($post) && $model->load($post) && $model->save(true, null, true))) {
+            if (!($model->updateBaseTagsFromRequest($post) && $model->load($post) && $model->save())) {
                 Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'There are errors in your form'));
             }
             else {
@@ -111,6 +115,8 @@ class BaseNewsController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionGetForm($id)
     {
@@ -123,6 +129,7 @@ class BaseNewsController extends BaseController
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {

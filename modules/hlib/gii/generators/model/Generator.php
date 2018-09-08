@@ -72,8 +72,8 @@ class Generator extends \yii\gii\Generator
             [['ns', 'queryNs'], 'validateNamespace'],
             [['tableName'], 'validateTableName'],
             [['modelClass'], 'validateModelClass', 'skipOnEmpty' => false],
-            [['baseClass'], 'validateClass', 'params' => ['extends' => ActiveRecord::className()]],
-            [['queryBaseClass'], 'validateClass', 'params' => ['extends' => ActiveQuery::className()]],
+            [['baseClass'], 'validateClass', 'params' => ['extends' => ActiveRecord::class]],
+            [['queryBaseClass'], 'validateClass', 'params' => ['extends' => ActiveQuery::class]],
             [['generateRelations', 'generateLabelsFromComments', 'useTablePrefix', 'useSchemaName', 'generateQuery'], 'boolean'],
             [['enableI18N'], 'boolean'],
             [['messageCategory'], 'validateMessageCategory', 'skipOnEmpty' => false],
@@ -341,7 +341,7 @@ class Generator extends \yii\gii\Generator
         $viaLink = $this->generateRelationLink([$table->primaryKey[0] => $fks[$table->primaryKey[0]][1]]);
         $relationName = $this->generateRelationName($relations, $table0Schema, $table->primaryKey[1], true);
         $relations[$table0Schema->fullName][$relationName] = [
-            "return \$this->hasMany($className1::className(), $link)->viaTable('"
+            "return \$this->hasMany($className1::class, $link)->viaTable('"
             . $this->generateTableName($table->name) . "', $viaLink);",
             $className1,
             true,
@@ -351,7 +351,7 @@ class Generator extends \yii\gii\Generator
         $viaLink = $this->generateRelationLink([$table->primaryKey[1] => $fks[$table->primaryKey[1]][1]]);
         $relationName = $this->generateRelationName($relations, $table1Schema, $table->primaryKey[0], true);
         $relations[$table1Schema->fullName][$relationName] = [
-            "return \$this->hasMany($className0::className(), $link)->viaTable('"
+            "return \$this->hasMany($className0::class, $link)->viaTable('"
             . $this->generateTableName($table->name) . "', $viaLink);",
             $className0,
             true,
@@ -362,6 +362,7 @@ class Generator extends \yii\gii\Generator
 
     /**
      * @return array the generated relation declarations
+     * @throws NotSupportedException
      */
     protected function generateRelations()
     {
@@ -373,11 +374,7 @@ class Generator extends \yii\gii\Generator
 
         $schema = $db->getSchema();
         if ($schema->hasMethod('getSchemaNames')) { // keep BC to Yii versions < 2.0.4
-            try {
-                $schemaNames = $schema->getSchemaNames();
-            } catch (NotSupportedException $e) {
-                // schema names are not supported by schema
-            }
+            $schemaNames = $schema->getSchemaNames();
         }
         if (!isset($schemaNames)) {
             if (($pos = strpos($this->tableName, '.')) !== false) {
@@ -402,7 +399,7 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink(array_flip($refs));
                     $relationName = $this->generateRelationName($relations, $table, $fks[0], false);
                     $relations[$table->fullName][$relationName] = [
-                        "return \$this->hasOne($refClassName::className(), $link);",
+                        "return \$this->hasOne($refClassName::class, $link);",
                         $refClassName,
                         false,
                     ];
@@ -424,7 +421,7 @@ class Generator extends \yii\gii\Generator
                     $link = $this->generateRelationLink($refs);
                     $relationName = $this->generateRelationName($relations, $refTableSchema, $className, $hasMany);
                     $relations[$refTableSchema->fullName][$relationName] = [
-                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "($className::className(), $link);",
+                        "return \$this->" . ($hasMany ? 'hasMany' : 'hasOne') . "($className::class, $link);",
                         $className,
                         $hasMany,
                     ];
@@ -517,6 +514,7 @@ class Generator extends \yii\gii\Generator
 
     /**
      * Validates the [[db]] attribute.
+     * @throws \yii\base\InvalidConfigException
      */
     public function validateDb()
     {
@@ -693,7 +691,8 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
-     * @return Connection the DB connection as specified by [[db]].
+     * @return object|Connection
+     * @throws \yii\base\InvalidConfigException
      */
     protected function getDbConnection()
     {

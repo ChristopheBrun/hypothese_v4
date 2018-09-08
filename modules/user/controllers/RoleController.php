@@ -2,7 +2,7 @@
 
 namespace app\modules\user\controllers;
 
-use app\modules\ia\lib\TreeNode;
+use app\modules\hlib\lib\TreeNode;
 use app\modules\user\models\AuthItem;
 use Yii;
 use yii\filters\AccessControl;

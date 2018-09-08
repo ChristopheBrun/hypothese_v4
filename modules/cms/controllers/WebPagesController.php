@@ -6,7 +6,6 @@ use app\modules\cms\models\BasePage;
 use app\modules\cms\models\Language;
 use app\modules\cms\models\WebText;
 use app\modules\hlib\controllers\BaseController;
-use app\modules\hlib\helpers\h;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
@@ -79,6 +78,7 @@ class WebPagesController extends BaseController
      *
      * @param string $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -131,6 +131,7 @@ class WebPagesController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -173,6 +174,7 @@ class WebPagesController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {

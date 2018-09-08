@@ -10,6 +10,7 @@ use yii\bootstrap\Alert;
 
 foreach ($messages as $level => $flashMessages) :
     foreach ($flashMessages as $flash) :
+        /** @noinspection PhpUnhandledExceptionInspection */
         echo Alert::widget([
             'options' => ['class' => 'alert-' . $level],
             'body' => $flash,

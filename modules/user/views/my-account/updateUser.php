@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 use app\modules\user\UserModule;
 
 /* @var $this yii\web\View */
@@ -10,7 +10,7 @@ use app\modules\user\UserModule;
 $this->title = UserModule::t('labels', 'Update My Identifiers');
 
 $this->params['breadcrumbs'][] = ['label' => UserModule::t('labels', 'My Account'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = IA::t('labels', 'Update');
+$this->params['breadcrumbs'][] = HLib::t('labels', 'Update');
 ?>
 <div class="user-update">
 

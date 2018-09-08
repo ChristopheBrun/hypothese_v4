@@ -20,7 +20,7 @@ class WebPagesQuery extends ActiveQuery
      */
     public function __construct($config = [])
     {
-        parent::__construct(WebPage::className(), $config);
+        parent::__construct(WebPage::class, $config);
     }
 
     /**

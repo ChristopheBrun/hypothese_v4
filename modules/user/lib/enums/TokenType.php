@@ -2,7 +2,7 @@
 
 namespace app\modules\user\lib\enums;
 
-use app\modules\ia\helpers\EnumHelper;
+use app\modules\hlib\helpers\EnumHelper;
 use app\modules\user\UserModule;
 
 

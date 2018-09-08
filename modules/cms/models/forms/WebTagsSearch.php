@@ -2,7 +2,6 @@
 
 namespace app\modules\cms\models\forms;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\cms\models\WebTag;

@@ -2,14 +2,14 @@
 
 namespace app\modules\user\controllers;
 
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 use app\modules\user\lib\enums\TokenType;
 use app\modules\user\models\form\MailRequestForm;
 use app\modules\user\models\form\PasswordForm;
 use app\modules\user\models\Token;
 use app\modules\user\models\User;
 use app\modules\user\UserModule;
-use app\modules\ia\lib\Flash;
+use app\modules\hlib\lib\Flash;
 use app\modules\user\filters\EnableRegistration;
 use app\modules\user\models\form\RegistrationForm;
 use Exception;
@@ -77,7 +77,6 @@ class RegistrationController extends Controller
      * Gestion du formulaire d'inscription
      *
      * @return string
-     * @throws Yii\web\HttpException
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\db\Exception
      */
@@ -99,7 +98,7 @@ class RegistrationController extends Controller
                 }
             }
 
-            Flash::error(IA::t('messages', "There are errors in your form"));
+            Flash::error(HLib::t('messages', "There are errors in your form"));
         }
 
         // Affichage initial ou ré-affichage après arreur
@@ -147,7 +146,7 @@ class RegistrationController extends Controller
                 }
             }
 
-            Flash::error(IA::t('messages', "There are errors in your form"));
+            Flash::error(HLib::t('messages', "There are errors in your form"));
         }
 
         return $this->render('resetPassword', [
@@ -175,7 +174,7 @@ class RegistrationController extends Controller
                 return $this->redirect(Yii::$app->request->getReferrer());
             }
 
-            Flash::error(IA::t('messages', "There are errors in your form"));
+            Flash::error(HLib::t('messages', "There are errors in your form"));
         }
 
         return $this->render('requestNewPassword', [
@@ -222,7 +221,7 @@ class RegistrationController extends Controller
                 }
             }
 
-            Flash::error(IA::t('messages', "There are errors in your form"));
+            Flash::error(HLib::t('messages', "There are errors in your form"));
         }
 
         return $this->render('resetPassword', [
@@ -291,7 +290,7 @@ class RegistrationController extends Controller
                 return $this->redirect(Yii::$app->request->getReferrer());
             }
 
-            Flash::error(IA::t('messages', "There are errors in your form"));
+            Flash::error(HLib::t('messages', "There are errors in your form"));
         }
 
         // Affichage initial ou ré-affichage après erreur

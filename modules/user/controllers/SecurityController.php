@@ -2,7 +2,7 @@
 
 namespace app\modules\user\controllers;
 
-use app\modules\ia\lib\Flash;
+use app\modules\hlib\lib\Flash;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;

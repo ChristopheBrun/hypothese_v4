@@ -57,7 +57,7 @@ class BaseNewsBaseTag extends ActiveRecord
      */
     public function getBaseNews()
     {
-        return $this->hasOne(BaseNews::className(), ['id' => 'base_news_id']);
+        return $this->hasOne(BaseNews::class, ['id' => 'base_news_id']);
     }
 
     /**
@@ -65,7 +65,7 @@ class BaseNewsBaseTag extends ActiveRecord
      */
     public function getBaseTag()
     {
-        return $this->hasOne(BaseTag::className(), ['id' => 'base_tag_id']);
+        return $this->hasOne(BaseTag::class, ['id' => 'base_tag_id']);
     }
 
     /**

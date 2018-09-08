@@ -5,8 +5,6 @@ namespace app\modules\hlib\helpers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
-use yii\db\Command;
-use yii\db\Query;
 
 /**
  *

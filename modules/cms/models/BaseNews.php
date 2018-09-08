@@ -100,7 +100,7 @@ class BaseNews extends ActiveRecord
      */
     public function getBaseNewsBaseTags()
     {
-        return $this->hasMany(BaseNewsBaseTag::className(), ['base_news_id' => 'id']);
+        return $this->hasMany(BaseNewsBaseTag::class, ['base_news_id' => 'id']);
     }
 
     /**
@@ -108,7 +108,7 @@ class BaseNews extends ActiveRecord
      */
     public function getBaseTags()
     {
-        return $this->hasMany(BaseTag::className(), ['id' => 'base_tag_id'])->viaTable('base_news_base_tag', ['base_news_id' => 'id']);
+        return $this->hasMany(BaseTag::class, ['id' => 'base_tag_id'])->viaTable('base_news_base_tag', ['base_news_id' => 'id']);
     }
 
     /**
@@ -116,7 +116,7 @@ class BaseNews extends ActiveRecord
      */
     public function getWebNews()
     {
-        return $this->hasMany(WebNews::className(), ['base_id' => 'id']);
+        return $this->hasMany(WebNews::class, ['base_id' => 'id']);
     }
 
     /**
@@ -168,10 +168,11 @@ class BaseNews extends ActiveRecord
      * Mise à jour de l'objet.
      * Si $saveRelated vaut 'true', la table d'association avec les tags est mise à jour en même temps.
      *
-     * @param bool|true  $runValidation
-     * @param null       $attributeNames
+     * @param bool|true $runValidation
+     * @param null $attributeNames
      * @param bool|false $saveRelated
      * @return bool
+     * @throws \yii\db\Exception
      */
     public function save($runValidation = true, $attributeNames = null, $saveRelated = false)
     {
@@ -199,7 +200,7 @@ class BaseNews extends ActiveRecord
      * Renvoie le tableau après avoir remplacé les libellés des nouveaux objets par leur identifiant.
      *
      * @param array $request Données de formulaire
-     * @return array
+     * @return array|bool
      */
     public function updateBaseTagsFromRequest(array &$request)
     {

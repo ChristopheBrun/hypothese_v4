@@ -6,7 +6,6 @@ use app\modules\hlib\HLib;
 use Exception;
 use Yii;
 use yii\db\ActiveRecord;
-use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -24,7 +23,7 @@ class BaseController extends Controller
      * Controller. Ex. : return $this->redirectAfterCreateSuccess($model)
      *
      * @param ActiveRecord $model
-     * @param string       $prefixRouteWith
+     * @param string $prefixRouteWith
      * @return \yii\web\Response
      */
     protected function redirectAfterCreateSuccess(ActiveRecord $model, $prefixRouteWith = '/')
@@ -58,22 +57,20 @@ class BaseController extends Controller
      * Controller. Ex. : return $this->redirectAfterCreateSuccess($model)
      *
      * @param ActiveRecord $model
-     * @param string|null  $redirectTo
+     * @param string|null $redirectTo
      * @return \yii\web\Response
+     * @throws \Throwable
      */
     protected function deleteModelAndRedirect(ActiveRecord $model, $redirectTo = null)
     {
         try {
             if (!$model->delete()) {
                 Yii::$app->session->setFlash('flash-danger', HLib::t('messages', 'Delete unsuccessful'));
-            }
-            else {
+            } else {
                 Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete successful'));
             }
         } catch (StaleObjectException $s) {
             Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'This object is outdated. Deletion failed'));
-        } catch (IntegrityException $s) {
-            Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'This object is referenced by another object. Deletion failed'));
         } catch (Exception $s) {
             Yii::$app->session->setFlash('flash-danger', HLib::t('messages', 'An error occured during the process. Deletion failed'));
         }

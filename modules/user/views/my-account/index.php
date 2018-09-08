@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 
 /**
  * @var $this yii\web\View
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(IA::t('labels', 'Update'), ['update-user'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(HLib::t('labels', 'Update'), ['update-user'], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(UserModule::t('labels', 'Request new password'), ['/new-password'], ['class' => 'btn btn-primary']) ?>
     </p>
 

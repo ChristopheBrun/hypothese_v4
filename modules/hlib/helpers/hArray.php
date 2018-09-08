@@ -23,7 +23,7 @@ class hArray extends ArrayHelper
      * @param mixed $indexKey (Optional.) The column to use as the index/keys for
      *                         the returned array. This value may be the integer key
      *                         of the column, or it may be the string key name.
-     * @return array
+     * @return array|bool
      * @internal la fonction de bibliothèque array_column() n'est pas disponible avant PHP5.5.
      * todo_cbn Voir si cette fonction est toujours utile...
      */
@@ -77,8 +77,7 @@ class hArray extends ArrayHelper
             }
         }
 
-        $resultArray = array();
-
+        $resultArray = [];
         foreach ($paramsInput as $row) {
 
             $key = $value = null;

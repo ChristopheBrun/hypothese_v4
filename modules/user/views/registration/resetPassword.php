@@ -11,7 +11,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 
 $this->title = UserModule::t('labels', 'Create password');
 $this->params['breadcrumbs'][] = $this->title;
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('<i class="fa fa-save"></i>' . IA::t('labels', 'Save'), ['class' => 'btn btn-primary']) ?>
+                    <?= Html::submitButton('<i class="fa fa-save"></i>' . HLib::t('labels', 'Save'), ['class' => 'btn btn-primary']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>

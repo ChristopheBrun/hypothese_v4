@@ -49,7 +49,8 @@ use execut\widget\TreeView;
 
     <?php Pjax::begin(); ?>
 
-    <?= TreeView::widget([
+    <?= /** @noinspection PhpUnhandledExceptionInspection */
+    TreeView::widget([
         'data' => $data,
         'size' => TreeView::SIZE_SMALL,
 //        'header' => 'Categories',

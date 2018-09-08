@@ -38,6 +38,7 @@ class BaseNewsBaseTagQuery extends ActiveQuery
      * @param array $updatedRelatedModelsIds
      * @param       $modelId
      * @return bool
+     * @throws \yii\db\Exception
      */
     public static function updateBaseTagsForNews(array $oldRelatedModelsIds, array $updatedRelatedModelsIds, $modelId)
     {

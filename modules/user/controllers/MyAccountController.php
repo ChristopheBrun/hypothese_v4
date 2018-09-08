@@ -2,12 +2,12 @@
 
 namespace app\modules\user\controllers;
 
-use app\modules\ia\lib\Flash;
+use app\modules\hlib\lib\Flash;
 use Exception;
 use Yii;
 use app\modules\user\models\User;
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 use yii\base\ActionEvent;
 use yii\base\Event;
 use yii\filters\AccessControl;
@@ -115,7 +115,7 @@ class MyAccountController extends Controller
                 }
             }
 
-            Flash::error(IA::t('messages', 'Update error'));
+            Flash::error(HLib::t('messages', 'Update error'));
         }
 
         return $this->render('updateUser', [
@@ -158,7 +158,7 @@ class MyAccountController extends Controller
                 return $this->redirect(['profile']);
             } catch (Exception $x) {
                 Yii::error($x);
-                Flash::error(IA::t('messages', 'Update error'));
+                Flash::error(HLib::t('messages', 'Update error'));
                 $transaction->rollBack();
             }
         }

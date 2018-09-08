@@ -56,6 +56,7 @@ class AuthAssignmentQuery extends ActiveQuery
     /**
      * @param int $userId
      * @return int
+     * @throws \yii\db\Exception
      */
     public static function deleteByUser($userId)
     {

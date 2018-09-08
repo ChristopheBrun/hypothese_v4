@@ -6,8 +6,8 @@
  * @var $dataProvider yii\data\ActiveDataProvider
  */
 
-use app\modules\ia\widgets\DisplayModels;
-use app\modules\ia\widgets\DisplayModelsWithLinks;
+use app\modules\hlib\widgets\DisplayModels;
+use app\modules\hlib\widgets\DisplayModelsWithLinks;
 use app\modules\user\models\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -27,7 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-    <?= GridView::widget([
+    <?= /** @noinspection PhpUnhandledExceptionInspection */
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [

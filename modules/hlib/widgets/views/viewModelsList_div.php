@@ -15,6 +15,7 @@ $widget = $this->context;
     <div>
         <?php
         /** @noinspection PhpUndefinedFieldInspection */
+        /** @noinspection PhpUnhandledExceptionInspection */
         echo Html::a($widget->retrieveLabel($model), Url::to([$widget->controllerRoute . '/view', 'id' => $model->id]));
 
         /** @noinspection PhpUndefinedFieldInspection */

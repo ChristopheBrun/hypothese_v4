@@ -62,6 +62,7 @@ class BasePagesController extends BaseController
      *
      * @param string $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -80,7 +81,7 @@ class BasePagesController extends BaseController
         $model = new BasePage();
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            if (!($this->processBaseTexts($post) && $model->load($post) && $model->save(true, null, true))) {
+            if (!($this->processBaseTexts($post) && $model->load($post) && $model->save())) {
                 Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'There are errors in your form'));
             }
             else {
@@ -97,13 +98,14 @@ class BasePagesController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-            if (!($this->processBaseTexts($post) && $model->load($post) && $model->save(true, null, true))) {
+            if (!($this->processBaseTexts($post) && $model->load($post) && $model->save())) {
                 Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'There are errors in your form'));
             }
             else {
@@ -120,6 +122,8 @@ class BasePagesController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionGetForm($id)
     {
@@ -132,6 +136,7 @@ class BasePagesController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {
@@ -143,7 +148,7 @@ class BasePagesController extends BaseController
      * Renvoie le tableau après avoir remplacé les libellés des nouveaux objets par leur identifiant.
      *
      * @param array $request
-     * @return array
+     * @return array|bool
      */
     private function processBaseTexts(array &$request)
     {
@@ -173,6 +178,7 @@ class BasePagesController extends BaseController
      * Met à jour la liste des index de menus
      *
      * @return \yii\web\Response
+     * @throws \Throwable
      */
     public function actionResetMenuIndexes()
     {
@@ -185,6 +191,7 @@ class BasePagesController extends BaseController
      *
      * @param int $id
      * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionIncreaseMenuIndex($id)
     {
@@ -206,6 +213,7 @@ class BasePagesController extends BaseController
      *
      * @param int $id
      * @return \yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionDecreaseMenuIndex($id)
     {
@@ -225,6 +233,7 @@ class BasePagesController extends BaseController
     /**
      * Met à jour la liste des index de menus. Ceux-ci sont dédoublonnés et réalignés à partir de l'index 1. l'ordre initial des pages est
      * conservé. Si deux pages avaient le même index de menu, elles sont reclassées par #id
+     * @throws \Throwable
      */
     private function resetMenuIndexes()
     {

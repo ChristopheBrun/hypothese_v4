@@ -2,7 +2,7 @@
 
 namespace app\modules\user\lib;
 
-use app\modules\ia\lib\Flash;
+use app\modules\hlib\lib\Flash;
 use app\modules\user\controllers\MyAccountController;
 use app\modules\user\controllers\RegistrationController;
 use app\modules\user\controllers\UserController;
@@ -12,7 +12,7 @@ use app\modules\user\models\Token;
 use app\modules\user\models\User;
 use Yii;
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 use yii\base\ActionEvent;
 use yii\base\Component;
 use yii\base\Event;
@@ -68,7 +68,7 @@ class UserEventHandler extends Component
             static::$singleton = $this;
             $this->subscribeEvents();
         } else {
-            throw new NotSupportedException(IA::t('messages', "Only one instance allowed"));
+            throw new NotSupportedException(HLib::t('messages', "Only one instance allowed"));
         }
     }
 

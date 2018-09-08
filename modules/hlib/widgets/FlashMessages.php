@@ -9,6 +9,10 @@ use yii\bootstrap\Widget;
 /**
  * Class FlashMessages
  * @package app\modules\hlib\widgets
+ *
+ * Affichage des messages flash de la session
+ *
+ * @see \app\modules\hlib\lib\Flash
  */
 class FlashMessages extends Widget
 {

@@ -56,6 +56,7 @@ class BaseTextsController extends BaseController
      *
      * @param string $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -89,6 +90,7 @@ class BaseTextsController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -112,6 +114,8 @@ class BaseTextsController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionGetForm($id)
     {
@@ -124,6 +128,7 @@ class BaseTextsController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {

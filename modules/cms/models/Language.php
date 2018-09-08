@@ -5,7 +5,6 @@ namespace app\modules\cms\models;
 use app\modules\cms\HCms;
 use app\modules\cms\queries\LanguagesQuery;
 use app\modules\hlib\HLib;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -77,7 +76,7 @@ class Language extends ActiveRecord
      */
     public function getLanguages()
     {
-        return $this->hasMany(Language::className(), ['language_id' => 'id']);
+        return $this->hasMany(Language::class, ['language_id' => 'id']);
     }
 
     /**

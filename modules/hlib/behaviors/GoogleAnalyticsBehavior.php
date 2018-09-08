@@ -2,7 +2,6 @@
 
 namespace app\modules\hlib\behaviors;
 
-use Yii;
 use yii\base\ActionFilter;
 
 

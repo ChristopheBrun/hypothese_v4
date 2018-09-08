@@ -2,13 +2,13 @@
 
 namespace app\modules\user\models;
 
-use app\modules\ia\validators\CellphoneValidator;
-use app\modules\ia\validators\FaxValidator;
-use app\modules\ia\validators\LandlinePhoneValidator;
+use app\modules\hlib\validators\CellphoneValidator;
+use app\modules\hlib\validators\FaxValidator;
+use app\modules\hlib\validators\LandlinePhoneValidator;
 use app\modules\user\models\query\ProfileQuery;
 use Yii;
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -109,8 +109,8 @@ class Profile extends ActiveRecord
             'landline_phone' => UserModule::t('labels', 'Landline Phone'),
             'landline_phone_confirm' => UserModule::t('labels', 'Landline Phone (confirm)'),
             'fax' => UserModule::t('labels', 'Fax'),
-            'created_at' => IA::t('labels', 'Created At'),
-            'updated_at' => IA::t('labels', 'Updated At'),
+            'created_at' => HLib::t('labels', 'Created At'),
+            'updated_at' => HLib::t('labels', 'Updated At'),
         ];
     }
 

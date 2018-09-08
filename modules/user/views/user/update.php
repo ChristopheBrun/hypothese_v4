@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\user\models\User */
@@ -9,7 +9,7 @@ use app\modules\ia\IAModule as IA;
 $this->title = Yii::t('labels', 'Update {modelClass}: ', [
     'modelClass' => 'User',
 ]) . $model->id;
-$this->params['breadcrumbs'][] = ['label' => IA::t('labels', 'Users'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('labels', 'Update');
 ?>

@@ -6,7 +6,6 @@ use app\modules\cms\HCms;
 use app\modules\cms\queries\WebNewsQuery;
 use app\modules\hlib\helpers\hString;
 use app\modules\hlib\HLib;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -94,7 +93,7 @@ class WebNews extends ActiveRecord
      */
     public function getBase()
     {
-        return $this->hasOne(BaseNews::className(), ['id' => 'base_id']);
+        return $this->hasOne(BaseNews::class, ['id' => 'base_id']);
     }
 
     /**
@@ -102,7 +101,7 @@ class WebNews extends ActiveRecord
      */
     public function getLanguage()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language_id']);
+        return $this->hasOne(Language::class, ['id' => 'language_id']);
     }
 
     /**

@@ -13,7 +13,8 @@ $context = $this->context;
     <div class="row">
         <?php foreach($columns as $column) : ?>
             <div class="col-sm-<?= $column['width'] ?> <?= $column['cssClass'] ?>">
-                <?= $context->renderColumnContent($column) ?>
+                <?= /** @noinspection PhpUnhandledExceptionInspection */
+                $context->renderColumnContent($column) ?>
             </div>
         <?php endforeach ?>
     </div>

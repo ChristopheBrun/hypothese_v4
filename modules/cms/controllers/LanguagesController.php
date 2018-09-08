@@ -3,7 +3,7 @@
 namespace app\modules\cms\controllers;
 
 use Yii;
-use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -74,6 +74,7 @@ class LanguagesController extends Controller
      *
      * @param string $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -115,6 +116,7 @@ class LanguagesController extends Controller
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -147,9 +149,9 @@ class LanguagesController extends Controller
         try {
             $this->findModel($id)->delete();
             Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete successful'));
-        }
-        catch(IntegrityException $s) {
-            Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'This object is referenced by another object. Deletion failed'));
+        } catch (NotFoundHttpException $e) {
+        } catch (StaleObjectException $e) {
+        } catch (\Throwable $e) {
         }
 
         return $this->redirect(Url::toRoute('/cms/languages/index'));

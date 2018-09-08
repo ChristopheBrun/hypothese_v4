@@ -40,6 +40,7 @@ class UserSearch extends User
      * @param array $params
      *
      * @return ActiveDataProvider
+     * @throws \yii\base\InvalidConfigException
      */
     public function search($params)
     {

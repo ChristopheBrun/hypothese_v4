@@ -71,6 +71,7 @@ class WebTagsController extends BaseController
      * Displays a single WebTag model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -83,6 +84,7 @@ class WebTagsController extends BaseController
      * Creates a new WebTag model.
      *
      * @return mixed
+     * @throws \yii\db\Exception
      */
     public function actionCreate()
     {
@@ -138,6 +140,7 @@ class WebTagsController extends BaseController
      *
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -181,6 +184,7 @@ class WebTagsController extends BaseController
      *
      * @param integer $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {

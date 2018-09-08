@@ -1,11 +1,11 @@
 <?php
 
 use app\modules\user\models\Profile;
-use app\modules\ia\widgets\DisplayModelsWithLinks;
+use app\modules\hlib\widgets\DisplayModelsWithLinks;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\user\UserModule;
-use app\modules\ia\IAModule as IA;
+use app\modules\hlib\HLib;
 
 /**
  * @var $this yii\web\View
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = ['label' => UserModule::t('labels', 'My Profile
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(IA::t('labels', 'Update'), ['update-profile'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(HLib::t('labels', 'Update'), ['update-profile'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= /** @noinspection PhpUnhandledExceptionInspection */

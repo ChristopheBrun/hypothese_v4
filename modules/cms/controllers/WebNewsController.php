@@ -98,6 +98,7 @@ class WebNewsController extends BaseController
      *
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -113,6 +114,7 @@ class WebNewsController extends BaseController
      *
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionShow($id)
     {
@@ -131,6 +133,7 @@ class WebNewsController extends BaseController
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @return mixed
+     * @throws \yii\db\Exception
      */
     public function actionCreate()
     {
@@ -170,6 +173,8 @@ class WebNewsController extends BaseController
      *
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
      */
     public function actionUpdate($id)
     {
@@ -190,7 +195,7 @@ class WebNewsController extends BaseController
             $ok &= ($baseModel
                 && $baseModel->updateBaseTagsFromRequest($post)
                 && $baseModel->load($post)
-                && $baseModel->save(true, null, true));
+                && $baseModel->save());
 
             $ok &= ($model->load($post)
                 && $model->save());
@@ -221,6 +226,7 @@ class WebNewsController extends BaseController
      *
      * @param integer $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {

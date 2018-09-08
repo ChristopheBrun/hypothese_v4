@@ -13,11 +13,12 @@ use app\modules\user\models\Profile;
 use app\modules\user\models\search\UserSearch;
 use app\modules\user\models\User;
 use Yii;
+use yii\base\Module;
 
 /**
  * user module definition class
  */
-class UserModule extends \yii\base\Module
+class UserModule extends Module
 {
     //
     // Configuration
@@ -65,6 +66,7 @@ class UserModule extends \yii\base\Module
 
     /**
      * @inheritdoc
+     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {

@@ -111,9 +111,9 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        Event::trigger(static::class, static::EVENT_BEFORE_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model->user]));
+        Event::trigger(static::class, static::EVENT_BEFORE_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model]));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Event::trigger(static::class, static::EVENT_AFTER_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model->user]));
+            Event::trigger(static::class, static::EVENT_AFTER_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model]));
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

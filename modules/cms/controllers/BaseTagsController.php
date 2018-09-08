@@ -25,6 +25,7 @@ class BaseTagsController extends BaseController
      * Displays a single BaseTag model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionView($id)
     {
@@ -59,6 +60,7 @@ class BaseTagsController extends BaseController
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
@@ -82,6 +84,8 @@ class BaseTagsController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionGetForm($id)
     {
@@ -94,6 +98,7 @@ class BaseTagsController extends BaseController
      *
      * @param int $id
      * @return mixed
+     * @throws \Throwable
      */
     public function actionDelete($id)
     {

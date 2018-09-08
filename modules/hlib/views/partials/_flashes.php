@@ -23,6 +23,7 @@ foreach ($levels as $level) :
 
     if ($flashes) :
         foreach ($flashes as $msg) :
+            /** @noinspection PhpUnhandledExceptionInspection */
             echo Alert::widget([
                 'options' => ['class' => 'alert-' . $level],
                 'body' => $msg,

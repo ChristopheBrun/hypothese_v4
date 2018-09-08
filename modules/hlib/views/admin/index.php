@@ -22,7 +22,8 @@ $this->title = HLib::t('labels', 'Site information');
 
     <div class="panel-body">
         <ul class="list-group">
-            <?= GridListHeader::widget(['columns' => [
+            <?= /** @noinspection PhpUnhandledExceptionInspection */
+            GridListHeader::widget(['columns' => [
                 ["width" => 6, "label" => HLib::t('labels', 'Name')],
                 ["width" => 6, "label" => HLib::t('labels', 'Value')],
             ]]) ?>

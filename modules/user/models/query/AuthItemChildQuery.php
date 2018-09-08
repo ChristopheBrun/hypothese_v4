@@ -2,12 +2,14 @@
 
 namespace app\modules\user\models\query;
 
+use yii\db\ActiveQuery;
+
 /**
  * This is the ActiveQuery class for [[\app\modules\user\models\AuthItemChild]].
  *
  * @see \app\modules\user\models\AuthItemChild
  */
-class AuthItemChildQuery extends \yii\db\ActiveQuery
+class AuthItemChildQuery extends ActiveQuery
 {
     /**
      * @inheritdoc

@@ -40,7 +40,7 @@ class HLib extends Module
     /**
      *
      */
-    public function registerTranslations()
+    public static function registerTranslations()
     {
         Yii::$app->i18n->translations['modules/hlib/*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
@@ -57,7 +57,7 @@ class HLib extends Module
      * @param       $category
      * @param       $message
      * @param array $params
-     * @param null  $language
+     * @param null $language
      * @return mixed
      */
     public static function t($category, $message, $params = [], $language = null)

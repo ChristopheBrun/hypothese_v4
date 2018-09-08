@@ -5,7 +5,6 @@ namespace app\modules\cms\models;
 use app\modules\cms\HCms;
 use app\modules\cms\queries\BaseTextsQuery;
 use app\modules\hlib\HLib;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -76,7 +75,7 @@ class BaseText extends ActiveRecord
      */
     public function getWebTexts()
     {
-        return $this->hasMany(WebText::className(), ['base_id' => 'id']);
+        return $this->hasMany(WebText::class, ['base_id' => 'id']);
     }
 
     /**
@@ -84,7 +83,7 @@ class BaseText extends ActiveRecord
      */
     public function getBasePage()
     {
-        return $this->hasOne(BasePage::className(), ['id' => 'base_page_id']);
+        return $this->hasOne(BasePage::class, ['id' => 'base_page_id']);
     }
 
     /**

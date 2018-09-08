@@ -3,9 +3,20 @@ Module : USER
 
 ### Installation
 
+```
+'modules' => [
+    'user' => [
+        'class' => 'app\modules\user\UserModule',
+        //
+        'rememberConfirmationTokenFor' => 259200, // 72h = 72 * 3600 secondes
+        'resetPasswordAfterEmailChange' => false,
+    ],
+],
+```
+
 ### Configuration
 
-### Extensions
+### Extensions requises
 
 - execut/yii2-widget-bootstraptreeview
 
@@ -43,7 +54,7 @@ classes qui lui a été injectée.
 Si la classe concernée n'est pas encore enregistrée dans le Container : 
 
 - renseigner le classMap du module dans la configuration. @see app\modules\user\Module::registerClassDefinitions() pour les définitions par défaut
-- dans les fichiers du module, remplacer les appels à new() par des appels à Yii::createObject(). NB : cela permettra aussi à la méthode IA::className() de fonctionner avec 
+- dans les fichiers du module, remplacer les appels à new() par des appels à Yii::createObject(). NB : cela permettra aussi à la méthode HLib::class de fonctionner avec 
 cette nouvelle classe
 
  

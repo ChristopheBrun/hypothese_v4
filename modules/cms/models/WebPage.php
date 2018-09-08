@@ -5,7 +5,6 @@ namespace app\modules\cms\models;
 use app\modules\cms\HCms;
 use app\modules\hlib\HLib;
 use app\modules\cms\queries\WebPagesQuery;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -103,7 +102,7 @@ class WebPage extends ActiveRecord
      */
     public function getLanguage()
     {
-        return $this->hasOne(Language::className(), ['id' => 'language_id']);
+        return $this->hasOne(Language::class, ['id' => 'language_id']);
     }
 
     /**
@@ -111,7 +110,7 @@ class WebPage extends ActiveRecord
      */
     public function getBase()
     {
-        return $this->hasOne(BasePage::className(), ['id' => 'base_id']);
+        return $this->hasOne(BasePage::class, ['id' => 'base_id']);
     }
 
     /**

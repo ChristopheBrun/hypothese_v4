@@ -20,13 +20,13 @@ class AdminController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'index' => ['get'],
                 ],
             ],
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +45,7 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+        /** @noinspection SqlResolve */
         $command = Yii::$app->db->createCommand('select VARIABLE_VALUE from information_schema.GLOBAL_VARIABLES where VARIABLE_NAME = \'version\'');
         $mySqlVersion = $command->queryScalar();
         return $this->render('index', compact('mySqlVersion'));

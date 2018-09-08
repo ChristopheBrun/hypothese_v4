@@ -4,7 +4,6 @@ namespace app\modules\cms\models;
 
 use app\modules\cms\queries\BaseTagsQuery;
 use app\modules\hlib\HLib;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -72,7 +71,7 @@ class BaseTag extends ActiveRecord
      */
     public function getBaseNewsBaseTags()
     {
-        return $this->hasMany(BaseNewsBaseTag::className(), ['base_tag_id' => 'id']);
+        return $this->hasMany(BaseNewsBaseTag::class, ['base_tag_id' => 'id']);
     }
 
     /**
@@ -80,7 +79,7 @@ class BaseTag extends ActiveRecord
      */
     public function getBaseNews()
     {
-        return $this->hasMany(BaseNews::className(), ['id' => 'base_news_id'])->viaTable('base_news_base_tag', ['base_tag_id' => 'id']);
+        return $this->hasMany(BaseNews::class, ['id' => 'base_news_id'])->viaTable('base_news_base_tag', ['base_tag_id' => 'id']);
     }
 
     /**
@@ -88,7 +87,7 @@ class BaseTag extends ActiveRecord
      */
     public function getWebTags()
     {
-        return $this->hasMany(WebTag::className(), ['base_id' => 'id']);
+        return $this->hasMany(WebTag::class, ['base_id' => 'id']);
     }
 
     /**

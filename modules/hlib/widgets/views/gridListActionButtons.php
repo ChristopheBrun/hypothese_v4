@@ -22,5 +22,6 @@ use app\modules\hlib\widgets\DeleteLink;
     <span class="glyphicon glyphicon-eye-open"></span>
 </a>
 
-<?= DeleteLink::widget(['url' => $deleteUrl, 'data' => $deleteMessageData]) ?>
+<?= /** @noinspection PhpUnhandledExceptionInspection */
+DeleteLink::widget(['url' => $deleteUrl, 'data' => $deleteMessageData]) ?>
 

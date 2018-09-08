@@ -2,7 +2,7 @@
 
 namespace app\modules\user\models;
 
-use app\modules\ia\lib\TreeNode;
+use app\modules\hlib\lib\TreeNode;
 use app\modules\user\models\query\AuthItemQuery;
 use Yii;
 use yii\db\ActiveRecord;

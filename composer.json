@@ -23,7 +23,11 @@
     "yiisoft/yii2": "~2.0.14",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
-    "execut/yii2-widget-bootstraptreeview": "dev-master"
+    "execut/yii2-widget-bootstraptreeview": "dev-master",
+    "intervention/image": "^2.4",
+    "nesbot/carbon": "^2.1",
+    "danielstjules/stringy": "^3.1",
+    "nterms/yii2-pagesize-widget": "^2.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
