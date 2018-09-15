@@ -13,9 +13,10 @@ $config = [
     'id' => 'basic',
     'name' => 'Hypothese.net',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'user', 'hlib', function () {
-        return Yii::$app->getModule('user');
-    }],
+    'bootstrap' => ['log'],
+//    'bootstrap' => ['log', 'user', 'hlib', function () {
+//        return Yii::$app->getModule('user');
+//    }],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -100,20 +101,22 @@ $config = [
     ],
 ];
 
-if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
+// Surcharge de la configuration selon l'environnement
+switch (YII_ENV) {
+    case 'prod' :
+        require_once __DIR__ . '/private/config.prod.php';
+        break;
+    default :
+        require_once __DIR__ . '/private/config.dev.php';
+}
+
+// La barre de debug
+if (YII_DEBUG) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
-
-    $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = [
-        'class' => 'yii\gii\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '88.187.229.52'],
     ];
 }
 

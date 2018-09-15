@@ -23,3 +23,4 @@ switch ($env) {
 }
 
 defined('YII_DEBUG') or define('YII_DEBUG', YII_ENV == 'dev');
+//define('YII_DEBUG', true);

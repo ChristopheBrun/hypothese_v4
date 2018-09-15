@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use app\modules\user\models\User;
 use yii\console\Controller;
 use yii\console\ExitCode;
 
@@ -37,7 +38,14 @@ class HelloController extends Controller
      */
     public function actionTest()
     {
+        echo "Env : " . YII_ENV . "\n";
         $time = 1534878269;
         echo date('Y-m-d H:i:s', $time), "\n";
+
+        echo User::find()
+            ->where('created_at != updated_at OR password_usage = :count', ['count' => 0])
+            ->andWhere('id > 10 OR blocked_at IS NULL')
+            ->count();
+        echo ">> OK\n";
     }
 }
