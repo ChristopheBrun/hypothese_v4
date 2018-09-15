@@ -9,6 +9,7 @@ namespace app\modules\user\commands;
 
 use app\modules\user\helpers\FixturesHelper;
 use Exception;
+use Yii;
 use yii\console\Controller;
 
 /**
@@ -17,16 +18,36 @@ use yii\console\Controller;
 class FixturesController extends Controller
 {
     /**
-     * @throws Exception
+     *
      */
     public function actionInitUserAndRbac()
     {
-        $helper = new FixturesHelper();
-        $helper->createSuperadmin();
-        $helper->createSuperadminRole();
-        $helper->createUserManagementPermissions();
-        $helper->createPrivilegesManagementPermissions();
-        $helper->setSuperadminPrivileges();
+        echo "Env : " . YII_ENV . "\n";
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $helper = new FixturesHelper();
+            $helper->createSuperadmin();
+            echo "createSuperadmin\n";
+            $helper->createSuperadminRole();
+            echo "createSuperadminRole\n";
+            $helper->createUserManagementPermissions();
+            echo "createUserManagementPermissions\n";
+            $helper->createPrivilegesManagementPermissions();
+            echo "createPrivilegesManagementPermissions\n";
+            $helper->setSuperadminPrivileges();
+            echo "setSuperadminPrivileges\n";
+            $transaction->commit();
+            echo ">> OK !\n";
+        } catch (Exception $x) {
+            Yii::error($x->getMessage());
+            echo $x->getMessage(), "\n";
+            try {
+                $transaction->rollBack();
+            } catch (\yii\db\Exception $e) {
+                Yii::error($x->getMessage());
+                echo $e->getMessage() . "\n";
+            }
+        }
     }
 
 }

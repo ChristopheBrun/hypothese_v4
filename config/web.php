@@ -13,7 +13,9 @@ $config = [
     'id' => 'basic',
     'name' => 'Hypothese.net',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'user', 'hlib', function () {
+        return Yii::$app->getModule('user');
+    }],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -86,6 +88,9 @@ $config = [
     ],
     //
     'modules' => [
+        'hlib' => [
+            'class' => 'app\modules\hlib\HLib',
+        ],
         'user' => [
             'class' => 'app\modules\user\UserModule',
             //

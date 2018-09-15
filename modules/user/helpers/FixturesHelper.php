@@ -2,8 +2,11 @@
 
 namespace app\modules\user\helpers;
 
+use app\modules\hlib\helpers\ModelHelper;
+use app\modules\user\lib\enums\AppRole;
 use app\modules\user\models\Profile;
 use app\modules\user\models\User;
+use Exception;
 use Yii;
 
 /**
@@ -12,20 +15,25 @@ use Yii;
  */
 class FixturesHelper
 {
+    private $superadminEmail = 'superadmin@hypothese.net';
+
     /**
      * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function createSuperadmin()
     {
         $data = [
             'scenario' => User::SCENARIO_REGISTER,
-            'email' => 'superadmin@hypothese.net',
+            'email' => $this->superadminEmail,
             'password_hash' => '',
             'auth_key' => '',
             'registered_from' => '',
         ];
         $user = new User($data);
-        $user->save();
+        if (!$user->save()) {
+            throw new Exception(ModelHelper::errMsg('save', $user));
+        }
 
         $data = [
             'scenario' => Profile::SCENARIO_REGISTER,
@@ -34,14 +42,18 @@ class FixturesHelper
             'user_id' => $user->id,
         ];
         $profile = new Profile($data);
-        $profile->save();
+        if (!$profile->save()) {
+            throw new Exception(ModelHelper::errMsg('save', $profile));
+        }
 
         $user->scenario = User::SCENARIO_PASSWORD;
         $user->password_hash = Yii::$app->getSecurity()->generatePasswordHash('ght4519');
         $user->password_updated_at = date('Y:m:d H:i:s');
         $user->password_usage = 0;
         $user->confirmed_at = date('Y-m-d H:i:s');
-        $user->save();
+        if (!$user->save()) {
+            throw new Exception(ModelHelper::errMsg('save', $user));
+        }
     }
 
     /**
@@ -51,8 +63,8 @@ class FixturesHelper
     {
         $auth = Yii::$app->getAuthManager();
 
-        $user = User::find()->byEmail('superadmin@hypothese.net')->one();
-        $role = $auth->getRole('superadmin');
+        $user = User::find()->byEmail($this->superadminEmail)->one();
+        $role = $auth->getRole(AppRole::SUPERADMIN);
 
         if ($user) {
             $auth->revoke($role, $user->id);
@@ -67,7 +79,7 @@ class FixturesHelper
     public function createSuperadminRole()
     {
         $auth = Yii::$app->getAuthManager();
-        $role = $auth->createRole('superadmin');
+        $role = $auth->createRole(AppRole::SUPERADMIN);
         $role->description = 'Super administrateur';
         $auth->add($role);
     }
@@ -78,7 +90,7 @@ class FixturesHelper
     public function removeSuperadminRole()
     {
         $auth = Yii::$app->getAuthManager();
-        $role = $auth->getRole('superadmin');
+        $role = $auth->getRole(AppRole::SUPERADMIN);
         $auth->remove($role);
     }
 
@@ -152,9 +164,9 @@ class FixturesHelper
     public function setSuperadminPrivileges()
     {
         $auth = Yii::$app->getAuthManager();
-        $user = User::find()->byEmail('superadmin@inadvans.com')->one();
+        $user = User::find()->byEmail($this->superadminEmail)->one();
 
-        $role = $auth->getRole('superadmin');
+        $role = $auth->getRole(AppRole::SUPERADMIN);
         $auth->assign($role, $user->id);
 
         $permission = $auth->getPermission('manageUsers');

@@ -145,4 +145,16 @@ class ModelHelper
         return $model;
     }
 
+    /**
+     * Renvoie un message d'erreur préformatté quand on veut notifier une erreur sur la méthode d'un modèle
+     *
+     * @param string $methodName
+     * @param Model $model
+     * @return string
+     */
+    public static function errMsg($methodName, Model $model)
+    {
+        return "!$methodName() : " . print_r([$model->getErrors(), $model->toArray()], true);
+    }
+
 }

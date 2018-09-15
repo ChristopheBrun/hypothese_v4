@@ -3,6 +3,7 @@
 namespace app\modules\hlib;
 
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\base\Module;
 
 /**
@@ -10,7 +11,7 @@ use yii\base\Module;
  *
  * @package app\modules\users
  */
-class HLib extends Module
+class HLib extends Module implements BootstrapInterface
 {
     public $controllerNamespace = 'app\modules\hlib\controllers';
 

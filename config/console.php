@@ -12,7 +12,9 @@ switch (YII_ENV) {
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'hlib', function () {
+        return Yii::$app->getModule('user');
+    }],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -42,6 +44,16 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'i18n' => [
+            'translations' => [
+                'labels' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                ],
+                'messages' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                ],
+            ],
+        ],
         'log' => [
             'targets' => [
                 [
@@ -53,6 +65,9 @@ $config = [
     ],
     //
     'modules' => [
+        'hlib' => [
+            'class' => 'app\modules\hlib\HLib',
+        ],
         'user' => [
             'class' => 'app\modules\user\UserModule',
             //

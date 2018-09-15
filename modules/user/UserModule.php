@@ -13,12 +13,14 @@ use app\modules\user\models\Profile;
 use app\modules\user\models\search\UserSearch;
 use app\modules\user\models\User;
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\base\Module;
+use yii\console\Application;
 
 /**
  * user module definition class
  */
-class UserModule extends Module
+class UserModule extends Module implements BootstrapInterface
 {
     //
     // Configuration
@@ -77,6 +79,17 @@ class UserModule extends Module
 
         // Lancement du gestionnaire d'événements (singleton)
         Yii::createObject('user/UserEventHandler');
+    }
+
+    /**
+     * @param $app
+     */
+    public function bootstrap($app)
+    {
+        // Il faut rendre les commandes du module accessibles depuis la console
+        if ($app instanceof Application) {
+            $this->controllerNamespace = 'app\modules\user\commands';
+        }
     }
 
     /**
