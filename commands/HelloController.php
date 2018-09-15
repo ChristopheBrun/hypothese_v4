@@ -31,4 +31,13 @@ class HelloController extends Controller
 
         return ExitCode::OK;
     }
+
+    /**
+     *
+     */
+    public function actionTest()
+    {
+        $time = 1534878269;
+        echo date('Y-m-d H:i:s', $time), "\n";
+    }
 }

@@ -1,7 +1,13 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+switch (YII_ENV) {
+    case 'prod':
+        $db = require_once __DIR__ . '/private/db.prod.php';
+        break;
+    default:
+        $db = require_once __DIR__ . '/private/db.dev.php';
+}
 
 $config = [
     'id' => 'basic',
@@ -16,7 +22,13 @@ $config = [
     'params' => $params,
     //
     'components' => [
-        'db' => $db,
+        'db' => isset($db) ? $db : [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=hypothese_v4',
+            'username' => 'root',
+            'password' => 'tagada',
+            'charset' => 'utf8',
+        ],
         //
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
