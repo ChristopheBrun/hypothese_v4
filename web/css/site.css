@@ -1,3 +1,4 @@
+/* Styles liés à Yii ou à ses extensions */
 html,
 body {
     height: 100%;
@@ -41,6 +42,7 @@ a.asc:after, a.desc:after {
     position: relative;
     top: 1px;
     display: inline-block;
+    /*noinspection CssNoGenericFontName*/
     font-family: 'Glyphicons Halflings';
     font-style: normal;
     font-weight: normal;
@@ -96,9 +98,9 @@ a.desc:after {
     border: none;
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .nav li > form > button.logout {
-        display:block;
+        display: block;
         text-align: left;
         width: 100%;
         padding: 10px 15px;

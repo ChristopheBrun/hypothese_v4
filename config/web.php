@@ -1,6 +1,5 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
 switch (YII_ENV) {
     case 'prod':
         $db = require_once __DIR__ . '/private/db.prod.php';
@@ -10,20 +9,31 @@ switch (YII_ENV) {
 }
 
 $config = [
+    //----------------------------------------------
+    // Attributs
+    //----------------------------------------------
     'id' => 'basic',
     'name' => 'Hypothese.net',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
-//    'bootstrap' => ['log', 'user', 'hlib', function () {
-//        return Yii::$app->getModule('user');
-//    }],
+    'bootstrap' => ['log', 'hlib', 'user', function () {
+        return Yii::$app->getModule('user');
+    }],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
     ],
     'language' => 'fr-FR',
-    'params' => $params,
-    //
+
+    //----------------------------------------------
+    // Paramètres
+    //----------------------------------------------
+    'params' => [
+        'adminEmail' => 'admin@example.com',
+    ],
+
+    //----------------------------------------------
+    // Composants
+    //----------------------------------------------
     'components' => [
         'db' => isset($db) ? $db : [
             'class' => 'yii\db\Connection',
@@ -87,7 +97,10 @@ $config = [
             'loginUrl' => '/login',
         ],
     ],
-    //
+
+    //----------------------------------------------
+    // Modules
+    //----------------------------------------------
     'modules' => [
         'hlib' => [
             'class' => 'app\modules\hlib\HLib',

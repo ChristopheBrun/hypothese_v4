@@ -1,6 +1,5 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
 switch (YII_ENV) {
     case 'prod':
         $db = require_once __DIR__ . '/private/db.prod.php';
@@ -10,6 +9,9 @@ switch (YII_ENV) {
 }
 
 $config = [
+    //----------------------------------------------
+    // Attributs
+    //----------------------------------------------
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'hlib', function () {
@@ -25,8 +27,17 @@ $config = [
 //            'class' => 'yii\faker\FixtureController',
 //        ],
 //    ],
-    'params' => $params,
-    //
+
+    //----------------------------------------------
+    // Paramètres
+    //----------------------------------------------
+    'params' => [
+        'adminEmail' => 'admin@example.com',
+    ],
+
+    //----------------------------------------------
+    // Composants
+    //----------------------------------------------
     'components' => [
         'db' => isset($db) ? $db : [
             'class' => 'yii\db\Connection',
@@ -63,7 +74,10 @@ $config = [
             ],
         ],
     ],
-    //
+
+    //----------------------------------------------
+    // Modules
+    //----------------------------------------------
     'modules' => [
         'hlib' => [
             'class' => 'app\modules\hlib\HLib',

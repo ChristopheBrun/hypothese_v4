@@ -23,7 +23,7 @@ class MyAccountController extends Controller
     const EVENT_BEFORE_UPDATE_USER = 'beforeUpdateUser';
     const EVENT_AFTER_UPDATE_USER = 'afterUpdateUser';
 
-    /** @var string|array Url ou route à exploiter pour une redirection après la gestion d'un événement */
+    /** @var string|array $afterEventRedirectTo Url ou route à exploiter pour une redirection après la gestion d'un événement */
     public $afterEventRedirectTo = false;
 
     /**

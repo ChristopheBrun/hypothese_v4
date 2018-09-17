@@ -284,7 +284,7 @@ class UserEventHandler extends Component
 
             $user->password_hash = '';
             $user->save();
-            /** @var MyAccountController */
+            /** @var MyAccountController $controller */
             $controller = $event->action->controller;
             $controller->afterEventRedirectTo = ['/user/security/logout'];
             Flash::success(UserModule::t('messages', "You have to reset your password. Please check your mails for further instructions"));

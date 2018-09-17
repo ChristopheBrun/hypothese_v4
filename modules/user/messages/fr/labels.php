@@ -23,6 +23,8 @@ return [
     "Last Name" => "Nom",
     "Logged In From" => "IP connexion",
     "Logged In At" => "Connecté le",
+    "Login" => "Connexion",
+    "Logout({email})" => "Déconnexion ({email})",
 
     "Manage privileges" => "Gérer les droits",
     "Manage users" => "Gérer les utilisateurs",
