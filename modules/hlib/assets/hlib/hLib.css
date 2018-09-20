@@ -1,5 +1,5 @@
 /**
- * Styles de la librairie HLib
+ * Styles de la librairie hLib
  * todo_cbn Pas exploités pour l'instant. Voir comment on peut intégrer les assets d'un module dans ceux de l'application
  */
 
@@ -131,11 +131,11 @@ li.grid-list-header .tags {
 }
 
 .backend-form label {
-    color: #8c8c8c;
+    color : #8c8c8c;
 }
 
 .backend-form .required label {
-    color: #000000;
+    color : #000000;
 }
 
 .list-group-item:hover {
@@ -149,11 +149,7 @@ li.grid-list-header .tags {
 }
 
 li.menu-separator {
-    border: 1px solid silver;
-    width: 80%;
+    border : 1px solid silver;
+    width:80%;
     margin-left: 10%;
-}
-
-.no-padding-right {
-    padding-right: 0;
 }

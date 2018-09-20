@@ -2,13 +2,14 @@
 
 namespace app\modules\hlib\helpers;
 
-use Carbon\Carbon;
 use yii\base\Exception;
 
 
 /**
  * Class dateObject
  * @package app\helpers
+ *
+ * @deprecated Utiliser Carbon à la place
  */
 class hDate
 {
@@ -25,7 +26,6 @@ class hDate
      * @param string $sqlDate
      * @return $this
      * @throws Exception
-     * @deprecated
      */
     public function fromSQLDate($sqlDate)
     {
@@ -44,7 +44,7 @@ class hDate
      *
      * @param string $value La date à traiter. Format attendu : DD/MM/YYYY
      * @return string Chaine au format : YYYY/MM/DD
-     * @deprecated cf BaseNews pour un exemple de traitement de $value avec Carbon
+     * @deprecated cf BaseNews pour un exemple de traitement de ^value avec Carbon
      */
     public static function convertDateToSQLFormat($value)
     {
@@ -63,7 +63,6 @@ class hDate
      *
      * @param string $sep
      * @return string
-     * @deprecated
      */
     public function asString($sep = '-')
     {
@@ -72,7 +71,6 @@ class hDate
 
     /**
      * @return int
-     * @deprecated
      */
     public function getDay()
     {
@@ -82,7 +80,6 @@ class hDate
     /**
      * @param int $day
      * @return hDate
-     * @deprecated
      */
     public function setDay($day)
     {
@@ -92,7 +89,6 @@ class hDate
 
     /**
      * @return int
-     * @deprecated
      */
     public function getMonth()
     {
@@ -102,7 +98,6 @@ class hDate
     /**
      * @param int $month
      * @return hDate
-     * @deprecated
      */
     public function setMonth($month)
     {
@@ -112,7 +107,6 @@ class hDate
 
     /**
      * @return int
-     * @deprecated
      */
     public function getYear()
     {
@@ -122,27 +116,11 @@ class hDate
     /**
      * @param int $year
      * @return hDate
-     * @deprecated
      */
     public function setYear($year)
     {
         $this->year = $year;
         return $this;
-    }
-
-    /**
-     * @param string $date
-     * @param string $format
-     * @return string
-     */
-    public static function formatLocalized($date, $format)
-    {
-        $carbon = Carbon::parse($date);
-        if (strtotime($carbon) === false) {
-            return $date;
-        }
-
-        return $carbon->formatLocalized($format);
     }
 
 }

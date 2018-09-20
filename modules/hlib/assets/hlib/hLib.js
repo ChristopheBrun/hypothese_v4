@@ -1,3 +1,3 @@
 /**
- * Scripts de la librairie HLib
+ * Scripts de la librairie hLib
  */

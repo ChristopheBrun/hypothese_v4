@@ -61,18 +61,12 @@ class ListSorter
      *
      * @param QueryInterface $query
      * @param string         $sessionKey La clé de session, en principe au format : app\models\MaClasse.sort
-     * @param string         $defaultSortClause Paramètres par défaut pour ORDER BY. N'est exploité que si $sessionKey ne pointe sur rien.
      * @return QueryInterface
      */
-    public static function updateQuery(QueryInterface $query, $sessionKey, $defaultSortClause = '')
+    public static function updateQuery(QueryInterface $query, $sessionKey)
     {
         // La clé de session contient un tableau au format : nom_colonne => ordre_de_tri
         $sortClauses = Yii::$app->session->get($sessionKey, []);
-        if (!$sortClauses && $defaultSortClause) {
-            $query->addOrderBy($defaultSortClause);
-            return $query;
-        }
-
         foreach ($sortClauses as $field => $clause) {
             if ($clause == 'asc' || $clause == 'desc') {
                 $query->addOrderBy($field . ' ' . $clause);
