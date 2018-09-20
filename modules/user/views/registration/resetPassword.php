@@ -27,12 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php $form = ActiveForm::begin(); ?>
 
                 <div class="notes">
-                    <ul>
-                        <li><?= UserModule::t('messages', "1 lower case letter at least") ?></li>
-                        <li><?= UserModule::t('messages', "1 upper case letter at least") ?></li>
-                        <li><?= UserModule::t('messages', "1 digit at least") ?></li>
-                        <li><?= UserModule::t('messages', "1 special character at least") ?></li>
-                    </ul>
+                    <?= UserModule::t('messages', "Your password must have at least {0} characters", [UserModule::getInstance()->passwordMinLength]) ?>
                 </div>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>

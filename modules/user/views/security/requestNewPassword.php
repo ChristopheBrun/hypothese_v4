@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Formulaire de saisie du mail pour l'envoi d'un nouveau mot depasse
+ * Formulaire de saisie du mail pour l'envoi d'un nouveau mot de passe
  *
  * @var $this yii\web\View
  * @var $model \app\modules\user\models\form\PasswordForm

@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * Barre de menu principale
+ */
+
+use app\modules\hlib\HLib;
+use app\modules\user\UserModule;
+use yii\bootstrap\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+
+NavBar::begin([
+    'brandLabel' => Yii::$app->name,
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => [
+        'class' => 'navbar-inverse navbar-fixed-top',
+    ],
+]);
+
+/** @var app\modules\user\models\User $identity */
+$identity = Yii::$app->user->identity;
+
+/** @noinspection PhpUnhandledExceptionInspection */
+echo Nav::widget([
+    'options' => [
+        'class' => 'navbar-nav navbar-right',
+    ],
+    'items' => [
+        ['label' => HLib::t('labels', 'Home'), 'url' => ['/site/index']],
+        ['label' => HLib::t('labels', 'About'), 'url' => ['/site/about']],
+        ['label' => 'Contact', 'url' => ['/site/contact']],
+        //
+        Yii::$app->user->isGuest ?
+            ['label' => UserModule::t('labels', 'Login'), 'url' => ['/user/security/login']]
+            :
+            '<li>' . Html::beginForm(['/user/security/logout'], 'post')
+            . Html::submitButton(UserModule::t('labels', "Logout({email})", ['email' => $identity->email]), ['class' => 'btn btn-link logout'])
+            . Html::endForm() . '</li>'
+    ],
+]);
+NavBar::end();

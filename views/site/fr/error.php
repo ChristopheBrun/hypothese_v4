@@ -14,7 +14,7 @@ use yii\helpers\Url;
 $this->title = HLib::t('labels', 'Server error');
 $this->params['breadcrumbs'][] = $this->title;
 
-$imgUrl = '/' . Yii::$app->params['images']['webDirectory'] . '/error_500.png';
+$imgUrl = Url::base(true) . '/images/error_500.png';
 ?>
 <div class=row">
     <div class="col-sm-12 alert alert-danger">

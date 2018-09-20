@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\modules\user\lib\enums\AppRole;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -19,7 +20,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout'],
                 'rules' => [
                     [
@@ -30,7 +31,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -61,6 +62,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // Si l'utilisateur est authentifié, on le redirige sur sa propre page d'accueil,  qui dépend du profil
+        if (!Yii::$app->user->isGuest) {
+            if (Yii::$app->user->can(AppRole::SUPERADMIN)) {
+                return $this->_actionIndexSuperadmin();
+            }
+        }
+
         return $this->render('index');
     }
 
@@ -125,4 +133,15 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    private function _actionIndexSuperadmin()
+    {
+        return $this->render('indexSuperadmin');
+    }
+
+
 }

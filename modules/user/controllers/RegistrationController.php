@@ -4,7 +4,6 @@ namespace app\modules\user\controllers;
 
 use app\modules\hlib\HLib;
 use app\modules\user\lib\enums\TokenType;
-use app\modules\user\models\form\MailRequestForm;
 use app\modules\user\models\form\PasswordForm;
 use app\modules\user\models\Token;
 use app\modules\user\models\User;
@@ -32,8 +31,6 @@ class RegistrationController extends Controller
     const EVENT_BEFORE_REGISTER = 'beforeRegister';
     const EVENT_AFTER_REGISTER = 'afterRegister';
 
-    const EVENT_REQUEST_NEW_CONFIRMATION_LINK = 'requestNewConfirmationLink';
-
     const EVENT_BEFORE_CONFIRM_PASSWORD = 'beforeConfirmPassword';
     const EVENT_AFTER_CONFIRM_PASSWORD = 'afterConfirmPassword';
 
@@ -58,11 +55,6 @@ class RegistrationController extends Controller
             [
                 'class' => AccessControl::class,
                 'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['request-new-password'],
-//                        'roles' => ['*']
-                    ],
                     // actions réservées aux utilisateurs non authentifiés
                     [
                         'allow' => true,
@@ -155,35 +147,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Gestion du formulaire de demande de ré-initialisation du mot de passe
-     *
-     * @return string
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionRequestNewPassword()
-    {
-        /** @var MailRequestForm $model */
-        $model = Yii::createObject('user/MailRequestForm');
-
-        if (Yii::$app->request->isPost) {
-            // Traitement du formulaire
-            if ($model->load(Yii::$app->request->post())) {
-                // Envoi d'un mail avec le lien (action par défaut)
-                // @see \app\modules\user\lib\UserEventHandler
-                Event::trigger(static::class, static::EVENT_REQUEST_NEW_PASSWORD, new ActionEvent($this->action));
-                return $this->redirect(Yii::$app->request->getReferrer());
-            }
-
-            Flash::error(HLib::t('messages', "There are errors in your form"));
-        }
-
-        return $this->render('requestNewPassword', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Gestion du formulaire de ré-initialisation du mot de passe
+     * Ré-initialisation du mot de passe
      *
      * @param int $id
      * @param string $code
@@ -259,44 +223,6 @@ class RegistrationController extends Controller
         }
 
         return false;
-    }
-
-    /**
-     * Gestion du formulaire permettant de demander l'envoi d'un nouveau lien de confirmation
-     *
-     * @return string
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionRequestNewConfirmationLink()
-    {
-        /** @var MailRequestForm $model */
-        $model = Yii::createObject('user/MailRequestForm');
-
-        if (Yii::$app->request->isPost) {
-            // Traitement du formulaire
-            if ($model->load(Yii::$app->request->post())) {
-                /** @var User $user */
-                $user = Yii::createObject('user/User')->find()->byEmail($model->email)->one();
-                if (!$user) {
-                    // RAF
-                } elseif ($user->confirmed_at) {
-                    // Compte déjà confirmé, inutile de renvoyer un lien
-                    Flash::warning(UserModule::t('messages', "This account is already confirmed"));
-                } else {
-                    // Envoi du lien
-                    Event::trigger(static::class, static::EVENT_REQUEST_NEW_CONFIRMATION_LINK, new ActionEvent($this->action, ['sender' => $model]));
-                }
-
-                return $this->redirect(Yii::$app->request->getReferrer());
-            }
-
-            Flash::error(HLib::t('messages', "There are errors in your form"));
-        }
-
-        // Affichage initial ou ré-affichage après erreur
-        return $this->render('requestNewConfirmationLink', [
-            'model' => $model,
-        ]);
     }
 
 }

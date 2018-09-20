@@ -56,6 +56,12 @@ class UserModule extends Module implements BootstrapInterface
     /** @var int Durée d'une session, en secondes */
     public $rememberFor = 86400; // 60*60*24 secondes = 1j
 
+    /** @var bool $confirmationRequiredForRegistration true => on passe par un mail de confirmation avant d'activer le compte sur le site */
+    public $confirmationRequiredForRegistration = false;
+
+    /** @var int */
+    public $passwordMinLength = 6;
+
     /**
      * @var array Mapping des classes créées dans le module
      * @see Yii::createObject()

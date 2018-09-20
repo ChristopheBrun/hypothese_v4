@@ -29,6 +29,8 @@ class UserMail extends Component
     //
 
     /**
+     * Mail avec un lien de confirmation pour l'inscription sur le site
+     *
      * @param string $to
      * @param User $user
      * @param string $token
@@ -51,6 +53,8 @@ class UserMail extends Component
     }
 
     /**
+     * Mail avec un lien permettant de ré-initialiser son mot de passe
+     *
      * @param string $to
      * @param User $user
      * @param string $token

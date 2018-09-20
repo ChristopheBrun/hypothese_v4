@@ -5,11 +5,13 @@ namespace app\modules\user\lib;
 use app\modules\hlib\lib\Flash;
 use app\modules\user\controllers\MyAccountController;
 use app\modules\user\controllers\RegistrationController;
+use app\modules\user\controllers\SecurityController;
 use app\modules\user\controllers\UserController;
 use app\modules\user\lib\enums\TokenType;
 use app\modules\user\models\form\MailRequestForm;
 use app\modules\user\models\Token;
 use app\modules\user\models\User;
+use Exception;
 use Yii;
 use app\modules\user\UserModule;
 use app\modules\hlib\HLib;
@@ -78,14 +80,16 @@ class UserEventHandler extends Component
     protected function subscribeEvents()
     {
         Event::on(RegistrationController::class, RegistrationController::EVENT_AFTER_REGISTER, [$this, 'onAfterRegister']);
-        Event::on(RegistrationController::class, RegistrationController::EVENT_REQUEST_NEW_PASSWORD, [$this, 'onRequestNewPassword']);
-        Event::on(RegistrationController::class, RegistrationController::EVENT_REQUEST_NEW_CONFIRMATION_LINK, [$this, 'onRequestNewConfirmationLink']);
 
         Event::on(UserController::class, UserController::EVENT_AFTER_CREATE_USER, [$this, 'onAfterCreateUser']);
         Event::on(UserController::class, UserController::EVENT_BEFORE_UPDATE_USER, [$this, 'onBeforeUpdateUser']);
         Event::on(UserController::class, UserController::EVENT_AFTER_UPDATE_USER, [$this, 'onAfterUpdateUser']);
+
         Event::on(MyAccountController::class, MyAccountController::EVENT_BEFORE_UPDATE_USER, [$this, 'onBeforeUpdateOwnUser']);
         Event::on(MyAccountController::class, MyAccountController::EVENT_AFTER_UPDATE_USER, [$this, 'onAfterUpdateOwnUser']);
+
+        Event::on(SecurityController::class, SecurityController::EVENT_REQUEST_NEW_PASSWORD, [$this, 'onRequestNewPassword']);
+        Event::on(SecurityController::class, SecurityController::EVENT_REQUEST_NEW_CONFIRMATION_LINK, [$this, 'onRequestNewConfirmationLink']);
 
         if (is_a(Yii::$app, 'yii\web\Application')) {
             Event::on(yii\web\User::class, yii\web\User::EVENT_AFTER_LOGIN, [$this, 'onAfterLogin']);
@@ -129,51 +133,58 @@ class UserEventHandler extends Component
     }
 
     /**
-     * Actions à effectuer après la demande d'un nouveau lien de confirmation
+     * Après la demande d'un nouveau lien de confirmation
      *  - renvoi dun mail de confirmation
      *  - affichage d'un message flash
      *
      * @param ActionEvent $event
-     * @throws \yii\base\InvalidConfigException
      */
     public function onRequestNewConfirmationLink(ActionEvent $event)
     {
-        /** @var MailRequestForm $model */
-        $model = $event->sender;
+        try {
+            /** @var MailRequestForm $model */
+            $model = $event->sender;
 
-        $to = $model->email;
-        $user = Yii::createObject('user/User')->find()->byEmail($to)->one();
-        if ($user) {
-            $token = Token::generateTokenForUser($user->id, TokenType::REGISTRATION);
-            $url = Url::to(['/user/registration/confirm-password', 'code' => $token->code, 'id' => $user->id], true);
+            $to = $model->email;
+            $user = Yii::createObject('user/User')->find()->byEmail($to)->one();
+            if ($user) {
+                $token = Token::generateTokenForUser($user->id, TokenType::REGISTRATION);
+                $url = Url::to(['/user/registration/confirm-password', 'code' => $token->code, 'id' => $user->id], true);
 
-            $this->getMailer()->passwordConfirmationLink($to, $user, $token, $url);
-            Flash::success(UserModule::t('messages',
-                "We are sending you a new mail with the instructions to activate your account"));
+                $this->getMailer()->passwordConfirmationLink($to, $user, $token, $url);
+                Flash::success(UserModule::t('messages',
+                    "We are sending you a new mail with the instructions to activate your account"));
+            }
+        } catch (Exception $x) {
+            Yii::error($x->getMessage());
         }
     }
 
     /**
-     * Actions à effectuer après la demande d'un nouveau lien pour un mot de passe
+     * Après la demande d'un nouveau lien pour un mot de passe
      *  - envoi d'un mail avec le lien pour confirmer son mot de passe
      *  - affichage d'un message flash
      *
      * @param ActionEvent $event
-     * @throws \yii\base\InvalidConfigException
      */
     public function onRequestNewPassword(ActionEvent $event)
     {
-        /** @var MailRequestForm $model */
-        $model = $event->sender;
+        try {
+            /** @var MailRequestForm $model */
+            $model = $event->sender;
 
-        $to = $model->email;
-        $user = Yii::createObject('user/User')->find()->byEmail($to)->one();
-        if ($user) {
-            $token = Token::generateTokenForUser($user->id, TokenType::PASSWORD);
-            $url = Url::to(['/user/registration/reset-password', 'code' => $token->code, 'id' => $user->id], true);
+            $to = $model->email;
+            $user = Yii::createObject('user/User')->find()->byEmail($to)->one();
 
-            $this->getMailer()->passwordResetLink($to, $user, $token, $url);
-            Flash::success(UserModule::t('messages', "We are sending you a mail with the instructions to reset your password"));
+            if ($user) {
+                $token = Token::generateTokenForUser($user->id, TokenType::PASSWORD);
+                $url = Url::to(['/user/registration/reset-password', 'code' => $token->code, 'id' => $user->id], true);
+
+                $this->getMailer()->passwordResetLink($to, $user, $token, $url);
+                Flash::success(UserModule::t('messages', "We are sending you a mail with the instructions to reset your password"));
+            }
+        } catch (Exception $x) {
+            Yii::error($x->getMessage());
         }
     }
 

@@ -3,11 +3,6 @@
  *
  */
 return [
-    "1 lower case letter at least" => "au moins 1 lettre minuscule",
-    "1 upper case letter at least" => "au moins 1 lettre majuscule",
-    "1 digit at least" => "au moins 1 chiffre",
-    "1 special character at least" => "au moins 1 caractère spécial",
-
     "Creation of your user account on {0}" => "Création de votre compte {0}",
 
     "Error on logout" => "Une erreur est survenue lors de la déconnexion",
@@ -31,6 +26,7 @@ return [
     "one uppercase character" => "une lettre en majuscules",
     "Only one instance allowed" => "Une seule instance autorisée",
 
+    "Please authenticate yourself" => "Veuillez vous authentifier",
     "Profile updated" => "Profil mis à jour",
     "Registration is not allowed on this site" => "L'inscription n'est pas autorisée sur ce site",
 
@@ -57,6 +53,7 @@ return [
     "Your reset password link" => "Lien de initialisation de votre mot de passe",
     "Your password has been successfully created. Your account is now validated" =>
         "Votre mot de passe a bien été créé. Votre compte est maintenant validé",
+    "Your password must have at least {0} characters" => "Votre mot depasse doit avoir au moins {0} caractères",
     "Your password has been successfully updated" => "Votre mot de passe a bien été ré-initialisé",
     "Your user account on {0} has been updated" => "Votre compte utilisateur sur {0} a été mis à jour",
 ];

@@ -4,7 +4,6 @@ namespace app\modules\user\models\form;
 
 use app\modules\user\models\User;
 use app\modules\user\UserModule;
-use app\modules\user\validators\PasswordStructureValidator;
 use Exception;
 use Yii;
 use yii\base\Model;
@@ -25,8 +24,7 @@ class PasswordForm extends Model
     {
         return [
             ['password', 'required'],
-            ['password', 'string', 'min' => 8, 'max' => 72],
-            ['password', PasswordStructureValidator::class],
+            ['password', 'string', 'min' => UserModule::getInstance()->passwordMinLength],
         ];
     }
 
@@ -49,6 +47,7 @@ class PasswordForm extends Model
     public function resetPassword(User $user)
     {
         if (!$this->validate()) {
+            Yii::debug($this->getErrors());
             return false;
         }
 

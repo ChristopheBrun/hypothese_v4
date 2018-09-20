@@ -2,6 +2,7 @@
 
 use app\modules\hlib\HLib;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * Page spécifique pour les erreurs 404
@@ -15,7 +16,7 @@ use yii\helpers\Html;
 $this->title = HLib::t('labels', 'Unknown page');
 $this->params['breadcrumbs'][] = $this->title;
 
-$imgUrl = '/' . Yii::$app->params['images']['webDirectory'] . '/error_404.jpg';
+$imgUrl = Url::base(true) . '/images/error_404.png';
 ?>
 <div class=row">
     <div class="col-sm-12 alert alert-danger">
