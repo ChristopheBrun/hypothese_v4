@@ -8,7 +8,7 @@ use app\modules\user\UserModule;
 use yii\bootstrap\Html;
 use yii\helpers\Url;
 
-$this->title = 'My Yii Application';
+$this->title = Yii::$app->name . ': superadmin';
 ?>
 <div class="site-index-superadmin">
 
@@ -16,11 +16,18 @@ $this->title = 'My Yii Application';
 
         <div class="row">
             <div class="col-lg-12">
-                <ul>
+                <h1>Administration</h1>
+                <ol>
                     <li>
                         <?= Html::a(UserModule::t('labels', 'Users'), Url::to('/user/user')) ?>
                     </li>
-                </ul>
+                    <li>
+                        <?= Html::a(UserModule::t('labels', 'Roles'), Url::to('/user/role')) ?>
+                    </li>
+                    <li>
+                        <?= Html::a(UserModule::t('labels', 'Permissions'), Url::to('/user/permission')) ?>
+                    </li>
+                </ol>
             </div>
         </div>
 

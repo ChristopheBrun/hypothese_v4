@@ -142,7 +142,8 @@ class TreeNode extends Component
     }
 
     /**
-     * /**
+     * Renvoie l'arbre sous la forme d'un tableau récursif
+     *
      * @param array $keyMap
      * @return array
      */
@@ -165,5 +166,24 @@ class TreeNode extends Component
         return $out;
     }
 
+    /**
+     * Renvoie l'arbre sous laforme d'un tableau à plat
+     *
+     * @return array
+     */
+    public function inDepth()
+    {
+        $out = [];
+
+        if ($this->data) {
+            $out[] = $this->data;
+        }
+
+        foreach ($this->children as $child) {
+            $out = array_merge($out, $child->inDepth());
+        }
+
+        return $out;
+    }
 
 }

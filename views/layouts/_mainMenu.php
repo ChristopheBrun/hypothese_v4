@@ -9,9 +9,12 @@ use app\modules\user\UserModule;
 use yii\bootstrap\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\Url;
+
+$imgUrl = Url::base(true) . '/images/hypothese-32.png';
 
 NavBar::begin([
-    'brandLabel' => Yii::$app->name,
+    'brandLabel' => Html::img($imgUrl, ['class' => 'main-menu-logo']) . Yii::$app->name,
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top',

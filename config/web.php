@@ -23,6 +23,7 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'language' => 'fr-FR',
+    'version' => '4.0.1',
 
     //----------------------------------------------
     // Paramètres

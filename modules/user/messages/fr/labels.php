@@ -11,8 +11,9 @@ return [
     "Cellphone" => "Portable",
     "Cellphone (confirm)" => "Portable (confirmer)",
     "Confirmed At" => "Confirmé le",
-    "Confirm your passrword" => "Confirmer votre mot de passe",
-    "Create password" => "Création du mot de passe",
+    "Confirm Your password" => "Confirmer votre mot de passe",
+    "Create Password" => "Création du mot de passe",
+    'Create User' => "Ajouter un utilisateur",
 
     "Email (confirm)" => "Email (confirmer)",
     "Fax" => "Fax",
