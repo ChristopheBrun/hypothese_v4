@@ -3,9 +3,11 @@
 switch (YII_ENV) {
     case 'prod':
         $db = require_once __DIR__ . '/private/db.prod.php';
+        $pwd = require_once __DIR__ . '/private/pwd.prod.php';
         break;
     default:
         $db = require_once __DIR__ . '/private/db.dev.php';
+        $pwd = require_once __DIR__ . '/private/pwd.dev.php';
 }
 
 $config = [
@@ -29,7 +31,7 @@ $config = [
     // Paramètres
     //----------------------------------------------
     'params' => [
-        'adminEmail' => 'admin@example.com',
+        'adminEmail' => 'superadmin@hypothese.net',
     ],
 
     //----------------------------------------------
@@ -79,7 +81,15 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => YII_ENV == 'dev' ? true : false,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.phpnet.org',
+                'username' => 'postmaster@hypothese.net',
+                'password' => $pwd['mailer.transport'],
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
