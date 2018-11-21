@@ -66,7 +66,7 @@ class UserMail extends Component
         $ok = Yii::$app->mailer->compose($this->mailViews . '/resetPassword', compact('user', 'token', 'url'))
             ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo($to)
-            ->setSubject(Yii::t('messages', "Your reset password link"))
+            ->setSubject(UserModule::t('messages', "Your reset password link"))
             ->send();
 
         if (!$ok) {
