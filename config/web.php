@@ -99,6 +99,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+//                'test' => 'site/test',
             ],
         ],
         'user' => [

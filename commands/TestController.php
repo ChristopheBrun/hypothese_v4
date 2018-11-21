@@ -12,31 +12,14 @@ use yii\console\Controller;
 use yii\console\ExitCode;
 
 /**
- * This command echoes the first argument that you have entered.
  *
- * This command is provided as an example for you to learn how to create console commands.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
  */
-class HelloController extends Controller
+class TestController extends Controller
 {
     /**
-     * This command echoes what you have entered as the message.
-     * @param string $message the message to be echoed.
-     * @return int Exit code
+     * @return string
      */
-    public function actionIndex($message = 'hello world')
-    {
-        echo $message . "\n";
-
-        return ExitCode::OK;
-    }
-
-    /**
-     *
-     */
-    public function actionTest()
+    public function actionFindUser()
     {
         echo "Env : " . YII_ENV . "\n";
         $time = 1534878269;
@@ -47,5 +30,25 @@ class HelloController extends Controller
             ->andWhere('id > 10 OR blocked_at IS NULL')
             ->count();
         echo ">> OK\n";
+
+        return ExitCode::getReason(ExitCode::OK);
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function actionReadonlyModel()
+    {
+//        $model = new TestModel();
+//        echo "code : $model->code\n";
+//
+//        $model->code = "set code";
+//        echo "code : $model->code\n";
+//
+//        $model->setCode("appel à setCode");
+//        echo "code : $model->code\n";
+//
+        return ExitCode::getReason(ExitCode::OK);
     }
 }
