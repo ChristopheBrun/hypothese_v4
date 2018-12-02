@@ -123,6 +123,9 @@ $config = [
             'rememberConfirmationTokenFor' => 259200, // 72h = 72 * 3600 secondes
             'resetPasswordAfterEmailChange' => false,
         ],
+        'ephemerides' => [
+            'class' => 'app\modules\ephemerides\EphemeridesModule',
+        ],
     ],
 ];
 
