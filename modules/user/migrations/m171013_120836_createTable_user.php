@@ -5,6 +5,7 @@ use yii\db\Migration;
 class m171013_120836_createTable_user extends Migration
 {
     private $tableName = 'user';
+    private $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
 
     /**
      *
@@ -25,7 +26,7 @@ class m171013_120836_createTable_user extends Migration
             'confirmed_at' => $this->dateTime(),
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createIndex("unique-$this->tableName-email", $this->tableName, 'email', true);
     }

@@ -5,6 +5,7 @@ use yii\db\Migration;
 class m171013_122258_createTable_profile extends Migration
 {
     private $tableName = 'profile';
+    private $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
 
     /**
      *
@@ -21,7 +22,7 @@ class m171013_122258_createTable_profile extends Migration
             'fax' => $this->string(25),
             'created_at' => $this->datetime(),
             'updated_at' => $this->datetime(),
-        ]);
+        ], $this->tableOptions);
 
         $this->addForeignKey("fk-$this->tableName-user", $this->tableName, 'user_id', 'user', 'id', 'CASCADE');
         $this->createIndex("unique-$this->tableName-user_id", $this->tableName, 'user_id', true);
