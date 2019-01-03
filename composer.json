@@ -28,7 +28,8 @@
     "nesbot/carbon": "^2.1",
     "danielstjules/stringy": "^3.1",
     "nterms/yii2-pagesize-widget": "^2.0",
-    "softark/yii2-dual-listbox": "^1.0"
+    "softark/yii2-dual-listbox": "^1.0",
+    "ext-simplexml": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

@@ -89,6 +89,7 @@ class CalendarEntryQuery extends ActiveQuery
      */
     public function byDay($date, $format = 'Y-m-d')
     {
+        /** @var Carbon $date */
         $date = Carbon::createFromFormat($format, $date);
         return $this
             ->andWhere('DAY(event_date) = :day', ['day' => $date->day])
