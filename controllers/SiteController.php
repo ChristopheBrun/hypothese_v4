@@ -2,9 +2,13 @@
 
 namespace app\controllers;
 
+use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
+use app\modules\ephemerides\models\Tag;
 use app\modules\user\lib\enums\AppRole;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -59,17 +63,40 @@ class SiteController extends Controller
      * Displays homepage.
      *
      * @return string
+     * @throws \yii\db\Exception
      */
     public function actionIndex()
     {
+        //
         // Si l'utilisateur est authentifié, on le redirige sur sa propre page d'accueil,  qui dépend du profil
+        //
         if (!Yii::$app->user->isGuest) {
             if (Yii::$app->user->can(AppRole::SUPERADMIN)) {
                 return $this->_actionIndexSuperadmin();
             }
         }
 
-        return $this->render('index');
+        //
+        // Page d'accueil publique
+        //
+
+        // Récupération d'une liste éventuellement filtrée selon les critères du moteur de recherche
+        $searchModel = new CalendarEntrySearchForm();
+
+        // date de la dernière mise à jour sur des éphémérides
+        $lastUpdatedEntry = CalendarEntry::find()->lastUpdated();
+
+        // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
+        $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags', 'articles')->all();
+
+        $previousEntry = $nextEntry = null;
+        if (!count($dailyEntries)) {
+            $previousEntry = CalendarEntry::find()->lastEntryBeforeCalendarDate(time());
+            $nextEntry = CalendarEntry::find()->nextEntryAfterCalendarDate(time());
+        }
+
+        $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
+        return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'searchModel', 'tags'));
     }
 
     /**

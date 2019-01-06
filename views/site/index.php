@@ -1,33 +1,82 @@
 <?php
+use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
+use Carbon\Carbon;
 
 /**
- * @var $this yii\web\View
+ * Page d'accueil du site
+ *
+ * @var yii\web\View            $this
+ * @var CalendarEntry           $lastUpdatedEntry
+ * @var int                     $countDaysWithEntries
+ * @var int                     $countEntries
+ * @var array                   $dailyEntries [CalendarEntry]
+ * @var CalendarEntry           $previousEntry CalendarEntry null, renseigné seulement si $dailyEntries est vide
+ * @var CalendarEntry           $nextEntry CalendarEntry null, renseigné seulement si $dailyEntries est vide
+ * @var CalendarEntrySearchForm $searchModel
+ * @var array                   $tags [Tag]
  */
 
-use yii\bootstrap\Html;
-use yii\helpers\Url;
-
 $this->title = Yii::$app->name;
+$dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
+
 ?>
-<div class="site-index">
+<div class="row">
+    <div class="panel panel-default" id="homepage">
+        <div class="panel-heading">
+            <h1><?= Yii::t('labels', 'Ephemerides of France and Europe') ?></h1>
+        </div>
 
-    <div class="jumbotron">
-        <h1>Welcome !</h1>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>you are...</h2>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <?= $this->render('@app/modules/ephemerides/views/calendar-entry/_frontendSearchForm', ['model' => $searchModel, 'tags' => $tags]) ?>
+                </div>
             </div>
-            <div class="col-lg-4 text-center">
-                <?= Html::img(Url::base(true) . '/images/marmotte.jpg', ['alt' => 'home page']) ?>
+
+            <div class="row">
+                <div class="col-sm-12" id="today-block">
+                    <div class="current-date"><?= ucfirst(utf8_encode($dateStr)); ?></div>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h3>... on our homepage.</h3>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <?php if (count($dailyEntries)): ?>
+
+                            <?php foreach ($dailyEntries as $entry): ?>
+                                <div class="col-sm-12">
+                                    <?= $this->render('@app/modules/ephemerides/views/calendar-entry/_entry', ['entry' => $entry]) ?>
+                                </div>
+                            <?php endforeach ?>
+
+                        <?php else: ?>
+
+                            <div class="col-sm-12">
+                                <?= Yii::t('messages', 'No calendar entries today') ?>...
+                            </div>
+                            <div class="col-sm-12">
+                                ... <?= Yii::t('messages', 'but last days we had') ?>...
+                                <?= $this->render('@app/modules/ephemerides/views/calendar-entry/_entry', ['entry' => $previousEntry]) ?>
+                            </div>
+                            <div class="col-sm-12">
+                                ... <?= Yii::t('messages', 'and next days we will have') ?>...
+                                <?= $this->render('@app/modules/ephemerides/views/calendar-entry/_entry', ['entry' => $nextEntry]) ?>
+                            </div>
+
+                        <?php endif ?>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-12">
+                    et voilà !
+                </div>
+            </div>
+        </div>
     </div>
 </div>

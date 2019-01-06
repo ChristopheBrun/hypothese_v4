@@ -1,7 +1,9 @@
 <?php
 
-namespace app\modules\ephemerides\models;
+namespace app\modules\ephemerides\models\form;
 
+use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\HLib;
 use app\modules\hlib\models\ModelSearchForm;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;

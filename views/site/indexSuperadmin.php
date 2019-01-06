@@ -32,10 +32,10 @@ $this->title = Yii::$app->name . ': superadmin';
                 <h2>Ephémérides</h2>
                 <ol>
                     <li>
-                        <?= Html::a(UserModule::t('labels', 'Ephémérides'), Url::to('/ephemerides/calendar-entries')) ?>
+                        <?= Html::a(UserModule::t('labels', 'Ephémérides'), Url::to('/ephemerides/calendar-entry')) ?>
                     </li>
                     <li>
-                        <?= Html::a(UserModule::t('labels', 'Catégories'), Url::to('/ephemerides/tags')) ?>
+                        <?= Html::a(UserModule::t('labels', 'Catégories'), Url::to('/ephemerides/tag')) ?>
                     </li>
                 </ol>
             </div>

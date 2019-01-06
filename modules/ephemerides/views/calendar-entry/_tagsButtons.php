@@ -4,7 +4,8 @@
  *
  * @var CalendarEntry $model
  */
-use app\models\CalendarEntry;
+
+use app\modules\ephemerides\models\CalendarEntry;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

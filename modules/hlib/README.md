@@ -7,6 +7,9 @@
 **Extensions à installer :**
 
 composer require intervention/image 
+
 composer require nesbot/carbon
+
 composer require danielstjules/stringy
+
 composer require nterms/yii2-pagesize-widget

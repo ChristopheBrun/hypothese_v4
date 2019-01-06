@@ -2,6 +2,7 @@
 
 namespace app\modules\hlib\helpers;
 
+use Carbon\Carbon;
 use yii\base\Exception;
 
 
@@ -123,4 +124,18 @@ class hDate
         return $this;
     }
 
+    /**
+     * @param string $date
+     * @param string $format
+     * @return string
+     */
+    public static function formatLocalized($date, $format)
+    {
+        $carbon = Carbon::parse($date);
+        if (strtotime($carbon) === false) {
+            return $date;
+        }
+
+        return $carbon->formatLocalized($format);
+    }
 }

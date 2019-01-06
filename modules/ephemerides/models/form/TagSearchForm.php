@@ -1,50 +1,35 @@
 <?php
 
-namespace app\modules\ephemerides\models;
+namespace app\modules\ephemerides\models\form;
 
-use app\modules\hlib\HLib;
-use app\modules\hlib\models\ModelSearchForm;
+use Yii;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use app\modules\ephemerides\models\Tag;
 
 /**
- * TagSearchForm represents the model behind the search form about `app\models\Tag`.
+ * TagSearchForm represents the model behind the search form of `app\modules\ephemerides\models\Tag`.
  */
-class TagSearchForm extends ModelSearchForm
+class TagSearchForm extends Tag
 {
-    /** @var  string */
-    public $label;
-
     /**
-     * Quelques initialisations...
-     *
-     * @param array $config Tableau de configuration
-     */
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-        $this->sessionKey = Tag::class . '.filter';
-    }
-
-
-    /**
-     * @return array
-     */
-    public function attributeLabels()
-    {
-        return [
-            'label' => HLib::t('labels', 'Label'),
-        ];
-    }
-
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            // filtres
-            ['label', 'string'],
+            [['id'], 'integer'],
+            [['label', 'created_at', 'updated_at'], 'safe'],
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
     }
 
     /**
@@ -54,49 +39,33 @@ class TagSearchForm extends ModelSearchForm
      *
      * @return ActiveDataProvider
      */
-    public function search(array $params)
+    public function search($params)
     {
         $query = Tag::find();
+
+        // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        if (!$params) {
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
             return $dataProvider;
         }
 
-        if (!$this->load($params) || !$this->validate()) {
-            $this->error = static::ERR_KO;
-            return $dataProvider;
-        }
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ]);
 
-        // S'il y a des erreurs pendant les traitements, le statut interne de $this sera mis à jour par la méthode où a eu lieu l'erreur
-        $this->error = static::ERR_OK;
         $query->andFilterWhere(['like', 'label', $this->label]);
 
         return $dataProvider;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasActiveFilters()
-    {
-        return $this->label !== '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function displayActiveFilters($sep = ' - ')
-    {
-        $filters = [];
-
-        if ($this->label) {
-            $filters[] = $this->label;
-        }
-
-        return implode($sep, $filters);
-    }
-
 }

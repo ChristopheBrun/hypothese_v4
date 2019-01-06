@@ -2,6 +2,7 @@
 
 namespace app\modules\ephemerides\models;
 
+use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
@@ -74,7 +75,7 @@ class CalendarEntry extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'calendar_entries';
+        return 'calendar_entry';
     }
 
     /**
@@ -133,9 +134,9 @@ class CalendarEntry extends ActiveRecord
             ],
             [
                 'class' => ImageOwner::class,
-                'imagesDirectoryName' => Yii::$app->params['calendarEntry']['images']['webDirectory'],
-                'originalImageSize' => Yii::$app->params['calendarEntry']['images']['originalSize'],
-                'thumbnailsSizes' => Yii::$app->params['calendarEntry']['images']['thumbnailsSizes'],
+                'imagesDirectoryName' => EphemeridesModule::getInstance()->images['webDirectory'],
+                'originalImageSize' => EphemeridesModule::getInstance()->images['originalSize'],
+                'thumbnailsSizes' => EphemeridesModule::getInstance()->images['thumbnailsSizes'],
             ],
         ];
     }
@@ -297,6 +298,7 @@ class CalendarEntry extends ActiveRecord
     {
         // $this->event_date est au format SQL : 2010-08-20 00:00:00
         // Pour le slug, seule la partie 'date' nous intéresse, la partie 'heure' doit être supprimée
+        /** @var Carbon $date */
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return hString::slugify($date->toDateString() . ' ' . $this->title);
     }
@@ -306,7 +308,9 @@ class CalendarEntry extends ActiveRecord
      */
     public function year()
     {
-        return Carbon::createFromFormat('Y-m-d', $this->event_date)->year;
+        /** @var Carbon $date */
+        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
+        return $date->year;
     }
 
     /**
@@ -314,7 +318,9 @@ class CalendarEntry extends ActiveRecord
      */
     public function month()
     {
-        return Carbon::createFromFormat('Y-m-d', $this->event_date)->month;
+        /** @var Carbon $date */
+        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
+        return $date->month;
     }
 
     /**
@@ -322,7 +328,9 @@ class CalendarEntry extends ActiveRecord
      */
     public function day()
     {
-        return Carbon::createFromFormat('Y-m-d', $this->event_date)->day;
+        /** @var Carbon $date */
+        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
+        return $date->day;
     }
 
 }

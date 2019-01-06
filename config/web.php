@@ -17,9 +17,15 @@ $config = [
     'id' => 'basic',
     'name' => 'Hypothese.net',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'hlib', 'user', function () {
-        return Yii::$app->getModule('user');
-    }],
+    'bootstrap' => [
+        'log',
+        'hlib',
+        'user', //le composant web/user
+        function () {
+            return Yii::$app->getModule('user');
+        }, // le module user
+        'ephemerides',
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -32,6 +38,10 @@ $config = [
     //----------------------------------------------
     'params' => [
         'adminEmail' => 'superadmin@hypothese.net',
+        'images' => [
+            'driver' => 'gd',
+            'webDirectory' => 'images',
+        ],
     ],
 
     //----------------------------------------------
