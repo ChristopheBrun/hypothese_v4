@@ -26,13 +26,13 @@ $imgUrl = Url::base(true) . '/images/error_500.png';
     </div>
     <div class="col-sm-7">
         <p>
-            You won't bbe able to access this page until the problemis fixed by the administrator.
+            Vous ne pouvez pas accéder à cette page tant que l'erreur n'aura pas été analysée par l'administrateur du site
         </p>
         <p>
-            Please try again in a few hours.
+            Retentez votre chance dans quelques heures.
         </p>
         <p>
-            If the problem remains, please <?= Html::a(Yii::t('messages', "contact us"), Url::to(['/site/contact'], true)) ?>.
+            Si le problème persiste, merci de nous <?= Html::a('contacter', Url::to(['/site/contact'], true)) ?>.
         </p>
     </div>
 </div>

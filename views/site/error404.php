@@ -27,6 +27,6 @@ $imgUrl = Url::base(true) . '/images/error_404.png';
         <?= Html::img($imgUrl, ['alt' => 'unknown page']) ?>
     </div>
     <div class="col-sm-6">
-        <p>OMG, this page does not exist...</p>
+        <p>En fait, cette page n'existe pas...</p>
     </div>
 </div>

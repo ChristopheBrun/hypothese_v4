@@ -17,15 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
         <div class="alert alert-success">
-            Thank you for contacting us. We will respond to you as soon as possible.
+            Merci pour votre message. Je vous répondrai dès que possible.
         </div>
 
         <p>
             Note that if you turn on the Yii debugger, you should be able
             to view the mail message on the mail panel of the debugger.
-            <?php if (Yii::$app->mailer->useFileTransport): ?>
+            <?php /** @noinspection PhpUndefinedFieldInspection */
+            if (Yii::$app->mailer->useFileTransport): ?>
                 Because the application is in development mode, the email is not sent but saved as
-                a file under <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
+                a file under <code><?= /** @noinspection PhpUndefinedFieldInspection */
+                    Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
                 Please configure the <code>useFileTransport</code> property of the <code>mail</code>
                 application component to be false to enable email sending.
             <?php endif; ?>
@@ -34,8 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php else: ?>
 
         <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
+            Si vous souhaitez me contacter, vous pouvez essayer ici.
         </p>
 
         <div class="row">
@@ -51,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
 
-                    <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                    <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
                         'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                     ]) ?>
 
