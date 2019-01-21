@@ -8,7 +8,6 @@ use yii\helpers\Html;
  * @var $this yii\web\View
  * @var $model app\models\CalendarEntry
  * @var $tags array [id => label] liste des tags disponibles
- * @var $articles array [id => title] liste des articles disponibles
  */
 
 $this->title = Yii::t('labels', 'Update calendar entry');
@@ -25,7 +24,6 @@ $formParameters = [];
             'model' => $model,
             'parameters' => $formParameters,
             'tags' => $tags,
-            'articles' => $articles,
         ]) ?>
     </div>
 </div>

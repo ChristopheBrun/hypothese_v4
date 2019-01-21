@@ -60,13 +60,6 @@ $this->title = Yii::t('labels', 'View calendar entry') . ' : ' . $model->title;
                     ]),
                     'format' => 'html',
                 ],
-                [
-                    'label' => Yii::t('labels', 'Articles'),
-                    'value' => ViewModelsList::widget([
-                        'models' => $model->articles, 'labelField' => 'title', 'controllerRoute' => '/articles', 'checkEnabled' => true
-                    ]),
-                    'format' => 'html',
-                ],
             ],
         ]) ?>
 

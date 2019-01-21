@@ -9,7 +9,6 @@ use yii\helpers\Html;
  * @var $this yii\web\View
  * @var $model app\models\CalendarEntry
  * @var $tags array  [id => label]
- * @var $articles array  [id => title]
  */
 
 $this->title = Yii::t('labels', 'Create a new calendar entry');
@@ -28,7 +27,6 @@ $formParameters = [
             'model' => $model,
             'parameters' => $formParameters,
             'tags' => $tags,
-            'articles' => $articles,
         ]) ?>
     </div>
 </div>

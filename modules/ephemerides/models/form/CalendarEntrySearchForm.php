@@ -23,8 +23,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
     public static $statusList;
     /** @var array $imageStatusList Liste des filtres sur l'image */
     public static $imageStatusList;
-    /** @var array $imageStatusList Liste des filtres sur les articles */
-    public static $articleStatusList;
 
     const NO_OP = '';
     const SAME_DATE = 1;
@@ -82,13 +80,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
         ];
         $this->image = static::ST_ALL;
 
-        static::$articleStatusList = [
-            static::ST_ALL => Yii::t('labels', 'n/a'),
-            static::ST_WITH => Yii::t('labels', 'With article'),
-            static::ST_WITHOUT => Yii::t('labels', 'Without article'),
-        ];
-        $this->article = static::ST_ALL;
-
         $this->sessionKey = CalendarEntry::class . '.filter';
     }
 
@@ -124,7 +115,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
             [['eventDateString', 'title', 'tag', 'body'], 'string'],
             ['status', 'in', 'range' => array_keys(static::$statusList)],
             ['image', 'in', 'range' => array_keys(static::$imageStatusList)],
-            ['article', 'in', 'range' => array_keys(static::$articleStatusList)],
             ['tag', 'exist', 'targetClass' => Tag::class, 'targetAttribute' => 'id'],
         ];
     }
@@ -156,10 +146,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
 
         if ($this->image !== '') {
             $filters[] = Yii::t('labels', static::$imageStatusList[$this->image]);
-        }
-
-        if ($this->article !== '') {
-            $filters[] = Yii::t('labels', static::$articleStatusList[$this->article]);
         }
 
         if ($this->title) {

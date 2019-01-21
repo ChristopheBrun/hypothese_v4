@@ -13,18 +13,12 @@ use yii\widgets\ActiveForm;
  * @var $form yii\widgets\ActiveForm
  * @var $parameters array
  * @var $tags array [id => label] liste des tags disponibles
- * @var $articles array [id => title] liste des articles disponibles
  */
 
 // Ajout du Select2 pour gérer les tags
 $this->registerJs('
     $(\'#tags_ids\').select2({
         placeholder: "' . Yii::t('labels', 'Add tags') . '",
-        tags: true
-    });
-
-    $(\'#articles_ids\').select2({
-        placeholder: "' . Yii::t('labels', 'Add articles') . '",
         tags: true
     });
 ');
@@ -67,8 +61,6 @@ $parameters = array_merge($parameters, ['options' => ['enctype' => 'multipart/fo
     <?= $form->field($model, 'image_caption') ?>
 
     <?= $form->field($model, 'tags')->listBox($tags, ['id' => 'tags_ids', 'multiple' => true]) ?>
-
-    <?= $form->field($model, 'articles')->listBox($articles, ['id' => 'articles_ids', 'multiple' => true]) ?>
 
     <?= $form->field($model, 'notes')->textarea()->hint(Yii::t('messages', 'Notes are for redactors only, they are not published')) ?>
 

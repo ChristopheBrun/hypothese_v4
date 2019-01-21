@@ -49,9 +49,6 @@ $form->field($model, 'status', $fieldConfig)->inline()->radioList(CalendarEntryS
 <?= /** @noinspection PhpUndefinedMethodInspection */
 $form->field($model, 'image', $fieldConfig)->inline()->radioList(CalendarEntrySearchForm::$imageStatusList) ?>
 
-<?= /** @noinspection PhpUndefinedMethodInspection */
-$form->field($model, 'article', $fieldConfig)->inline()->radioList(CalendarEntrySearchForm::$articleStatusList) ?>
-
 <div class="form-group">
     <?= Html::activeLabel($model, 'title', ['class' => 'control-label col-sm-2']) ?>
     <div class="col-sm-5">

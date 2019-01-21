@@ -49,7 +49,6 @@ $webUser = Yii::$app->user;
                         <ul class="dropdown-menu" role="menu">
                             <li><?= Html::a(Yii::t('labels', 'Calendar entries'), Url::to(['/calendar-entries/index', 'page' => 1], true)) ?></li>
                             <li><?= Html::a(Yii::t('labels', 'Tags'), Url::to(['/tags/index', 'page' => 1], true)) ?></li>
-                            <li><?= Html::a(Yii::t('labels', 'Articles'), Url::to(['/articles/index', 'page' => 1], true)) ?></li>
                         </ul>
                     </li>
 

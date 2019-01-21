@@ -61,9 +61,6 @@ class CalendarEntry extends ActiveRecord
     /** @var  int[] */
     private $updatedTagsIds;
 
-    /** @var  int[] */
-    private $updatedArticlesIds;
-
     /** @var  UploadedFile */
     public $uploadedImage;
 
@@ -214,30 +211,8 @@ class CalendarEntry extends ActiveRecord
         return hArray::getColumn($this->tags, 'label');
     }
 
-    /**
-     * Renvoie la liste des identifiants des articles associés à $this
-     *
-     * @return array
-     */
-    public function getArticlesIds()
-    {
-        /** @noinspection PhpUndefinedFieldInspection */
-        return hArray::getColumn($this->articles, 'id');
-    }
-
-    /**
-     * Renvoie la liste des noms des tags associés à $this
-     *
-     * @return array
-     */
-    public function getArticlesTitles()
-    {
-        /** @noinspection PhpUndefinedFieldInspection */
-        return hArray::getColumn($this->articles, 'title');
-    }
-
-    /**
-     * Assignation en masse des attributs avec prise en compte de la liste des ids des tags & des articles
+     /**
+     * Assignation en masse des attributs avec prise en compte de la liste des ids des tags
      * todo_cbn cf. issue #20
      *
      * @inheritdoc
@@ -247,11 +222,6 @@ class CalendarEntry extends ActiveRecord
         $this->updatedTagsIds = hArray::getValue($data, 'CalendarEntry.tags');
         if ($this->updatedTagsIds === "") {
             $this->updatedTagsIds = [];
-        }
-
-        $this->updatedArticlesIds = hArray::getValue($data, 'CalendarEntry.articles');
-        if ($this->updatedArticlesIds === "") {
-            $this->updatedArticlesIds = [];
         }
 
         return parent::load($data, $formName);

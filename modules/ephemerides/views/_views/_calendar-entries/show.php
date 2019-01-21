@@ -24,9 +24,6 @@ $fullTitle = Carbon::parse($model->event_date)->format(CalendarEntry::DATE_FORMA
 /** @var \app\modules\users\WebUser $webUser */
 $webUser = Yii::$app->user;
 
-/** @var array $articles [Articles] */
-$articles = $model->enabledArticles();
-
 ?>
 <div class="row panel panel-default" id="show-calendar-entry">
     <div class="panel-heading">
@@ -61,22 +58,6 @@ $articles = $model->enabledArticles();
     </div>
 
     <div class="panel-footer">
-
-        <div>
-            <?php if (count($articles)) :
-                foreach ($articles as $article) :
-                    /** @var Article $article */
-                    ?>
-                    <div>
-                        <?= Html::a('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp' . $article->title,
-                            Url::to(['/articles/show', 'id' => $article->id, 'slug' => $article->getSlug()])
-                        ) ?>
-                    </div>
-                <?php endforeach;
-            endif ?>
-        </div>
-
-        <hr/>
 
         <?php if($webUser->isAdmin() || $webUser->isSuperAdmin()) : ?>
                 <?= Html::a(HLib::t('labels', 'Update item'), Url::to(['calendar-entries/update', 'id' => $model->id]), ['class' => 'btn btn-success']) ?>

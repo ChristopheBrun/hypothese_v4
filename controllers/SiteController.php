@@ -87,7 +87,7 @@ class SiteController extends Controller
         $lastUpdatedEntry = CalendarEntry::find()->lastUpdated();
 
         // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
-        $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags', 'articles')->all();
+        $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags')->all();
 
         $previousEntry = $nextEntry = null;
         if (!count($dailyEntries)) {

@@ -13,11 +13,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 
-/**
- * @var Articles[] $articles
- */
-$articles = $entry->enabledArticles();
-
 ?>
 <div class="calendar-entry-block">
     <div class="row">
@@ -54,19 +49,6 @@ $articles = $entry->enabledArticles();
 
                 <?= $this->render('_tagsButtons', ['model' => $entry]) ?>
 
-                <div>
-                    <?php if (count($articles)) :
-                        foreach ($articles as $article) :
-                            /** @var Article $article */
-                            ?>
-                            <div>
-                                <?= Html::a('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp' . $article->title,
-                                    Url::to(['/articles/show', 'id' => $article->id, 'slug' => $article->getSlug()])
-                                ) ?>
-                            </div>
-                        <?php endforeach;
-                    endif ?>
-                </div>
             </div>
         </div>
 

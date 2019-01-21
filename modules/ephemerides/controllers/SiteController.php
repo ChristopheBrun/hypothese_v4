@@ -2,10 +2,10 @@
 
 namespace app\modules\ephemerides\controllers;
 
-use app\models\CalendarEntry;
-use app\models\CalendarEntrySearchForm;
-use app\models\Tag;
 use app\modules\cms\models\WebPage;
+use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
+use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\behaviors\GoogleAnalyticsBehavior;
 use app\modules\hlib\components\actions\ErrorAction;
 use app\modules\hlib\helpers\h;
@@ -65,33 +65,33 @@ class SiteController extends Controller
         ];
     }
 
-//    /**
-//     * Page d'accueil du site
-//     *
-//     * @return string
-//     * @throws \yii\db\Exception
-//     */
-//    public function actionIndex()
-//    {
-//        // Récupération d'une liste éventuellement filtrée selon les critères du moteur de recherche
-//        $searchModel = new CalendarEntrySearchForm();
-//
-//        // date de la dernière mise à jour sur des éphémérides
-//        $lastUpdatedEntry = CalendarEntry::find()->lastUpdated();
-//
-//        // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
-//        $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags', 'articles')->all();
-//
-//        $previousEntry = $nextEntry = null;
-//        if (!count($dailyEntries)) {
-//            $previousEntry = CalendarEntry::find()->lastEntryBeforeCalendarDate(time());
-//            $nextEntry = CalendarEntry::find()->nextEntryAfterCalendarDate(time());
-//        }
-//
-//        $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
-//        $page = WebPage::find()->byCode('Accueil')->one();
-//        return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'page', 'searchModel', 'tags'));
-//    }
+    /**
+     * Page d'accueil du site
+     *
+     * @return string
+     * @throws \yii\db\Exception
+     */
+    public function actionIndex()
+    {
+        // Récupération d'une liste éventuellement filtrée selon les critères du moteur de recherche
+        $searchModel = new CalendarEntrySearchForm();
+
+        // date de la dernière mise à jour sur des éphémérides
+        $lastUpdatedEntry = CalendarEntry::find()->lastUpdated();
+
+        // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
+        $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->all();
+
+        $previousEntry = $nextEntry = null;
+        if (!count($dailyEntries)) {
+            $previousEntry = CalendarEntry::find()->lastEntryBeforeCalendarDate(time());
+            $nextEntry = CalendarEntry::find()->nextEntryAfterCalendarDate(time());
+        }
+
+        $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
+        $page = WebPage::find()->byCode('Accueil')->one();
+        return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'page', 'searchModel', 'tags'));
+    }
 
     /**
      * Affiche ou traite le formulaire de contact
