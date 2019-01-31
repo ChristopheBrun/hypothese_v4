@@ -23,23 +23,41 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['contact'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['management'],
+                        'allow' => true,
+                        'roles' => ['superadmin'],
+                    ],
+                ],
+            ],
+
         ];
     }
 
@@ -68,15 +86,6 @@ class SiteController extends Controller
     public function actionIndex()
     {
         //
-        // Si l'utilisateur est authentifié, on le redirige sur sa propre page d'accueil,  qui dépend du profil
-        //
-        if (!Yii::$app->user->isGuest) {
-            if (Yii::$app->user->can(AppRole::SUPERADMIN)) {
-                return $this->_actionIndexSuperadmin();
-            }
-        }
-
-        //
         // Page d'accueil publique
         //
 
@@ -97,6 +106,14 @@ class SiteController extends Controller
 
         $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
         return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'searchModel', 'tags'));
+    }
+
+    /**
+     * @return string
+     */
+    public function actionManagement()
+    {
+        return $this->render('management');
     }
 
     /**
@@ -151,24 +168,10 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
-
-    private function _actionIndexSuperadmin()
-    {
-        return $this->render('indexSuperadmin');
-    }
 
 
 }

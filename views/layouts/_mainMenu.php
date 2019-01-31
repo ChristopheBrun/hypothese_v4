@@ -4,7 +4,6 @@
  * Barre de menu principale
  */
 
-use app\modules\hlib\HLib;
 use app\modules\user\UserModule;
 use yii\bootstrap\Html;
 use yii\bootstrap\Nav;
@@ -30,9 +29,19 @@ echo Nav::widget([
         'class' => 'navbar-nav navbar-right',
     ],
     'items' => [
-        ['label' => HLib::t('labels', 'Home'), 'url' => ['/site/index']],
-        ['label' => HLib::t('labels', 'About'), 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        [
+            'label' => "Accueil",
+            'url' => ['/site/index'],
+        ],
+        [
+            'label' => "Administration",
+            'url' => ['/site/management'],
+            'visible' => Yii::$app->user->can('superadmin'),
+        ],
+        [
+            'label' => 'Contact',
+            'url' => ['/site/contact'],
+        ],
         //
         Yii::$app->user->isGuest ?
             ['label' => UserModule::t('labels', 'Login'), 'url' => ['/user/security/login']]
