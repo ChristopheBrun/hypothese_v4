@@ -25,7 +25,7 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
 <div class="row">
     <div class="panel panel-default" id="homepage">
         <div class="panel-heading">
-            <h1><?= Yii::t('labels', 'Welcome') ?></h1>
+            <h1>Bonjour</h1>
         </div>
 
         <div class="panel-body">
