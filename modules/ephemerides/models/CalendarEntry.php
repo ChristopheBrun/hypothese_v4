@@ -14,7 +14,9 @@ use app\modules\ephemerides\models\query\CalendarEntryTagQuery;
 use Carbon\Carbon;
 use SimpleXMLElement;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\helpers\Html;
@@ -81,7 +83,6 @@ class CalendarEntry extends ActiveRecord
     public function rules()
     {
         return [
-            // formatages préalables
 //            ['event_date', 'filter', 'filter' => function ($value) {
 //                return hDate::convertDateToSQLFormat($value);
 //            }],
@@ -89,16 +90,15 @@ class CalendarEntry extends ActiveRecord
                 // en entrée : dd-MM-yyyy ; en sortie : format compatible SQL
                 return (new Carbon($value))->toDateString();
             }],
-            // validations
-            [['event_date', 'title'], 'required'],
-//            ['event_date', 'date', 'format' => 'yyyy-MM-dd'],
-            // todo_cbn format garanti par le masque pour le moment. Je désactive provisoiement la validation car elle est faite selon le format fr
-            // alors que le masque doit être au format us pour être correctement initialisé (cf. ticket #17)
-            [['body', 'notes'], 'string'],
+            ['event_date', 'required'],
+            //
+            ['title', 'required'],
+            [['title', 'body', 'notes', 'image', 'image_caption'], 'string'],
+            [['title', 'body', 'notes', 'image', 'image_caption'], 'filter', 'filter' => 'strip_tags'],
+            //
             ['enabled', 'boolean'],
             ['deleteImage', 'boolean'],
-            [['title', 'image'], 'string', 'max' => 255],
-            ['image_caption', 'string', 'max' => 512],
+            //
             ['uploadedImage', 'file', 'extensions' => 'png, jpg, jpeg, gif'], // seuls formats reconnus par le driver GD
         ];
     }
@@ -145,18 +145,18 @@ class CalendarEntry extends ActiveRecord
     {
         return [
             'id' => HLib::t('labels', 'ID'),
-            'event_date' => Yii::t('labels', 'Event Date'),
+            'event_date' => 'Date',
             'title' => HLib::t('labels', 'Title'),
-            'body' => Yii::t('labels', 'Body'),
+            'body' => 'Corps de texte',
             'image' => HLib::t('labels', 'Image'),
-            'image_caption' => Yii::t('labels', 'Image caption'),
+            'image_caption' => "Légende",
             'uploadedImage' => HLib::t('labels', 'Image'),
             'enabled' => HLib::t('labels', 'Enabled'),
-            'notes' => Yii::t('labels', 'Notes'),
+            'notes' => "Notes",
             'created_at' => HLib::t('labels', 'Created At'),
             'updated_at' => HLib::t('labels', 'Updated At'),
-            'tags' => Yii::t('labels', 'Tags'),
-            'deleteImage' => Yii::t('labels', 'Delete this image'),
+            'tags' => "Catégories",
+            'deleteImage' => "Supprimer cette image",
         ];
     }
 
@@ -174,7 +174,7 @@ class CalendarEntry extends ActiveRecord
     /**
      * Déclaration de la relation 1-n avec la table d'association calendar_entry_tag
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCalendarEntryTags()
     {
@@ -184,7 +184,8 @@ class CalendarEntry extends ActiveRecord
     /**
      * Déclaration de la relation n-n avec la table tags
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getTags()
     {
@@ -211,7 +212,7 @@ class CalendarEntry extends ActiveRecord
         return hArray::getColumn($this->tags, 'label');
     }
 
-     /**
+    /**
      * Assignation en masse des attributs avec prise en compte de la liste des ids des tags
      * todo_cbn cf. issue #20
      *
@@ -235,7 +236,6 @@ class CalendarEntry extends ActiveRecord
      * @param null $attributeNames
      * @param bool|false $saveRelated
      * @return bool
-     * @throws Exception
      */
     public function save($runValidation = true, $attributeNames = null, $saveRelated = false)
     {
