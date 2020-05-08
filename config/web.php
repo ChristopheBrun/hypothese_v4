@@ -30,6 +30,9 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
     ],
+    'container' => [
+        'definitions' => require(__DIR__ . '/classMap.php'),
+    ],
     'language' => 'fr-FR',
     'version' => '4.0.1',
 

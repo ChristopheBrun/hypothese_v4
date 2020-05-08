@@ -2,6 +2,7 @@
 
 namespace app\modules\user\controllers;
 
+use app\modules\user\models\search\UserSearch;
 use Yii;
 use app\modules\user\models\User;
 use yii\base\ActionEvent;

@@ -4,6 +4,7 @@ namespace app\modules\user\controllers;
 
 use app\modules\hlib\HLib;
 use app\modules\hlib\lib\Flash;
+use app\modules\user\models\form\LoginForm;
 use app\modules\user\models\form\MailRequestForm;
 use app\modules\user\models\User;
 use Yii;

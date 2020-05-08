@@ -18,8 +18,6 @@ class EnableRegistration extends ActionFilter
     public $enable = true;
 
     /**
-     * Si le module gère un paramètre
-     *
      * @param \yii\base\Action $action
      * @return bool
      * @throws MethodNotAllowedHttpException
