@@ -60,7 +60,7 @@ class MyAccountController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Yii::createObject('user/User')->findOne($id)) !== null) {
+        if (($model = Yii::createObject(User::class)->findOne($id)) !== null) {
             return $model;
         }
 

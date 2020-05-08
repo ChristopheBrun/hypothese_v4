@@ -9,7 +9,7 @@ Module : USER
         'class' => 'app\modules\user\UserModule',
         //
         'rememberConfirmationTokenFor' => 259200, // 72h = 72 * 3600 secondes
-        'resetPasswordAfterEmailChange' => false,
+        'password_resetAfterEmailChange' => false,
     ],
 ],
 ```

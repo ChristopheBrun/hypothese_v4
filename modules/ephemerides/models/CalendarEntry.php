@@ -245,8 +245,10 @@ class CalendarEntry extends ActiveRecord
                 throw new Exception('Erreur sur parent::save()');
             }
 
-            if ($saveRelated && !CalendarEntryTagQuery::updateTagsForCalendarEntry($this->getTagsIds(), $this->updatedTagsIds, $this->id)) {
-                throw new Exception("Erreur sur CalendarEntryTag::updateTagsForCalendarEntry()");
+            if ($saveRelated) {
+                if (!!CalendarEntryTagQuery::updateTagsForCalendarEntry($this->getTagsIds(), $this->updatedTagsIds, $this->id)) {
+                    throw new Exception("Erreur sur CalendarEntryTag::updateTagsForCalendarEntry()");
+                }
             }
 
             $transaction->commit();

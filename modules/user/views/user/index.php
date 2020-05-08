@@ -1,10 +1,13 @@
 <?php
 
 /**
- * @var $this yii\web\View
- * @var $searchModel app\modules\user\models\search\UserSearch
- * @var $dataProvider yii\data\ActiveDataProvider
+ * Liste des utilisateurs avec GridView pour la gestion
  */
+
+/** @var $this yii\web\View */
+/** @var $searchModel app\modules\user\models\search\UserSearch */
+
+/** @var $dataProvider yii\data\ActiveDataProvider */
 
 use app\modules\hlib\widgets\DisplayModels;
 use app\modules\hlib\widgets\DisplayModelsWithLinks;
@@ -16,7 +19,9 @@ use app\modules\user\UserModule;
 
 $this->title = UserModule::t('labels', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -57,20 +62,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html',
             ],
-            // 'confirmation_token',
-            // 'confirmation_sent_at',
-            // 'confirmed_at',
-            // 'unconfirmed_email:email',
-            // 'recovery_token',
-            // 'recovery_sent_at',
-            // 'blocked_at',
-            // 'registered_from',
-            // 'logged_in_from',
-            // 'logged_in_at',
-            // 'created_at',
-            // 'updated_at',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn'
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

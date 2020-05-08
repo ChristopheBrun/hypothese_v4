@@ -32,10 +32,10 @@ class RegistrationForm extends Model
     {
         parent::__construct($config);
 
-        $this->user = Yii::createObject('user/User');
+        $this->user = Yii::createObject(User::class);
         $this->user->setScenario(User::SCENARIO_REGISTER);
 
-        $this->profile = Yii::createObject('user/Profile');
+        $this->profile = Yii::createObject(Profile::class);
         $this->profile->setScenario(Profile::SCENARIO_REGISTER);
     }
 

@@ -46,11 +46,11 @@ class RegistrationController extends Controller
     public function behaviors()
     {
         /** @noinspection PhpUndefinedFieldInspection */
-        $enableRegistration = $this->module->enableRegistration;
+        $registration_enable = $this->module->registration_enable;
         return [
             [
                 'class' => EnableRegistration::class,
-                'enable' => $enableRegistration,
+                'enable' => $registration_enable,
             ],
             [
                 'class' => AccessControl::class,
@@ -75,7 +75,7 @@ class RegistrationController extends Controller
     public function actionRegister()
     {
         /** @var RegistrationForm $model */
-        $model = Yii::createObject('user/RegistrationForm');
+        $model = Yii::createObject(RegistrationForm::class);
 
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -111,7 +111,7 @@ class RegistrationController extends Controller
      */
     public function actionConfirmPassword($id, $code)
     {
-        if (!($user = Yii::createObject('user/User')->findOne(['id' => $id]))) {
+        if (!($user = Yii::createObject(User::class)->findOne(['id' => $id]))) {
             throw new NotFoundHttpException();
         }
 
@@ -122,7 +122,7 @@ class RegistrationController extends Controller
         }
 
         /** @var PasswordForm $model */
-        $model = Yii::createObject('user/PasswordForm');
+        $model = Yii::createObject(PasswordForm::class);
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
                 Event::trigger(static::class, static::EVENT_BEFORE_CONFIRM_PASSWORD, new ActionEvent($this->action));
@@ -134,7 +134,7 @@ class RegistrationController extends Controller
 
                     // Mot de passe mis à jour. On connecte l'utilisateur à con compte avant de rediriger
                     Yii::$app->user->login($user, $this->module->rememberFor);
-                    return $this->redirect($this->module->redirectAfterConfirmPassword);
+                    return $this->redirect($this->module->password_redirectAfterConfirm);
                 }
             }
 
@@ -158,18 +158,18 @@ class RegistrationController extends Controller
      */
     public function actionResetPassword($id, $code)
     {
-        if (!($user = Yii::createObject('user/User')->findOne(['id' => $id]))) {
+        if (!($user = Yii::createObject(User::class)->findOne(['id' => $id]))) {
             throw new NotFoundHttpException();
         }
 
-        $token = Token::findToken(TokenType::PASSWORD, $user->id, $code, $this->module->rememberPasswordTokenFor);
+        $token = Token::findToken(TokenType::PASSWORD, $user->id, $code, $this->module->password_rememberResetTokenFor);
         if (!$token) {
             Flash::error(UserModule::t('messages', 'The link is invalid or expired. Please try requesting a new one'));
             return $this->redirect('/');
         }
 
         /** @var PasswordForm $model */
-        $model = Yii::createObject('user/PasswordForm');
+        $model = Yii::createObject(PasswordForm::class);
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
                 Event::trigger(static::class, static::EVENT_BEFORE_RESET_PASSWORD, new ActionEvent($this->action));
@@ -181,7 +181,7 @@ class RegistrationController extends Controller
 
                     // Mot de passe mis à jour? On connecte l'utilisateur à son compte avant de rediriger
                     Yii::$app->user->login($user, $this->module->rememberFor);
-                    return $this->redirect([$this->module->redirectAfterResetPassword]);
+                    return $this->redirect([$this->module->password_redirectAfterReset]);
                 }
             }
 

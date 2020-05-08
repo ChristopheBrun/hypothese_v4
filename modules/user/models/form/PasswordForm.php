@@ -24,7 +24,7 @@ class PasswordForm extends Model
     {
         return [
             ['password', 'required'],
-            ['password', 'string', 'min' => UserModule::getInstance()->passwordMinLength],
+            ['password', 'string', 'min' => UserModule::getInstance()->password_minLength],
         ];
     }
 

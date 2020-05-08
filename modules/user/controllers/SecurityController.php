@@ -59,7 +59,7 @@ class SecurityController extends Controller
     public function actionLogin()
     {
         /** @var \app\modules\user\models\form\LoginForm $model */
-        $model = Yii::createObject('user/LoginForm');
+        $model = Yii::createObject(LoginForm::class);
 
         if (Yii::$app->request->isPost) {
             // Traitement du formulaire
@@ -72,7 +72,7 @@ class SecurityController extends Controller
                 }
 
                 /** @var \app\modules\user\models\User $user */
-                $user = Yii::createObject('user/User')->find()->byEmail($model->email)->one();
+                $user = Yii::createObject(User::class)->find()->byEmail($model->email)->one();
                 if (!$user) {
                     Event::trigger(static::class, static::EVENT_UNKNOWN_USER, new ActionEvent($this->action, ['sender' => $model]));
                     Flash::error(UserModule::t('messages', "Unkown user"));
@@ -139,7 +139,7 @@ class SecurityController extends Controller
     public function actionRequestNewPassword()
     {
         /** @var MailRequestForm $model */
-        $model = Yii::createObject('user/MailRequestForm');
+        $model = Yii::createObject(MailRequestForm::class);
 
         if (Yii::$app->request->isPost) {
             // Traitement du formulaire
@@ -167,13 +167,13 @@ class SecurityController extends Controller
     public function actionRequestNewConfirmationLink()
     {
         /** @var MailRequestForm $model */
-        $model = Yii::createObject('user/MailRequestForm');
+        $model = Yii::createObject(MailRequestForm::class);
 
         if (Yii::$app->request->isPost) {
             // Traitement du formulaire
             if ($model->load(Yii::$app->request->post())) {
                 /** @var User $user */
-                $user = Yii::createObject('user/User')->find()->byEmail($model->email)->one();
+                $user = Yii::createObject(User::class)->find()->byEmail($model->email)->one();
                 if (!$user) {
                     // RAF
                 } elseif ($user->confirmed_at) {

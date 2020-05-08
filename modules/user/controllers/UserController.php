@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = Yii::createObject('user/UserSearch');
+        $searchModel = Yii::createObject(UserSearch::class);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -85,7 +85,7 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = Yii::createObject('user/User');
+        $model = Yii::createObject(User::class);
 
         Event::trigger(static::class, static::EVENT_BEFORE_CREATE_USER, new ActionEvent($this->action));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -149,7 +149,7 @@ class UserController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Yii::createObject('user/User')->findOne($id)) !== null) {
+        if (($model = Yii::createObject(User::class)->findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

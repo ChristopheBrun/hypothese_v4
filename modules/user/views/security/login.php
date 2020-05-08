@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(UserModule::t('messages', 'Lost password ?'), ['/user/security/request-new-password']) ?>
         </p>
 
-        <?php if (UserModule::getInstance()->confirmationRequiredForRegistration) : ?>
+        <?php if (UserModule::getInstance()->registration_confirmationRequired) : ?>
             <p class="text-center">
                 <?= Html::a(UserModule::t('messages', 'Lost confirmation mail ?'), ['/user/security/request-new-confirmation-link']) ?>
             </p>

@@ -2,6 +2,7 @@
 
 namespace app\modules\ephemerides\controllers;
 
+use app\modules\hlib\lib\Flash;
 use Yii;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
@@ -66,8 +67,21 @@ class CalendarEntryController extends Controller
     {
         $model = new CalendarEntry();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        try {
+            if (!$model->load(Yii::$app->request->post())) {
+                throw new \Exception('!$model->load()');
+            }
+
+           if (!$model->validate()) {
+                throw new \Exception('!$model->validate()');
+            }
+
+            if (!$model->save(false)) {
+                throw new \Exception('!$model->save()');
+            }
+        } catch (\Exception $x) {
+            Yii::error($x->getMessage());
+            Flash::error("Erreur sur " . __METHOD__);
         }
 
         return $this->render('create', [
@@ -85,6 +99,11 @@ class CalendarEntryController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        if (!$model->load(Yii::$app->request->post())) {
+            Flash::error('!$model->load()');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

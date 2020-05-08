@@ -29,6 +29,7 @@ class hString extends StringHelper
      * @param  string $title
      * @param  string $separator
      * @return string
+     * @deprecated utiliser plutôt yii\helpers\Inflector::slug()
      */
     public static function slugify($title, $separator = '-')
     {

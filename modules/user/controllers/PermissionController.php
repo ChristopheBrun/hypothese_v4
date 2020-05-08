@@ -50,7 +50,7 @@ class PermissionController extends Controller
         // On construit l'arbre des droits à partir des droits racine
         $tree = new TreeNode();
         /** @var AuthItem $model */
-        $model = Yii::createObject('user/AuthItem');
+        $model = Yii::createObject(AuthItem::class);
         foreach ($model->find()->rootPermissions()->all() as $item) {
             $tree->addChild($item->getTreeNode());
         }
@@ -73,7 +73,7 @@ class PermissionController extends Controller
     public function actionCreate()
     {
         /** @var AuthItem $model */
-        $model = Yii::createObject('user/AuthItem');
+        $model = Yii::createObject(AuthItem::class);
 
         if (Yii::$app->request->isPost) {
             // Traitement du formulaire
@@ -120,7 +120,7 @@ class PermissionController extends Controller
         // Affichage initial ou ré-affichage après erreur de validation
         /** @var AuthItem $parent */
         $parents = [];
-        foreach (Yii::createObject('user/AuthItem')->find()->rootRoles()->all() as $parent) {
+        foreach (Yii::createObject(AuthItem::class)->find()->rootRoles()->all() as $parent) {
             $parents = array_merge($parents, $parent->getTreeNode()->inDepth());
         }
 
@@ -143,7 +143,7 @@ class PermissionController extends Controller
     public function actionUpdate($id)
     {
         /** @var AuthItem $model */
-        $authItem = Yii::createObject('user/AuthItem');
+        $authItem = Yii::createObject(AuthItem::class);
         $model = $authItem->findOne($id);
 
         if (Yii::$app->request->isPost) {

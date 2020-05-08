@@ -2,16 +2,7 @@
 
 namespace app\modules\user;
 
-use app\modules\user\lib\UserMail;
 use app\modules\user\lib\UserEventHandler;
-use app\modules\user\models\AuthItem;
-use app\modules\user\models\form\LoginForm;
-use app\modules\user\models\form\MailRequestForm;
-use app\modules\user\models\form\PasswordForm;
-use app\modules\user\models\form\RegistrationForm;
-use app\modules\user\models\Profile;
-use app\modules\user\models\search\UserSearch;
-use app\modules\user\models\User;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Module;
@@ -26,47 +17,41 @@ class UserModule extends Module implements BootstrapInterface
     // Configuration
     //
 
-    /** @var bool Active ou désactive les page d'inscription */
-    public $enableRegistration = true;
+    /** @var int */
+    public $password_minLength = 6;
 
-    /** @var string Route de redirection après inscription */
-    public $redirectAfterRegister = '/';
+    /** @var string Route de redirection après avoir créé son mot de passe */
+    public $password_redirectAfterConfirm = '/';
+
+    /** @var string Route de redirection après avoir changé son mot de passe */
+    public $password_redirectAfterReset = '/';
+
+    /** @var int Durée de validité d'un jeton de reset du mot de passe, en secondes */
+    public $password_rememberResetTokenFor = 3600; // 60*60 secondes = 1h
+
+    /** @var bool Indique s'il faut obliger l'utilisateur à renouveler son mot de passe après qu'il a modifié son email */
+    public $password_resetAfterEmailChange = false;
+
+    /** @var bool $registration_confirmationRequired true => on passe par un mail de confirmation avant d'activer le compte sur le site */
+    public $registration_confirmationRequired = false;
+
+    /** @var bool Active ou désactive les page d'inscription */
+    public $registration_enable = true;
 
     /** @var string Route de redirection après authentification */
     public $redirectAfterLogin = '/';
 
-    /** @var string Route de redirection après avoir créé son mot de passe */
-    public $redirectAfterConfirmPassword = '/';
-
-    /** @var string Route de redirection après avoir changé son mot de passe */
-    public $redirectAfterResetPassword = '/';
-
     /** @var string Route de redirection après déconnexion */
     public $redirectAfterLogout;
 
-    /** @var bool Indique s'il faut obliger l'utilisateur à renouveler son mot de passe après qu'il a modifié son email */
-    public $resetPasswordAfterEmailChange = false;
+    /** @var string Route de redirection après inscription */
+    public $redirectAfterRegister = '/';
 
     /** @var int Durée de validité d'un jeton de confirmation, en secondes */
     public $rememberConfirmationTokenFor = 3600; // 60*60 secondes = 1h
 
-    /** @var int Durée de validité d'un jeton de reset du mot de passe, en secondes */
-    public $rememberPasswordTokenFor = 3600; // 60*60 secondes = 1h
-
     /** @var int Durée d'une session, en secondes */
     public $rememberFor = 86400; // 60*60*24 secondes = 1j
-
-    /** @var bool $confirmationRequiredForRegistration true => on passe par un mail de confirmation avant d'activer le compte sur le site */
-    public $confirmationRequiredForRegistration = false;
-
-    /** @var int */
-    public $passwordMinLength = 6;
-
-    /**
-     * @var array Mapping des classes créées dans le module
-     * @see Yii::createObject()
-     */
-    public $classMap = [];
 
     //
     //
@@ -79,12 +64,9 @@ class UserModule extends Module implements BootstrapInterface
     public function init()
     {
         parent::init();
-
-        $this->registerClassDefinitions();
         static::registerTranslations();
-
         // Lancement du gestionnaire d'événements (singleton)
-        Yii::createObject('user/UserEventHandler');
+        Yii::createObject(UserEventHandler::class);
     }
 
     /**
@@ -125,36 +107,6 @@ class UserModule extends Module implements BootstrapInterface
     public static function t($category, $message, $params = [], $language = null)
     {
         return Yii::t('modules/user/' . $category, $message, $params, $language);
-    }
-
-    /**
-     * Fusion les définitions de classes issues de la configuration avec les définitions fournies par défaut
-     * Enregistrement des définitions dans le DI de l'application
-     */
-    protected function registerClassDefinitions()
-    {
-        $defaultClassMap = [
-            //
-            'user/AuthItem' => AuthItem::class,
-            'user/LoginForm' => LoginForm::class,
-            'user/MailRequestForm' => MailRequestForm::class,
-            'user/PasswordForm' => PasswordForm::class,
-            'user/Profile' => Profile::class,
-            'user/RegistrationForm' => RegistrationForm::class,
-            'user/User' => User::class,
-            'user/UserSearch' => UserSearch::class,
-            //
-            'user/UserEventHandler' => UserEventHandler::class,
-            'user/UserMail' => UserMail::class,
-        ];
-
-        foreach ($defaultClassMap as $key => $classDefinition) {
-            if (!array_key_exists($key, $this->classMap)) {
-                $this->classMap[$key] = $classDefinition;
-            }
-        }
-
-        Yii::$container->setDefinitions($this->classMap);
     }
 
 }

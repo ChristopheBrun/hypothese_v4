@@ -50,7 +50,7 @@ class RoleController extends Controller
         // On récupère l'arborescence des rôles avec leurs droits
         $tree = new TreeNode();
         /** @var AuthItem $item */
-        $model = Yii::createObject('user/AuthItem');
+        $model = Yii::createObject(AuthItem::class);
         foreach ($model->find()->rootRoles()->all() as $item) {
             $tree->addChild($item->getTreeNode());
         }
@@ -77,7 +77,7 @@ class RoleController extends Controller
         /** @var AuthItemForm $model */
         /** @var AuthItem $authItem */
         $model = Yii::createObject('user/AuthItemForm');
-        $authItem = Yii::createObject('user/AuthItem');
+        $authItem = Yii::createObject(AuthItem::class);
         $authItem->type = AuthItemType::ROLE;
         $model->loadAuthItem($authItem);
 
@@ -131,7 +131,7 @@ class RoleController extends Controller
     {
         /** @var AuthItemForm $model */
         $model = Yii::createObject('user/AuthItemForm');
-        $model->loadAuthItem(Yii::createObject('user/AuthItem')::findOne($id));
+        $model->loadAuthItem(Yii::createObject(AuthItem::class)::findOne($id));
 
         if (Yii::$app->request->isPost) {
             // Traitement du formulaire

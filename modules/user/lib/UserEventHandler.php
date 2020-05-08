@@ -103,7 +103,7 @@ class UserEventHandler extends Component
     protected function getMailer()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return Yii::createObject('user/UserMail');
+        return Yii::createObject(UserMail::class);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ class UserEventHandler extends Component
             $model = $event->sender;
 
             $to = $model->email;
-            $user = Yii::createObject('user/User')->find()->byEmail($to)->one();
+            $user = Yii::createObject(User::class)->find()->byEmail($to)->one();
             if ($user) {
                 $token = Token::generateTokenForUser($user->id, TokenType::REGISTRATION);
                 $url = Url::to(['/user/registration/confirm-password', 'code' => $token->code, 'id' => $user->id], true);
@@ -174,7 +174,7 @@ class UserEventHandler extends Component
             $model = $event->sender;
 
             $to = $model->email;
-            $user = Yii::createObject('user/User')->find()->byEmail($to)->one();
+            $user = Yii::createObject(User::class)->find()->byEmail($to)->one();
 
             if ($user) {
                 $token = Token::generateTokenForUser($user->id, TokenType::PASSWORD);
@@ -249,7 +249,7 @@ class UserEventHandler extends Component
         $user = $event->sender;
 
         $dirtyAttributes = ArrayHelper::getValue($this->userDirtyAttributes, $user->id, []);
-        if (array_key_exists('email', $dirtyAttributes) && UserModule::getInstance()->resetPasswordAfterEmailChange) {
+        if (array_key_exists('email', $dirtyAttributes) && UserModule::getInstance()->password_resetAfterEmailChange) {
             // Si le mail a changé, il faut ré-initialiser le mot de passe
             $to = $user->email;
             $token = Token::generateTokenForUser($user->id, TokenType::PASSWORD);
@@ -287,7 +287,7 @@ class UserEventHandler extends Component
         $user = $event->sender;
 
         $dirtyAttributes = ArrayHelper::getValue($this->userDirtyAttributes, $user->id, []);
-        if (array_key_exists('email', $dirtyAttributes) && UserModule::getInstance()->resetPasswordAfterEmailChange) {
+        if (array_key_exists('email', $dirtyAttributes) && UserModule::getInstance()->password_resetAfterEmailChange) {
             // Si le mail a changé, il faut ré-initialiser le mot de passe
             $to = $user->email;
             $token = Token::generateTokenForUser($user->id, TokenType::PASSWORD);

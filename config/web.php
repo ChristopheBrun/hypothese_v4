@@ -48,14 +48,6 @@ $config = [
     // Composants
     //----------------------------------------------
     'components' => [
-        'db' => isset($db) ? $db : [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=hypothese_v4',
-            'username' => 'root',
-            'password' => 'tagada',
-            'charset' => 'utf8',
-        ],
-        //
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
 //        'cache' => Yii::$app->cache,
@@ -64,6 +56,7 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'db' => $db,
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -124,17 +117,16 @@ $config = [
     // Modules
     //----------------------------------------------
     'modules' => [
+        'ephemerides' => [
+            'class' => 'app\modules\ephemerides\EphemeridesModule',
+        ],
         'hlib' => [
             'class' => 'app\modules\hlib\HLib',
         ],
         'user' => [
             'class' => 'app\modules\user\UserModule',
-            //
             'rememberConfirmationTokenFor' => 259200, // 72h = 72 * 3600 secondes
-            'resetPasswordAfterEmailChange' => false,
-        ],
-        'ephemerides' => [
-            'class' => 'app\modules\ephemerides\EphemeridesModule',
+            'password_resetAfterEmailChange' => false,
         ],
     ],
 ];
