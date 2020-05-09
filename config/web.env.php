@@ -1,7 +1,7 @@
 <?php
 
 $environments = [
-    'hypothese_v4' => 'dev',
+    'hypothese-v4' => 'dev',
     'www.hypothese.net' => 'prod',
 ];
 
@@ -15,12 +15,15 @@ if (array_key_exists("HTTP_HOST", $_SERVER)) {
 }
 
 switch ($env) {
+    case 'dev' :
+        define('YII_ENV', 'dev');
+        defined('YII_DEBUG') or define('YII_DEBUG', true);
+        break;
     case 'prod' :
         define('YII_ENV', 'prod');
+        defined('YII_DEBUG') or define('YII_DEBUG', true);
         break;
     default :
-        define('YII_ENV', 'dev');
+        define('YII_ENV', '???');
 }
 
-defined('YII_DEBUG') or define('YII_DEBUG', YII_ENV == 'dev');
-//define('YII_DEBUG', true);

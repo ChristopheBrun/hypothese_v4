@@ -1,13 +1,17 @@
 <?php
 
 switch (YII_ENV) {
+    case 'dev':
+        $db = require_once __DIR__ . '/private/db.dev.php';
+        $pwd = require_once __DIR__ . '/private/pwd.dev.php';
+        break;
     case 'prod':
         $db = require_once __DIR__ . '/private/db.prod.php';
         $pwd = require_once __DIR__ . '/private/pwd.prod.php';
         break;
-    default:
-        $db = require_once __DIR__ . '/private/db.dev.php';
-        $pwd = require_once __DIR__ . '/private/pwd.dev.php';
+    default :
+        /** @noinspection PhpUnhandledExceptionInspection */
+        throw new Exception("Environnement non défini : " . YII_ENV);
 }
 
 $config = [
