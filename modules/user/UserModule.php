@@ -89,7 +89,7 @@ class UserModule extends Module implements BootstrapInterface
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@app/modules/user/messages',
             'fileMap' => [
-                'modules/user/labels' => 'app.php',
+                'modules/user/labels' => 'labels.php',
                 'modules/user/messages' => 'messages.php',
             ],
         ];

@@ -47,7 +47,7 @@ class HLib extends Module implements BootstrapInterface
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@app/modules/hlib/messages',
             'fileMap' => [
-                'modules/hlib/labels' => 'app.php',
+                'modules/hlib/labels' => 'labels.php',
                 'modules/hlib/messages' => 'messages.php',
                 'modules/hlib/titles' => 'titles.php',
             ],
