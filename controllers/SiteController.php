@@ -5,7 +5,6 @@ namespace app\controllers;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
-use app\modules\user\lib\enums\AppRole;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -33,7 +32,7 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'contact', 'error', 'captcha'],
                         'allow' => true,
                     ],
                     [
@@ -45,10 +44,6 @@ class SiteController extends Controller
                         'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['contact'],
-                        'allow' => true,
                     ],
                     [
                         'actions' => ['management'],
@@ -78,7 +73,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Page d'accueil du site
      *
      * @return string
      * @throws \yii\db\Exception
@@ -109,6 +104,8 @@ class SiteController extends Controller
     }
 
     /**
+     * Page d'administration
+     *
      * @return string
      */
     public function actionManagement()
@@ -117,7 +114,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Login action.
+     * Formulaire de connexion (utilisateurs anonymes seulement)
      *
      * @return Response|string
      */
@@ -139,7 +136,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Logout action.
+     * Déconnexion (utilisateurs authentifiés seulement)
      *
      * @return Response
      */
@@ -151,21 +148,19 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays contact page.
+     * Formulaire de contact
      *
      * @return Response|string
      */
     public function actionContact()
     {
         $model = new ContactForm();
+        $formSubmitted = false;
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
+            $formSubmitted = true;
         }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+
+        return $this->render('contact', compact('model', 'formSubmitted'));
     }
 
 

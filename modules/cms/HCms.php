@@ -48,7 +48,7 @@ class HCms extends Module implements BootstrapInterface
             'class' => 'yii\i18n\PhpMessageSource',
             'basePath' => '@app/modules/cms/messages',
             'fileMap' => [
-                'modules/cms/labels' => 'labels.php',
+                'modules/cms/labels' => 'app.php',
                 'modules/cms/messages' => 'messages.php',
                 'modules/cms/titles' => 'titles.php',
             ],

@@ -1,7 +1,17 @@
-/* Styles spécifiques au site (hors modules) */
+/* Styles spécifiques à cette application (hors modules) */
 
 .main-menu-logo {
     float: left;
     margin-top: -6px;
     margin-right: 10px;
+}
+
+div.required label.control-label:after,
+div.required div.checkbox label:after,
+th.required label:after,
+td.required label:after,
+label.required:after {
+    content: "* ";
+    color: #FF0000;
+    margin-left: 7px;
 }

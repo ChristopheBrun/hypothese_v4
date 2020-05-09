@@ -13,26 +13,51 @@ use yii\helpers\Url;
 
 $this->title = HLib::t('labels', 'Server error');
 $this->params['breadcrumbs'][] = $this->title;
-
 $imgUrl = Url::base(true) . '/images/error_500.png';
+
 ?>
-<div class=row">
-    <div class="col-sm-12 alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+
+<div class="panel panel-default" id="error-page">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1><?= $this->title ?></h1>
+            </div>
+        </div>
     </div>
 
-    <div class="col-sm-5">
-        <?= Html::img($imgUrl, ['alt' => 'server error']) ?>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 alert alert-danger">
+                <?= nl2br(Html::encode($message)) ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5">
+                <?= Html::img($imgUrl, ['alt' => 'server error']) ?>
+            </div>
+            <div class="col-sm-7">
+                <p>
+                    Vous ne pouvez pas accéder à cette page tant que l'erreur n'aura pas été analysée par
+                    l'administrateur du site
+                </p>
+                <p>
+                    Retentez votre chance dans quelques heures.
+                </p>
+                <p>
+                    Si le problème persiste, merci de
+                    nous <?= Html::a('contacter', Url::to(['/site/contact'], true)) ?>.
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-7">
-        <p>
-            Vous ne pouvez pas accéder à cette page tant que l'erreur n'aura pas été analysée par l'administrateur du site
-        </p>
-        <p>
-            Retentez votre chance dans quelques heures.
-        </p>
-        <p>
-            Si le problème persiste, merci de nous <?= Html::a('contacter', Url::to(['/site/contact'], true)) ?>.
-        </p>
+
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-sm-12">
+
+            </div>
+        </div>
     </div>
 </div>
