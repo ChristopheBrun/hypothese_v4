@@ -39,7 +39,7 @@ class UserModule extends Module implements BootstrapInterface
     public $redirectAfterLogin = '/';
 
     /** @var string Route de redirection après déconnexion */
-    public $redirectAfterLogout;
+    public $redirectAfterLogout = '/';
 
     /** @var string Route de redirection après inscription */
     public $redirectAfterRegister = '/';

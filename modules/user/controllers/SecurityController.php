@@ -119,15 +119,16 @@ class SecurityController extends Controller
     {
         // La session risque d'être détruite dans le logout. On sauvegarde les flashs en attente
         Flash::savePendingFlashes();
-
         if (!Yii::$app->user->logout()) {
             Flash::error(UserModule::t('messages', "Error on logout"));
         }
 
         Flash::reloadPendingFlashes();
         Flash::success(UserModule::t('messages', "Logout successful"));
-        /** @noinspection PhpUndefinedFieldInspection */
-        $redirectTo = $this->module->redirectAfterLogout ? Url::to($this->module->redirectAfterLogout) : Yii::$app->request->getReferrer();
+
+        // Redirection, par défaut sur la page d'accueil du site
+        $userModule = UserModule::getInstance();
+        $redirectTo = Url::to($userModule->redirectAfterLogout);
         return $this->redirect($redirectTo);
     }
 
