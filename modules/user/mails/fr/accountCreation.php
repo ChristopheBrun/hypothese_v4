@@ -26,7 +26,7 @@ $userModule = Yii::$app->getModule('user');
     </p>
 
     <p>
-        Pour l'utiliser, vous devez définir votre mot de passe dans les <?= $userModule->rememberConfirmationTokenFor / 3600 ?>
+        Pour l'utiliser, vous devez définir votre mot de passe dans les <?= $userModule->confirmationToken_rememberFor / 3600 ?>
         heures en vous connectant à l'adresse <a href='<?= $url ?>'><?= $appName ?></a>
     </p>
 </div>

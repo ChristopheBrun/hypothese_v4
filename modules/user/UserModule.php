@@ -17,6 +17,9 @@ class UserModule extends Module implements BootstrapInterface
     // Configuration
     //
 
+    /** @var int Durée de validité d'un jeton de confirmation, en secondes */
+    public $confirmationToken_rememberFor = 3600; // 60*60 secondes = 1h
+
     /** @var int */
     public $password_minLength = 6;
 
@@ -32,12 +35,6 @@ class UserModule extends Module implements BootstrapInterface
     /** @var bool Indique s'il faut obliger l'utilisateur à renouveler son mot de passe après qu'il a modifié son email */
     public $password_resetAfterEmailChange = false;
 
-    /** @var bool $registration_confirmationRequired true => on passe par un mail de confirmation avant d'activer le compte sur le site */
-    public $registration_confirmationRequired = false;
-
-    /** @var bool Active ou désactive les page d'inscription */
-    public $registration_enable = true;
-
     /** @var string Route de redirection après authentification */
     public $redirectAfterLogin = '/';
 
@@ -47,11 +44,14 @@ class UserModule extends Module implements BootstrapInterface
     /** @var string Route de redirection après inscription */
     public $redirectAfterRegister = '/';
 
-    /** @var int Durée de validité d'un jeton de confirmation, en secondes */
-    public $rememberConfirmationTokenFor = 3600; // 60*60 secondes = 1h
+    /** @var bool $registration_confirmationRequired true => on passe par un mail de confirmation avant d'activer le compte sur le site */
+    public $registration_confirmationRequired = false;
+
+    /** @var bool Active ou désactive les page d'inscription */
+    public $registration_enable = true;
 
     /** @var int Durée d'une session, en secondes */
-    public $rememberFor = 86400; // 60*60*24 secondes = 1j
+    public $session_rememberFor = 86400; // 60*60*24 secondes = 1j
 
     //
     //

@@ -115,7 +115,7 @@ class RegistrationController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $token = Token::findToken(TokenType::REGISTRATION, $user->id, $code, $this->module->rememberConfirmationTokenFor);
+        $token = Token::findToken(TokenType::REGISTRATION, $user->id, $code, $this->module->confirmationToken_rememberFor);
         if (!$token) {
             Flash::error(UserModule::t('messages', 'The link is invalid or expired. Please try requesting a new one'));
             return $this->redirect('/');
@@ -133,7 +133,7 @@ class RegistrationController extends Controller
                     Flash::success(UserModule::t('messages', "Your password has been successfully created. Your account is now validated"));
 
                     // Mot de passe mis à jour. On connecte l'utilisateur à con compte avant de rediriger
-                    Yii::$app->user->login($user, $this->module->rememberFor);
+                    Yii::$app->user->login($user, $this->module->session_rememberFor);
                     return $this->redirect($this->module->password_redirectAfterConfirm);
                 }
             }
@@ -180,7 +180,7 @@ class RegistrationController extends Controller
                     Flash::success(UserModule::t('messages', "Your password has been successfully updated"));
 
                     // Mot de passe mis à jour? On connecte l'utilisateur à son compte avant de rediriger
-                    Yii::$app->user->login($user, $this->module->rememberFor);
+                    Yii::$app->user->login($user, $this->module->session_rememberFor);
                     return $this->redirect([$this->module->password_redirectAfterReset]);
                 }
             }

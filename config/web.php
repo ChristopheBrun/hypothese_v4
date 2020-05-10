@@ -18,7 +18,7 @@ $config = [
     //----------------------------------------------
     // Attributs
     //----------------------------------------------
-    'id' => 'basic',
+    'id' => 'hypothese',
     'name' => 'Hypothese.net',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
@@ -132,7 +132,7 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\UserModule',
-            'rememberConfirmationTokenFor' => 259200, // 72h = 72 * 3600 secondes
+            'confirmationToken_rememberFor' => 259200, // 72h = 72 * 3600 secondes
             'password_resetAfterEmailChange' => false,
         ],
     ],

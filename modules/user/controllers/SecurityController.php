@@ -92,7 +92,7 @@ class SecurityController extends Controller
                     return $this->redirect($module->redirectAfterLogin);
                 }
 
-                if (!Yii::$app->user->login($user, $module->rememberFor)) {
+                if (!Yii::$app->user->login($user, $module->session_rememberFor)) {
                     Flash::error(UserModule::t('messages', "Login rejected"));
                     return $this->redirect($module->redirectAfterRegister);
                 }
