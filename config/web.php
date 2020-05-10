@@ -118,6 +118,13 @@ $config = [
             'enableAutoLogin' => 'true',
             'loginUrl' => '/login',
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/modules/user/views' => '@app/views/user',
+                ],
+            ],
+        ],
     ],
 
     //----------------------------------------------
