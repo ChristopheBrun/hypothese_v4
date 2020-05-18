@@ -25,11 +25,12 @@ class UtilsController extends Controller
      */
     public function actionUpdateNomsFichiers()
     {
-        $dirname = 'F:\etc\test';
-        $files = FileHelper::findFiles($dirname);
+        $dirname = '';
+        $chaineASupprimer = '';
 
+        $files = FileHelper::findFiles($dirname);
         foreach ($files as $filename) {
-            $newName = str_replace('gragmentdunomdefichiertroplong', '', $filename);
+            $newName = str_replace($chaineASupprimer, '', $filename);
             rename($filename, $newName);
             $this->stdout(sprintf("Ancien : %s >> \nNouveau : %s\n---------\n", basename($filename), basename($newName)));
         }

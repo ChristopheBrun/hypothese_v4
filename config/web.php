@@ -14,6 +14,18 @@ switch (YII_ENV) {
         throw new Exception("Environnement non défini : " . YII_ENV);
 }
 
+/**
+ * On expose ici la configuration de production qui sera sauvegardée sous Git.
+ * La configuration peut être surchargée dans les fichiers config.xxx.php et private/config.xxx.php
+ *
+ * Ce fichier  est archivé sous Git : NE JAMAIS PUBLIER ICI DES INFORMTIONS CONFIDENTIELLES.
+ *
+ * Les fichiers du sous-répertoire private/ ne sont pas inclus dans Git : c'est là que doivent se trouver les données confidentielles
+ * qu'il ne faut pas publier hors de nos serveurs (dont les mots de passe).
+ *
+ * Les fichiers et règlages personnels des développeurs doivent aussi être mis dans private/ pour ne pas encombrer le dépôt.
+ */
+
 $config = [
     //----------------------------------------------
     // Attributs
@@ -30,6 +42,14 @@ $config = [
         }, // le module user
         'ephemerides',
     ],
+    'on beforeRequest' => function () {
+        if (!Yii::$app->request->isSecureConnection) {
+            $url = Yii::$app->request->getAbsoluteUrl();
+            $url = str_replace('http:', 'https:', $url);
+            Yii::$app->getResponse()->redirect($url);
+            Yii::$app->end();
+        }
+    },
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -145,7 +165,7 @@ $config = [
     ],
 ];
 
-// Surcharge de la configuration selon l'environnement
+// Surcharge de la configuration avec les autres données condidentielles ou privées
 switch (YII_ENV) {
     case 'prod' :
         require_once __DIR__ . '/private/config.prod.php';
