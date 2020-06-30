@@ -4,7 +4,7 @@ $(function () {
         let path = $('#path-windows').val();
         console.log(path);
 
-        let out = path.replace(/\\/, '/');
+        let out = path.replaceAll(/\\/, '/');
         if (path.includes(' ')) {
             out = '"' + out + '"';
         }
