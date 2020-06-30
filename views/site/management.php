@@ -40,6 +40,12 @@ $this->title = Yii::$app->name . ': superadmin';
                             <?= Html::a(UserModule::t('labels', 'Catégories'), Url::to('/ephemerides/tag')) ?>
                         </li>
                     </ol>
+                    <h2>Utilitaires</h2>
+                    <ol>
+                        <li>
+                            <?= Html::a(UserModule::t('labels', "Path windows"), Url::to('/helper/path-windows')) ?>
+                        </li>
+                    </ol>
                 </div>
             </div>
         </div>
