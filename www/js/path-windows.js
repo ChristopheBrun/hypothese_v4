@@ -1,10 +1,7 @@
 $(function () {
     $('#path-windows-submit').on('click', function () {
-        console.log(2);
         let path = $('#path-windows').val();
-        console.log(path);
-
-        let out = path.replaceAll(/\\/, '/');
+        let out = path.replace(/\\/g, '/');
         if (path.includes(' ')) {
             out = '"' + out + '"';
         }
