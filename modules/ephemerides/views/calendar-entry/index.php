@@ -1,18 +1,23 @@
 <?php
 
+use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
+use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\AssetsHelper;
 use Carbon\Carbon;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\modules\ephemerides\models\form\CalendarEntrySearchForm */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $searchModel CalendarEntrySearchForm */
+/* @var $dataProvider ActiveDataProvider */
+/* @var $tags Tag[] */
 
-$this->title = Yii::t('labels', 'Calendar Entries');
+$this->title = EphemeridesModule::t('labels', 'Calendar Entries');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="calendar-entry-index">
 
@@ -44,7 +49,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             'title',
-            //'image_caption',
+            [
+                'attribute' => 'tag',
+                'label' => "Catégories",
+                'value' => function (CalendarEntry $model) {
+                    return \app\modules\hlib\widgets\DisplayModels::widget([
+                        'models' => $model->tags,
+                        'labelField' => 'label',
+                    ]);
+                },
+                'format' => 'html',
+                'filter' => \yii\helpers\ArrayHelper::map($tags, 'id', 'label'),
+            ],
             AssetsHelper::gridViewEnabled(),
             ['class' => 'yii\grid\ActionColumn'],
         ],

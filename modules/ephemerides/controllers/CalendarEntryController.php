@@ -2,7 +2,9 @@
 
 namespace app\modules\ephemerides\controllers;
 
+use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\lib\Flash;
+use Exception;
 use Yii;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
@@ -22,7 +24,7 @@ class CalendarEntryController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -38,10 +40,12 @@ class CalendarEntryController extends Controller
     {
         $searchModel = new CalendarEntrySearchForm();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $tags = Tag::find()->orderByLabel()->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tags' => $tags,
         ]);
     }
 
@@ -68,18 +72,20 @@ class CalendarEntryController extends Controller
         $model = new CalendarEntry();
 
         try {
-            if (!$model->load(Yii::$app->request->post())) {
-                throw new \Exception('!$model->load()');
-            }
+            if (Yii::$app->request->isPost) {
+                if (!$model->load(Yii::$app->request->post())) {
+                    throw new Exception('!$model->load()');
+                }
 
-           if (!$model->validate()) {
-                throw new \Exception('!$model->validate()');
-            }
+                if (!$model->validate()) {
+                    throw new Exception('!$model->validate()');
+                }
 
-            if (!$model->save(false)) {
-                throw new \Exception('!$model->save()');
+                if (!$model->save(false)) {
+                    throw new Exception('!$model->save()');
+                }
             }
-        } catch (\Exception $x) {
+        } catch (Exception $x) {
             Yii::error($x->getMessage());
             Flash::error("Erreur sur " . __METHOD__);
         }
@@ -100,13 +106,23 @@ class CalendarEntryController extends Controller
     {
         $model = $this->findModel($id);
 
-        if (!$model->load(Yii::$app->request->post())) {
-            Flash::error('!$model->load()');
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        try {
+            if (Yii::$app->request->isPost) {
+                if (!$model->load(Yii::$app->request->post())) {
+                    throw new Exception('!$model->load()');
+                }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+                if (!$model->validate()) {
+                    throw new Exception('!$model->validate()');
+                }
+
+                if (!$model->save(false)) {
+                    throw new Exception('!$model->save()');
+                }
+            }
+        } catch (Exception $x) {
+            Yii::error($x->getMessage());
+            Flash::error("Erreur sur " . __METHOD__);
         }
 
         return $this->render('update', [
@@ -120,6 +136,8 @@ class CalendarEntryController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

@@ -106,16 +106,24 @@ class CalendarEntrySearchForm extends ModelSearchForm
     {
         return [
             // filtres
-            [['image', 'status', 'article'], 'filter', 'filter' => function ($value) {
+            [['image', 'status', 'article'],
+                'filter', 'filter' => function ($value) {
                 // Ce sont des chaînes de caractères qui nous arrivent mais on veut des entiers pour garantir la validité des comparaisons strictes
                 return $value !== "" ? (int)$value : $value;
             }],
-            // validateurs
-            ['eventDateOperator', 'in', 'range' => array_keys(static::$dateOperators)],
-            [['eventDateString', 'title', 'tag', 'body'], 'string'],
-            ['status', 'in', 'range' => array_keys(static::$statusList)],
-            ['image', 'in', 'range' => array_keys(static::$imageStatusList)],
-            ['tag', 'exist', 'targetClass' => Tag::class, 'targetAttribute' => 'id'],
+            // enums
+            ['eventDateOperator',
+                'in', 'range' => array_keys(static::$dateOperators)],
+            ['status',
+                'in', 'range' => array_keys(static::$statusList)],
+            ['image',
+                'in', 'range' => array_keys(static::$imageStatusList)],
+            // string
+            [['eventDateString', 'title', 'tag', 'body'],
+                'filter', 'filter' => 'strip_tags'],
+            // fk
+            ['tag',
+                'exist', 'targetClass' => Tag::class, 'targetAttribute' => 'id'],
         ];
     }
 
@@ -191,7 +199,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
         }
 
         $this->buildImageClause($query);
-        $this->buildArticleClause($query);
         $this->buildTagClause($query);
 
         $query->andFilterWhere(['enabled' => $this->status]);
@@ -229,24 +236,20 @@ class CalendarEntrySearchForm extends ModelSearchForm
             $dateFields['month'] = $matches[2];
             $dateFields['year'] = $matches[3];
             $dateFields['op'] = static::SAME_DATE;
-        }
-        elseif (preg_match('#(\d\d)\D(\d\d)#', $eventDateString, $matches)) {
+        } elseif (preg_match('#(\d\d)\D(\d\d)#', $eventDateString, $matches)) {
             // date au format : dd-mm
             $dateFields['day'] = $matches[1];
             $dateFields['month'] = $matches[2];
             $dateFields['op'] = static::SAME_DAY;
-        }
-        elseif (preg_match('#(\d\d\d\d)#', $eventDateString, $matches)) {
+        } elseif (preg_match('#(\d\d\d\d)#', $eventDateString, $matches)) {
             // date au format : yyyy
             $dateFields['year'] = $matches[1];
             $dateFields['op'] = static::SAME_YEAR;
-        }
-        elseif (preg_match('#(\d\d)#', $eventDateString, $matches)) {
+        } elseif (preg_match('#(\d\d)#', $eventDateString, $matches)) {
             // date au format : mm
             $dateFields['month'] = $matches[1];
             $dateFields['op'] = static::SAME_MONTH;
-        }
-        else {
+        } else {
             // Y'a une couille dans le potage...
             return false;
         }
@@ -284,8 +287,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
                     break;
             }
 
-        }
-        else {
+        } else {
             $this->error = static::ERR_KO;
         }
     }
@@ -300,25 +302,8 @@ class CalendarEntrySearchForm extends ModelSearchForm
         // NB : on n'utilise pas de switch ici car nous avons besoin d'une comparaison stricte sur la valeur de $this->image
         if ($this->image === static::ST_WITH) {
             $query->andWhere(['not', ['image' => null]]);
-        }
-        elseif ($this->image === static::ST_WITHOUT) {
+        } elseif ($this->image === static::ST_WITHOUT) {
             $query->andWhere(['image' => null]);
-        }
-    }
-
-    /**
-     * Ajoute une clause de sélection s'il y a une condition sur la présence d'une article
-     *
-     * @param CalendarEntryQuery $query
-     */
-    private function buildArticleClause(CalendarEntryQuery &$query)
-    {
-        // NB : on n'utilise pas de switch ici car nous avons besoin d'une comparaison stricte sur la valeur de $this->article
-        if ($this->article === static::ST_WITH) {
-            $query->innerJoin('article_calendar_entry ace', 'id = ace.calendar_entry_id');
-        }
-        elseif ($this->article === static::ST_WITHOUT) {
-            $query->leftJoin('article_calendar_entry ace', 'id = ace.calendar_entry_id')->andWhere('ace.article_id IS NULL');
         }
     }
 
@@ -357,8 +342,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
                 default:
                     break;
             }
-        }
-        else {
+        } else {
             $this->error = static::ERR_KO;
         }
 

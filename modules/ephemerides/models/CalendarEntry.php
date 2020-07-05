@@ -8,7 +8,6 @@ use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
 use app\modules\hlib\HLib;
 use app\modules\hlib\helpers\hArray;
-use app\modules\hlib\helpers\hString;
 
 use app\modules\ephemerides\models\query\CalendarEntryTagQuery;
 use Carbon\Carbon;
@@ -20,6 +19,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 
@@ -29,6 +29,7 @@ use yii\web\UploadedFile;
  * @property string $id
  * @property string $event_date
  * @property string $title
+ * @property string $description
  * @property string $body
  * @property string $image
  * @property string $image_caption
@@ -83,23 +84,29 @@ class CalendarEntry extends ActiveRecord
     public function rules()
     {
         return [
+            // date
 //            ['event_date', 'filter', 'filter' => function ($value) {
 //                return hDate::convertDateToSQLFormat($value);
 //            }],
-            ['event_date', 'filter', 'filter' => function ($value) {
+            ['event_date',
+                'filter', 'filter' => function ($value) {
                 // en entrée : dd-MM-yyyy ; en sortie : format compatible SQL
                 return (new Carbon($value))->toDateString();
             }],
-            ['event_date', 'required'],
+            // required
+            [['title', 'event_date'],
+                'required'],
+            //string
+            [['title', 'description', 'body', 'notes', 'image', 'image_caption'],
+                'filter', 'filter' => 'strip_tags'],
+            [['title', 'body', 'notes', 'image', 'image_caption'],
+                'filter', 'filter' => 'trim'],
+            // boolean
+            [['enabled', 'deleteImage'],
+                'boolean'],
             //
-            ['title', 'required'],
-            [['title', 'body', 'notes', 'image', 'image_caption'], 'string'],
-            [['title', 'body', 'notes', 'image', 'image_caption'], 'filter', 'filter' => 'strip_tags'],
-            //
-            ['enabled', 'boolean'],
-            ['deleteImage', 'boolean'],
-            //
-            ['uploadedImage', 'file', 'extensions' => 'png, jpg, jpeg, gif'], // seuls formats reconnus par le driver GD
+            [['uploadedImage'],
+                'file', 'extensions' => 'png, jpg, jpeg, gif'], // seuls formats reconnus par le driver GD
         ];
     }
 
@@ -144,9 +151,9 @@ class CalendarEntry extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => HLib::t('labels', 'ID'),
             'event_date' => 'Date',
             'title' => HLib::t('labels', 'Title'),
+            'description' => "Description",
             'body' => 'Corps de texte',
             'image' => HLib::t('labels', 'Image'),
             'image_caption' => "Légende",
@@ -272,7 +279,7 @@ class CalendarEntry extends ActiveRecord
         // Pour le slug, seule la partie 'date' nous intéresse, la partie 'heure' doit être supprimée
         /** @var Carbon $date */
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
-        return hString::slugify($date->toDateString() . ' ' . $this->title);
+        return Inflector::slug($date->toDateString() . ' ' . $this->title);
     }
 
     /**
