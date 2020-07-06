@@ -5,8 +5,8 @@
  */
 
 use app\modules\user\UserModule;
+use kartik\nav\NavX;
 use yii\bootstrap\Html;
-use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Url;
 
@@ -24,7 +24,7 @@ NavBar::begin([
 $identity = Yii::$app->user->identity;
 
 /** @noinspection PhpUnhandledExceptionInspection */
-echo Nav::widget([
+echo NavX::widget([
     'options' => [
         'class' => 'navbar-nav navbar-right',
     ],
@@ -32,6 +32,12 @@ echo Nav::widget([
         [
             'label' => "Accueil",
             'url' => ['/site/index'],
+        ],
+        [
+            'label' => "Des trucs & des machins",
+            'items' => [
+                ['label' => "Path windows > linux", 'url' => ['/helper/path-windows']],
+            ],
         ],
         [
             'label' => "Administration",
@@ -51,4 +57,5 @@ echo Nav::widget([
             . Html::endForm() . '</li>'
     ],
 ]);
+
 NavBar::end();

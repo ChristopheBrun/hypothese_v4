@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUnused */
+
 /**
  * Created by PhpStorm.
  * User: Christophe
@@ -7,7 +8,6 @@
  */
 
 namespace app\controllers;
-
 
 use yii\web\Controller;
 

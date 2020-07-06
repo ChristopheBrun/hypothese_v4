@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace app\controllers;
 
@@ -6,6 +6,7 @@ use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -76,7 +77,7 @@ class SiteController extends Controller
      * Page d'accueil du site
      *
      * @return string
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public function actionIndex()
     {
