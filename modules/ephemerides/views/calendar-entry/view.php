@@ -1,9 +1,11 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 
 use app\modules\ephemerides\EphemeridesModule;
+use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\hlib\helpers\AssetsHelper;
 use app\modules\hlib\HLib;
+use app\modules\hlib\widgets\DisplayModels;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -23,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(HLib::t('labels', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('labels', 'Are you sure you want to delete this item?'),
+                'confirm' => HLib::t('labels', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -34,7 +36,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'event_date',
             'title',
-            'domaine',
+            [
+                'attribute' => 'domaine',
+                'value' => Domaine::getLabel($model->domaine),
+            ],
+            [
+                'attribute' => 'tags',
+                'value' => DisplayModels::widget([
+                    'models' => $model->tags,
+                    'labelField' => 'label',
+                ]),
+                'format' => 'html',
+            ],
             'description',
             'body:ntext',
             [

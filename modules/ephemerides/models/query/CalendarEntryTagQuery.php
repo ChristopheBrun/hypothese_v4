@@ -6,6 +6,7 @@ use app\modules\ephemerides\models\CalendarEntryTag;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Exception;
 
 
 /**
@@ -46,9 +47,9 @@ class CalendarEntryTagQuery extends ActiveQuery
      *
      * @param array $oldTagsIds
      * @param array $updatedTagsIds
-     * @param       $entryId
+     * @param int $entryId
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function updateTagsForCalendarEntry(array $oldTagsIds, array $updatedTagsIds, $entryId)
     {

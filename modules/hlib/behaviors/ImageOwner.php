@@ -49,7 +49,7 @@ class ImageOwner extends Behavior
      */
     public function attach($owner)
     {
-        if(!is_a($owner, 'yii\db\BaseActiveRecord')) {
+        if (!is_a($owner, 'yii\db\BaseActiveRecord')) {
             throw new InvalidConfigException('Le possesseur de ce behavior doit descendre de yii\db\BaseActiveRecord');
         }
 
@@ -116,8 +116,7 @@ class ImageOwner extends Behavior
             $thumbnailSize = $this->getThumbnailSize($thumbnailAlias);
             $subdirectory = self::getThumbnailsDirectoryName($thumbnailSize['width'], $thumbnailSize['height']);
             return $this->getImagesDirectoryPath($absolute) . '/' . $subdirectory . '/' . $this->owner->__get($this->imageField);
-        }
-        else {
+        } else {
             // On a demandé l'image originale
             return $this->getImagesDirectoryPath($absolute) . '/' . $this->owner->__get($this->imageField);
         }
@@ -196,22 +195,26 @@ class ImageOwner extends Behavior
 
     /**
      * Suppression de toutes les images associées à l'objet : image originale + vignettes
+     *
      * @throws UnknownPropertyException
      * @throws \Exception
      */
     public function deleteImageFiles()
     {
-        $imagesDirectoryPath = $this->getImagesDirectoryPath(true);
-        $originalImagePath = $imagesDirectoryPath . '/' . $this->owner->__get($this->imageField);
-        hFile::delete($originalImagePath);
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+        if ($this->owner->hasImage()) {
+            $imagesDirectoryPath = $this->getImagesDirectoryPath(true);
+            $originalImagePath = $imagesDirectoryPath . '/' . $this->owner->__get($this->imageField);
+            hFile::delete($originalImagePath);
 
-        foreach ($this->thumbnailsSizes as $alias => $size) {
-            $subdirectory = self::getThumbnailsDirectoryName($size['width'], $size['height']);
-            $thumbnailPath = $imagesDirectoryPath . '/' . $subdirectory . '/' . $this->owner->__get($this->imageField);
-            hFile::delete($thumbnailPath);
+            foreach ($this->thumbnailsSizes as $alias => $size) {
+                $subdirectory = self::getThumbnailsDirectoryName($size['width'], $size['height']);
+                $thumbnailPath = $imagesDirectoryPath . '/' . $subdirectory . '/' . $this->owner->__get($this->imageField);
+                hFile::delete($thumbnailPath);
+            }
+
+            $this->owner->__set($this->imageField, null);
         }
-
-        $this->owner->__set($this->imageField, null);
     }
 
     /**

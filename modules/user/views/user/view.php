@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\hlib\HLib;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('labels', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('labels', 'Are you sure you want to delete this item?'),
+                'confirm' => HLib::t('labels', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>

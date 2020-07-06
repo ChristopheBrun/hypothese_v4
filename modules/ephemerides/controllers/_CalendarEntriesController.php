@@ -419,36 +419,36 @@ class CalendarEntriesController extends Controller
 //        return true;
 //    }
 
-    /**
-     * Contrôle la liste de tags déclarés dans $request[CalendarEntry][tags] et crée s'il le faut de nouveaux tags dans la base.
-     * Renvoie le tableau après avoir remplacé les libellés des nouveaux tags par leur identifiant.
-     *
-     * @param array $request
-     * @return boolean
-     */
-    private function processTags(array &$request)
-    {
-        $currentTags = ArrayHelper::getColumn(Tag::find()->all(), 'id');
-        $updatedTags = ArrayHelper::getValue($request, 'CalendarEntry.tags', []);
-        if ($updatedTags === "") {
-            $updatedTags = [];
-        }
-
-        foreach ($updatedTags as $i => $value) {
-            if (!in_array($value, $currentTags)) {
-                // $value n'est pas l'identifiant d'un tag déjà connu en base mais le libellé d'un nouveau tag
-                $tag = new Tag(['label' => $value]);
-                if (!$tag->save()) {
-                    return false;
-                }
-
-                $updatedTags[$i] = $tag->id;
-            }
-        }
-
-        $request['CalendarEntry']['tags'] = $updatedTags;
-        return true;
-    }
+//    /**
+//     * Contrôle la liste de tags déclarés dans $request[CalendarEntry][tags] et crée s'il le faut de nouveaux tags dans la base.
+//     * Renvoie le tableau après avoir remplacé les libellés des nouveaux tags par leur identifiant.
+//     *
+//     * @param array $request
+//     * @return boolean
+//     */
+//    private function processTags(array &$request)
+//    {
+//        $currentTags = ArrayHelper::getColumn(Tag::find()->all(), 'id');
+//        $updatedTags = ArrayHelper::getValue($request, 'CalendarEntry.tags', []);
+//        if ($updatedTags === "") {
+//            $updatedTags = [];
+//        }
+//
+//        foreach ($updatedTags as $i => $value) {
+//            if (!in_array($value, $currentTags)) {
+//                // $value n'est pas l'identifiant d'un tag déjà connu en base mais le libellé d'un nouveau tag
+//                $tag = new Tag(['label' => $value]);
+//                if (!$tag->save()) {
+//                    return false;
+//                }
+//
+//                $updatedTags[$i] = $tag->id;
+//            }
+//        }
+//
+//        $request['CalendarEntry']['tags'] = $updatedTags;
+//        return true;
+//    }
 
     /**
      * Enregistre les filtres en session.

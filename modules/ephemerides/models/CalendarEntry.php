@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace app\modules\ephemerides\models;
 
@@ -7,15 +7,12 @@ use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
 use app\modules\hlib\helpers\hArray;
-use app\modules\ephemerides\models\query\CalendarEntryTagQuery;
 use Carbon\Carbon;
 use SimpleXMLElement;
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Exception;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
@@ -59,9 +56,6 @@ class CalendarEntry extends ActiveRecord
     const DATE_FORMAT_DAY = 'd-m-Y';
     const DATE_FORMAT_MONTH = 'm-Y';
     const DATE_FORMAT_YEAR = 'Y';
-
-    /** @var  int[] */
-    private $updatedTagsIds;
 
     /** @var  UploadedFile */
     public $uploadedImage;
@@ -198,6 +192,10 @@ class CalendarEntry extends ActiveRecord
         return $this->hasMany(Tag::class, ['id' => 'tag_id'])->viaTable('calendar_entry_tag', ['calendar_entry_id' => 'id']);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Renvoie la liste des identifiants des tags associés à $this
      *
@@ -219,54 +217,6 @@ class CalendarEntry extends ActiveRecord
     }
 
     /**
-     * Assignation en masse des attributs avec prise en compte de la liste des ids des tags
-     * todo_cbn cf. issue #20
-     *
-     * @inheritdoc
-     */
-    public function load($data, $formName = null)
-    {
-        $this->updatedTagsIds = hArray::getValue($data, 'CalendarEntry.tags');
-        if ($this->updatedTagsIds === "") {
-            $this->updatedTagsIds = [];
-        }
-
-        return parent::load($data, $formName);
-    }
-
-    /**
-     * Mise à jour de l'objet.
-     * Si $saveRelated vaut 'true', les tables d'association sont mises à jour en même temps.
-     *
-     * @param bool|true $runValidation
-     * @param null $attributeNames
-     * @param bool|false $saveRelated
-     * @return bool
-     */
-    public function save($runValidation = true, $attributeNames = null, $saveRelated = false)
-    {
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            if (!parent::save($runValidation, $attributeNames)) {
-                throw new Exception('Erreur sur parent::save()');
-            }
-
-            if ($saveRelated) {
-                if (!!CalendarEntryTagQuery::updateTagsForCalendarEntry($this->getTagsIds(), $this->updatedTagsIds, $this->id)) {
-                    throw new Exception("Erreur sur CalendarEntryTag::updateTagsForCalendarEntry()");
-                }
-            }
-
-            $transaction->commit();
-            return true;
-        } catch (Exception $x) {
-            Yii::error($x->getMessage(), __METHOD__);
-            $transaction->rollBack();
-            return false;
-        }
-    }
-
-    /**
      * Calcule un 'slug' pour cette éphéméride.
      * Le format du slug est : date de l'événement (yyyy-mm-dd) - espace - titre
      *
@@ -276,7 +226,6 @@ class CalendarEntry extends ActiveRecord
     {
         // $this->event_date est au format SQL : 2010-08-20 00:00:00
         // Pour le slug, seule la partie 'date' nous intéresse, la partie 'heure' doit être supprimée
-        /** @var Carbon $date */
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return Inflector::slug($date->toDateString() . ' ' . $this->title);
     }
@@ -286,7 +235,6 @@ class CalendarEntry extends ActiveRecord
      */
     public function year()
     {
-        /** @var Carbon $date */
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return $date->year;
     }
@@ -296,7 +244,6 @@ class CalendarEntry extends ActiveRecord
      */
     public function month()
     {
-        /** @var Carbon $date */
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return $date->month;
     }
@@ -306,7 +253,6 @@ class CalendarEntry extends ActiveRecord
      */
     public function day()
     {
-        /** @var Carbon $date */
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return $date->day;
     }
