@@ -15,6 +15,7 @@ class m200701_182203_alterTbl_calendar_entry extends Migration
     public function safeUp()
     {
         $this->addColumn($this->tableName, 'description', $this->text()->after('title'));
+        $this->addColumn($this->tableName, 'domaine', $this->string(50)->after('description'));
     }
 
     /**
@@ -23,5 +24,6 @@ class m200701_182203_alterTbl_calendar_entry extends Migration
     public function safeDown()
     {
         $this->dropColumn($this->tableName, 'description');
+        $this->dropColumn($this->tableName, 'domaine');
     }
 }

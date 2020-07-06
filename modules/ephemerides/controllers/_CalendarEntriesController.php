@@ -272,7 +272,7 @@ class CalendarEntriesController extends Controller
                 }
                 else {
                     // Retour à la liste ou redirection sur la page d'édition, selon le bouton qui a été cliqué
-                    Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Create successful'));
+                    Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Create success'));
                 }
 
                 $requestedRedirection =
@@ -343,7 +343,7 @@ class CalendarEntriesController extends Controller
     {
         try {
             $this->findModel($id)->delete();
-            Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete successful'));
+            Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete success'));
         } catch (Exception $x) {
             Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'This object is referenced by another object. Deletion failed'));
         }
@@ -352,72 +352,72 @@ class CalendarEntriesController extends Controller
         return $this->redirect(Url::to(['/calendar-entries/index', 'page' => $currentPage]));
     }
 
-    /**
-     * Traitement de l'image du modèle : suppression, renommage, téléchargement depuis le formulaire
-     * Puisque le nom des images dépend du titre du modèle, cette méthode doit être appelée après le save() pour éviter les
-     * désynchronisations. Un nouveau save() peut être appelé en interne si nécessaire.
-     *
-     * @param CalendarEntry $model
-     * @param array         $request
-     * @param array         $oldAttributes
-     * @param UploadedFile  $uploadedFile Vaut NULL si aucune image n'est téléchargée
-     * @return bool
-     * @throws \Exception
-     */
-    private function processModelImage(CalendarEntry $model, array $request, array $oldAttributes, UploadedFile $uploadedFile = null)
-    {
-        $saveModel = false;
-
-        // Si le modèle a déjà une image, on vérifie s'il faut la supprimer ou la renommer
-        if ($model->hasImage()) {
-            if (ArrayHelper::getValue($request, 'CalendarEntry.deleteImage')) {
-                // Si la case "supprimer est cochée", on supprime l'ancienne image & les vignettes
-                $model->deleteImageFiles();
-                $saveModel = true;
-            }
-            elseif ($oldAttributes['title'] != $model->title || $oldAttributes['event_date'] != $model->event_date) {
-                // Si le titre du modèle a changé, il faut renommer les images de l'objet
-                $model->image = $model->computeImageName(hFile::getExtension($model->image));
-                $model->resetImagesNames();
-                $saveModel = true;
-            }
-        }
-
-        // Traitement de l'image téléchargée
-        if ($uploadedFile) {
-            // Une nouvelle image a été téléchargée : on la déplace dans le répertoire des images de CalendarEntry
-            $imagesDirectoryPath = $model->getImagesDirectoryPath(true);
-            $file = $imagesDirectoryPath . '/' . $model->computeImageName($uploadedFile->extension);
-            if (!$uploadedFile->saveAs($file)) {
-                return false;
-            }
-
-            // On enregistre l'image sous un format standard (jpg par défaut) et à une taille appropriée
-            // S'il y avait déjà une image pour ce modèle, elles sera écrasée
-            $extension = Yii::$app->params['calendarEntry']['images']['extension'];
-            if ($uploadedFile->extension != $extension) {
-                // Le type de l'image reçue n'est pas le bon : on la ré-encode...
-                $image = hImage::configure()->make($file)->encode($extension, 100);
-                $reEncodedFile = $imagesDirectoryPath . '/' . $model->computeImageName($extension);
-                $image->save($reEncodedFile)->destroy();
-                // ... et on efface le fichier avec la mauvaise extension
-                hFile::delete($file);
-                $file = $reEncodedFile;
-            }
-
-            // Mise à jour du modèle et des vignettes
-            $model->image = basename($file);
-            $model->resizeOriginalImage();
-            $model->setThumbnails();
-            $saveModel = true;
-        }
-
-        if ($saveModel) {
-            return $model->save(false);
-        }
-
-        return true;
-    }
+//    /**
+//     * Traitement de l'image du modèle : suppression, renommage, téléchargement depuis le formulaire
+//     * Puisque le nom des images dépend du titre du modèle, cette méthode doit être appelée après le save() pour éviter les
+//     * désynchronisations. Un nouveau save() peut être appelé en interne si nécessaire.
+//     *
+//     * @param CalendarEntry $model
+//     * @param array         $request
+//     * @param array         $oldAttributes
+//     * @param UploadedFile  $uploadedFile Vaut NULL si aucune image n'est téléchargée
+//     * @return bool
+//     * @throws \Exception
+//     */
+//    private function processModelImage(CalendarEntry $model, array $request, array $oldAttributes, UploadedFile $uploadedFile = null)
+//    {
+//        $saveModel = false;
+//
+//        // Si le modèle a déjà une image, on vérifie s'il faut la supprimer ou la renommer
+//        if ($model->hasImage()) {
+//            if (ArrayHelper::getValue($request, 'CalendarEntry.deleteImage')) {
+//                // Si la case "supprimer est cochée", on supprime l'ancienne image & les vignettes
+//                $model->deleteImageFiles();
+//                $saveModel = true;
+//            }
+//            elseif ($oldAttributes['title'] != $model->title || $oldAttributes['event_date'] != $model->event_date) {
+//                // Si le titre du modèle a changé, il faut renommer les images de l'objet
+//                $model->image = $model->computeImageName(hFile::getExtension($model->image));
+//                $model->resetImagesNames();
+//                $saveModel = true;
+//            }
+//        }
+//
+//        // Traitement de l'image téléchargée
+//        if ($uploadedFile) {
+//            // Une nouvelle image a été téléchargée : on la déplace dans le répertoire des images de CalendarEntry
+//            $imagesDirectoryPath = $model->getImagesDirectoryPath(true);
+//            $file = $imagesDirectoryPath . '/' . $model->computeImageName($uploadedFile->extension);
+//            if (!$uploadedFile->saveAs($file)) {
+//                return false;
+//            }
+//
+//            // On enregistre l'image sous un format standard (jpg par défaut) et à une taille appropriée
+//            // S'il y avait déjà une image pour ce modèle, elles sera écrasée
+//            $extension = Yii::$app->params['calendarEntry']['images']['extension'];
+//            if ($uploadedFile->extension != $extension) {
+//                // Le type de l'image reçue n'est pas le bon : on la ré-encode...
+//                $image = hImage::configure()->make($file)->encode($extension, 100);
+//                $reEncodedFile = $imagesDirectoryPath . '/' . $model->computeImageName($extension);
+//                $image->save($reEncodedFile)->destroy();
+//                // ... et on efface le fichier avec la mauvaise extension
+//                hFile::delete($file);
+//                $file = $reEncodedFile;
+//            }
+//
+//            // Mise à jour du modèle et des vignettes
+//            $model->image = basename($file);
+//            $model->resizeOriginalImage();
+//            $model->setThumbnails();
+//            $saveModel = true;
+//        }
+//
+//        if ($saveModel) {
+//            return $model->save(false);
+//        }
+//
+//        return true;
+//    }
 
     /**
      * Contrôle la liste de tags déclarés dans $request[CalendarEntry][tags] et crée s'il le faut de nouveaux tags dans la base.

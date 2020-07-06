@@ -29,7 +29,7 @@ class BaseController extends Controller
     protected function redirectAfterCreateSuccess(ActiveRecord $model, $prefixRouteWith = '/')
     {
         $controllerRoute = $this->getControllerRoute($prefixRouteWith);
-        Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Create successful'));
+        Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Create success'));
         /** @noinspection PhpUndefinedFieldInspection */
         $requestedRedirection =
             Yii::$app->request->getBodyParam('action') == 'saveAndKeepEditing' ?
@@ -67,7 +67,7 @@ class BaseController extends Controller
             if (!$model->delete()) {
                 Yii::$app->session->setFlash('flash-danger', HLib::t('messages', 'Delete unsuccessful'));
             } else {
-                Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete successful'));
+                Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete success'));
             }
         } catch (StaleObjectException $s) {
             Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'This object is outdated. Deletion failed'));

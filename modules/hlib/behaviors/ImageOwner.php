@@ -1,13 +1,16 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 namespace app\modules\hlib\behaviors;
 
 use app\modules\hlib\helpers\hFile;
 use app\modules\hlib\helpers\hImage;
+use app\modules\hlib\HLib;
 use Yii;
 use yii\base\Behavior;
+use yii\base\Component;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\base\UnknownPropertyException;
 use yii\helpers\ArrayHelper;
 
 
@@ -31,6 +34,9 @@ class ImageOwner extends Behavior
     /** @var string */
     public $imagesDirectoryName = 'images';
 
+    /** @var string */
+    public $publicDirectory;
+
     /** @var array */
     public $originalImageSize;
 
@@ -38,7 +44,7 @@ class ImageOwner extends Behavior
     public $thumbnailsSizes;
 
     /**
-     * @param \yii\base\Component $owner
+     * @param Component $owner
      * @throws InvalidConfigException
      */
     public function attach($owner)
@@ -52,7 +58,7 @@ class ImageOwner extends Behavior
 
     /**
      * @return bool
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      */
     public function hasImage()
     {
@@ -65,7 +71,7 @@ class ImageOwner extends Behavior
      *
      * @param string $extension
      * @return string
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      */
     public function computeImageName($extension = '')
     {
@@ -83,11 +89,12 @@ class ImageOwner extends Behavior
      *
      * @param bool $absolute
      * @return string
+     * @throws InvalidConfigException
      */
     public function getImagesDirectoryPath($absolute = false)
     {
         // NB : l'alias @webroot est inconnu pour les applications console, on utilise donc @app + nom du répertoire public
-        $pathPrefix = $absolute ? Yii::getAlias('@app') . '/public_html/' : "";
+        $pathPrefix = $absolute ? sprintf('%s/%s/', Yii::getAlias('@app'), $this->retrievePublicDirectoryName()) : '';
         return $pathPrefix . Yii::$app->params['images']['webDirectory'] . '/' . $this->imagesDirectoryName;
     }
 
@@ -100,7 +107,7 @@ class ImageOwner extends Behavior
      * @param bool $absolute
      * @return string
      * @throws Exception
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      */
     public function getImagePath($thumbnailAlias = null, $absolute = false)
     {
@@ -122,6 +129,7 @@ class ImageOwner extends Behavior
      *
      * @param bool $absolute
      * @return string
+     * @throws InvalidConfigException
      */
     public function getImagesDirectoryUrl($absolute = false)
     {
@@ -142,7 +150,7 @@ class ImageOwner extends Behavior
      * @param bool $absolute true => URL absolue, false (défaut) => URL relative
      * @return string
      * @throws Exception
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      */
     public function getImageUrl($thumbnailAlias = null, $absolute = false)
     {
@@ -153,7 +161,8 @@ class ImageOwner extends Behavior
     /**
      * Retaille l'image originale de l'objet.
      *
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
+     * @throws InvalidConfigException
      */
     public function resizeOriginalImage()
     {
@@ -166,7 +175,7 @@ class ImageOwner extends Behavior
 
     /**
      * Fabrique les vignettes prévues par l'application
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      * @throws Exception
      */
     public function setThumbnails()
@@ -187,7 +196,7 @@ class ImageOwner extends Behavior
 
     /**
      * Suppression de toutes les images associées à l'objet : image originale + vignettes
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      * @throws \Exception
      */
     public function deleteImageFiles()
@@ -208,14 +217,14 @@ class ImageOwner extends Behavior
     /**
      * Renommage des images de l'objet : on renomme non seulement l'image principale mais aussi toutes les vignettes
      * Le nouveau nom de l'image doit avoir été enregistré dans $this. L'ancien nom se trouve dans getOriginal()
-     * @throws \yii\base\UnknownPropertyException
+     * @throws UnknownPropertyException
      * @throws Exception
      */
     public function resetImagesNames()
     {
         $imagesDirectoryPath = $this->getImagesDirectoryPath(true);
-        /** @noinspection PhpUndefinedMethodInspection */
         // getOldAttribute est une méthode de l'ActiveRecord et ce behavior ne doit être attaché qu'à des ActiveRecords
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $originalImageName = $this->owner->getOldAttribute('image');
 
         // On renomme l'image originale...
@@ -259,5 +268,31 @@ class ImageOwner extends Behavior
     public static function getThumbnailsDirectoryName($thumbnailWidth, $thumbnailHeight = 0)
     {
         return $thumbnailWidth . 'x' . $thumbnailHeight;
+    }
+
+    /**
+     * Renvoie le nom du répertoire web del'application.
+     * S'il est renseigné dans la configuration de $this, on prned ce qui a été paramétré.
+     * Sinon, on prend le premier répertoire trouvé parmi public_html, www et web.
+     * Si aucun répertoire n'est identifiable, on lance une exception
+     *
+     * @return string
+     * @throws InvalidConfigException
+     */
+    private function retrievePublicDirectoryName()
+    {
+        if (isset($this->publicDirectory)) {
+            return $this->publicDirectory;
+        }
+
+        $dirnames = ['public_html', 'www', 'web'];
+        $appDir = Yii::getAlias('@app');
+        foreach ($dirnames as $dirname) {
+            if (is_dir("$appDir/$dirname")) {
+                return $dirname;
+            }
+        }
+
+        throw new InvalidConfigException(HLib::t('messages', "No valid public directory for " . __CLASS__));
     }
 }

@@ -3,6 +3,7 @@
  * Formulaire pour la création ou la modification de l'objet
  */
 
+use app\modules\ephemerides\EphemeridesModule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -62,7 +63,8 @@ $parameters = array_merge($parameters, ['options' => ['enctype' => 'multipart/fo
 
     <?= $form->field($model, 'tags')->listBox($tags, ['id' => 'tags_ids', 'multiple' => true]) ?>
 
-    <?= $form->field($model, 'notes')->textarea()->hint(Yii::t('messages', 'Notes are for redactors only, they are not published')) ?>
+    <?= $form->field($model, 'notes')->textarea()->hint(EphemeridesModule::t('messages',
+        'Notes are for redactors only, they are not published')) ?>
 
     <?= $this->render('@app/modules/hlib/views/partials/_formSubmitButtons', ['indexUrl' => Url::to(['/calendar-entries/index', 'page' => 1])]) ?>
 

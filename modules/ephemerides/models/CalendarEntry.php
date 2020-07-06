@@ -6,9 +6,7 @@ use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
-use app\modules\hlib\HLib;
 use app\modules\hlib\helpers\hArray;
-
 use app\modules\ephemerides\models\query\CalendarEntryTagQuery;
 use Carbon\Carbon;
 use SimpleXMLElement;
@@ -30,6 +28,7 @@ use yii\web\UploadedFile;
  * @property string $event_date
  * @property string $title
  * @property string $description
+ * @property string $domaine
  * @property string $body
  * @property string $image
  * @property string $image_caption
@@ -97,9 +96,9 @@ class CalendarEntry extends ActiveRecord
             [['title', 'event_date'],
                 'required'],
             //string
-            [['title', 'description', 'body', 'notes', 'image', 'image_caption'],
+            [['title', 'description', 'body', 'notes', 'image', 'image_caption', 'domaine'],
                 'filter', 'filter' => 'strip_tags'],
-            [['title', 'body', 'notes', 'image', 'image_caption'],
+            [['title', 'body', 'notes', 'image', 'image_caption', 'domaine'],
                 'filter', 'filter' => 'trim'],
             // boolean
             [['enabled', 'deleteImage'],
@@ -152,16 +151,16 @@ class CalendarEntry extends ActiveRecord
     {
         return [
             'event_date' => 'Date',
-            'title' => HLib::t('labels', 'Title'),
+            'title' => "Titre",
             'description' => "Description",
             'body' => 'Corps de texte',
-            'image' => HLib::t('labels', 'Image'),
+            'image' => "Image",
             'image_caption' => "Légende",
-            'uploadedImage' => HLib::t('labels', 'Image'),
-            'enabled' => HLib::t('labels', 'Enabled'),
+            'uploadedImage' => "Image",
+            'enabled' => "Activé",
             'notes' => "Notes",
-            'created_at' => HLib::t('labels', 'Created At'),
-            'updated_at' => HLib::t('labels', 'Updated At'),
+            'created_at' => "Date création",
+            'updated_at' => "Date maj",
             'tags' => "Catégories",
             'deleteImage' => "Supprimer cette image",
         ];

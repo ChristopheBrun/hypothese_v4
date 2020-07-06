@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\Tag;
@@ -19,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'tags'  => ArrayHelper::map(Tag::find()->all(), 'id', 'label'),
+        'domaines'  => Domaine::getList(),
     ]) ?>
 
 </div>

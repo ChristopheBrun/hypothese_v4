@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\HLib;
@@ -19,9 +20,14 @@ $this->params['breadcrumbs'][] = HLib::t('labels', 'Update');
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <p>
+        <?= Html::a(HLib::t('labels', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+    </p>
+
     <?= $this->render('_form', [
         'model' => $model,
-        'tags'  => ArrayHelper::map(Tag::find()->all(), 'id', 'label'),
+        'tags' => ArrayHelper::map(Tag::find()->all(), 'id', 'label'),
+        'domaines' => Domaine::getList(),
     ]) ?>
 
 </div>

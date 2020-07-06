@@ -6,8 +6,10 @@
 return [
     'An error occurred during the process' => 'Une erreur est survenue pendant les traitements',
     'Are you sure you want to delete this item?' => 'Etes-vous sûr de vouloir supprimer cet objet ?',
-    'Create successful' => 'Création réussie',
-    'Delete successful' => 'Suppression réussie',
+    'Create success' => 'Création réussie',
+
+    'Delete success' => 'Suppression réussie',
+
     'Select a value in the list' => "Sélectionnez une valeur dans la liste",
     'There are errors in your form' => 'Il y a des erreurs dans votre formulaire',
     'The requested page does not exist' => 'La page demandée n\'existe pas',

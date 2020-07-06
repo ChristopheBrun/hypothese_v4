@@ -2,8 +2,9 @@
 
 use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\hlib\helpers\AssetsHelper;
+use app\modules\hlib\HLib;
 use yii\helpers\Html;
-use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /* @var $model CalendarEntry */
@@ -11,15 +12,15 @@ use yii\widgets\DetailView;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => EphemeridesModule::t('labels', 'Calendar Entries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-YiiAsset::register($this);
+
 ?>
 <div class="calendar-entry-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('labels', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('labels', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(HLib::t('labels', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(HLib::t('labels', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('labels', 'Are you sure you want to delete this item?'),
@@ -31,14 +32,25 @@ YiiAsset::register($this);
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'event_date',
             'title',
+            'domaine',
+            'description',
             'body:ntext',
-            'image',
+            [
+                'attribute' => 'image',
+                'value' => Html::img($model->getImageUrl('xs', 'true')),
+                'format' => 'html',
+            ],
             'image_caption',
-            'enabled',
             'notes:ntext',
+            AssetsHelper::detailViewSeparator(),
+            [
+                'attribute' => 'enabled',
+                'value' => AssetsHelper::getImageTagForBoolean($model->enabled),
+                'format' => 'html',
+            ],
+            'id',
             'created_at',
             'updated_at',
         ],

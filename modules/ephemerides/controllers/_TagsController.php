@@ -126,7 +126,7 @@ class TagsController extends Controller
             }
             else {
                 // Retour à la liste ou redirection sur la page d'édition, selon le bouton qui a été cliqué
-                Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Create successful'));
+                Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Create success'));
                 $requestedRedirection =
                     Yii::$app->request->getBodyParam('action') == 'saveAndKeepEditing' ?
                         Url::toRoute(['/tags/update', 'id' => $model->id]) :
@@ -178,7 +178,7 @@ class TagsController extends Controller
     {
         try {
             $this->findModel($id)->delete();
-            Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete successful'));
+            Yii::$app->session->setFlash('flash-success', HLib::t('messages', 'Delete success'));
         } catch (\Throwable $s) {
             Yii::$app->session->setFlash('flash-warning', HLib::t('messages', 'This object is referenced by another object. Deletion failed'));
         }
