@@ -3,14 +3,16 @@
 namespace app\modules\ephemerides\models;
 
 use app\modules\hlib\behaviors\SitemapableBehavior;
-use app\modules\hlib\helpers\hString;
 use app\modules\hlib\HLib;
 
 use app\modules\ephemerides\models\query\TagQuery;
 use SimpleXMLElement;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\Url;
 
 /**
@@ -40,8 +42,13 @@ class Tag extends ActiveRecord
     public function rules()
     {
         return [
-            [['label'], 'required'],
-            [['label'], 'string', 'max' => 255],
+            [['label'],
+                'required'],
+            // string
+            [['label'],
+                'filter', 'filter' => 'strip_tags'],
+            [['label'],
+                'filter', 'filter' => 'trim'],
         ];
     }
 
@@ -98,7 +105,7 @@ class Tag extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCalendarEntryTags()
     {
@@ -106,7 +113,8 @@ class Tag extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getCalendarEntries()
     {
@@ -121,7 +129,7 @@ class Tag extends ActiveRecord
      */
     public function getSlug()
     {
-        return hString::slugify($this->label);
+        return Inflector::slug($this->label);
     }
 
 }

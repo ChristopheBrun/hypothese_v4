@@ -2,9 +2,11 @@
 
 namespace app\modules\ephemerides\controllers;
 
+use Throwable;
 use Yii;
 use app\modules\ephemerides\models\Tag;
 use app\modules\ephemerides\models\form\TagSearchForm;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,6 +39,9 @@ class TagController extends Controller
     {
         $searchModel = new TagSearchForm();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = [
+            'label' => SORT_ASC,
+        ];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -101,6 +106,8 @@ class TagController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {

@@ -2,6 +2,7 @@
 
 namespace app\modules\ephemerides\models\form;
 
+use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\HLib;
@@ -59,24 +60,24 @@ class CalendarEntrySearchForm extends ModelSearchForm
         parent::__construct($config);
         static::$dateOperators = [
             static::NO_OP => '',
-            static::SAME_DATE => Yii::t('labels', 'Date (dd-mm-yyyy)'),
-            static::SAME_DAY => Yii::t('labels', 'Calendar day (dd-mm)'),
-            static::SAME_MONTH => Yii::t('labels', 'Month (mm)'),
-            static::SAME_YEAR => Yii::t('labels', 'Year (yyyy)'),
+            static::SAME_DATE => EphemeridesModule::t('labels', 'Date (dd-mm-yyyy)'),
+            static::SAME_DAY => EphemeridesModule::t('labels', 'Calendar day (dd-mm)'),
+            static::SAME_MONTH => EphemeridesModule::t('labels', 'Month (mm)'),
+            static::SAME_YEAR => EphemeridesModule::t('labels', 'Year (yyyy)'),
         ];
         $this->eventDateOperator = static::NO_OP;
 
         static::$statusList = [
-            static::ST_ALL => Yii::t('labels', 'n/a'),
-            static::ST_ENABLED => Yii::t('labels', 'Enabled'),
-            static::ST_DISABLED => Yii::t('labels', 'Disabled'),
+            static::ST_ALL => HLib::t('labels', 'n/a'),
+            static::ST_ENABLED => HLib::t('labels', 'Enabled'),
+            static::ST_DISABLED => HLib::t('labels', 'Disabled'),
         ];
         $this->status = static::ST_ALL;
 
         static::$imageStatusList = [
-            static::ST_ALL => Yii::t('labels', 'n/a'),
-            static::ST_WITH => Yii::t('labels', 'With image'),
-            static::ST_WITHOUT => Yii::t('labels', 'Without image'),
+            static::ST_ALL => HLib::t('labels', 'n/a'),
+            static::ST_WITH => HLib::t('labels', 'With image'),
+            static::ST_WITHOUT => HLib::t('labels', 'Without image'),
         ];
         $this->image = static::ST_ALL;
 
@@ -89,7 +90,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
     public function attributeLabels()
     {
         return [
-            'eventDateString' => HLib::t('labels', 'Date'),
+            'eventDateString' => HLib::t('aplabelsp', 'Date'),
             'status' => HLib::t('labels', 'Status'),
             'image' => HLib::t('labels', 'Image'),
             'article' => HLib::t('labels', 'Article'),
@@ -149,19 +150,19 @@ class CalendarEntrySearchForm extends ModelSearchForm
         }
 
         if ($this->status !== '') {
-            $filters[] = Yii::t('labels', static::$statusList[$this->status]);
+            $filters[] = Yii::t('app', static::$statusList[$this->status]);
         }
 
         if ($this->image !== '') {
-            $filters[] = Yii::t('labels', static::$imageStatusList[$this->image]);
+            $filters[] = Yii::t('app', static::$imageStatusList[$this->image]);
         }
 
         if ($this->title) {
-            $filters[] = Yii::t('labels', '(title)') . ' ' . $this->title;
+            $filters[] = Yii::t('app', '(title)') . ' ' . $this->title;
         }
 
         if ($this->body) {
-            $filters[] = Yii::t('labels', '(text)') . ' ' . $this->body;
+            $filters[] = Yii::t('app', '(text)') . ' ' . $this->body;
         }
 
         if ($this->tag) {
@@ -265,7 +266,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
      *
      * @param CalendarEntryQuery $query
      */
-    private function buildEventDateClause(CalendarEntryQuery &$query)
+    private function buildEventDateClause(CalendarEntryQuery $query)
     {
         // On lit la sate demandée. La méthode parseEventDateString() en extrait le jour/mois/année et déduit quel opérateur doit être
         // appliqué.
@@ -297,7 +298,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
      *
      * @param CalendarEntryQuery $query
      */
-    private function buildImageClause(CalendarEntryQuery &$query)
+    private function buildImageClause(CalendarEntryQuery $query)
     {
         // NB : on n'utilise pas de switch ici car nous avons besoin d'une comparaison stricte sur la valeur de $this->image
         if ($this->image === static::ST_WITH) {
@@ -310,7 +311,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
     /**
      * @param CalendarEntryQuery $query
      */
-    private function buildTagClause(CalendarEntryQuery &$query)
+    private function buildTagClause(CalendarEntryQuery $query)
     {
         if ($this->tag) {
             $query->innerJoin('`calendar_entry_tag` jt', 'id = jt.calendar_entry_id AND jt.tag_id = :tag', ['tag' => $this->tag]);
@@ -322,7 +323,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
      */
     public function getFilteringDate()
     {
-        // On lit la sate demandée. La méthode parseEventDateString() en extrait le jour/mois/année et déduit quel opérateur doit être
+        // On lit la date demandée. La méthode parseEventDateString() en extrait le jour/mois/année et déduit quel opérateur doit être
         // appliqué.
         $out = '';
         if (($dateFields = $this->parseEventDateString($this->eventDateString))) {

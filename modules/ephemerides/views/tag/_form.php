@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\hlib\HLib;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -15,7 +16,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(HLib::t('labels', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

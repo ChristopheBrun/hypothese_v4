@@ -12,5 +12,5 @@ return [
     'yourEmail' => "Votre adresse mail",
     'yourMessage' => "Votre message",
     'yourName' => "Votre nom",
-    'verifyCode' => "Veuilez saisir le code de vérification",
+    'verifyCode' => "Veuillez saisir le code de vérification",
 ];

@@ -2,7 +2,6 @@
 
 namespace app\modules\ephemerides\models\form;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\ephemerides\models\Tag;
@@ -18,8 +17,8 @@ class TagSearchForm extends Tag
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['label', 'created_at', 'updated_at'], 'safe'],
+            [['label', 'created_at', 'updated_at'],
+                'safe'],
         ];
     }
 

@@ -4,6 +4,7 @@
  * Barre de menu principale
  */
 
+use app\modules\hlib\HLib;
 use app\modules\user\UserModule;
 use kartik\nav\NavX;
 use yii\bootstrap\Html;
@@ -40,7 +41,7 @@ echo NavX::widget([
             ],
         ],
         [
-            'label' => "Administration",
+            'label' => HLib::t('labels', "Management"),
             'url' => ['/site/management'],
             'visible' => Yii::$app->user->can('superadmin'),
         ],
