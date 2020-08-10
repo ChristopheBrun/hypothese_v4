@@ -7,7 +7,10 @@
  */
 
 return [
+    'command' => "Commande console",
+    'yiiCommands' => "Commandes Yii",
     'sendMessage' => "Envoyer le message",
+    'sendCommand' => "Envoyer la commande console",
     'subject' => "Sujet",
     'yourEmail' => "Votre adresse mail",
     'yourMessage' => "Votre message",

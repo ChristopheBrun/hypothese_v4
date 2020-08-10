@@ -38,4 +38,12 @@ class UtilsController extends Controller
         return ExitCode::getReason(ExitCode::OK);
     }
 
+    /**
+     *
+     */
+    public function actionTest()
+    {
+        $this->stdout(__METHOD__);
+    }
+
 }

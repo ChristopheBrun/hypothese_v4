@@ -2,10 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\ConsoleCommandForm;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
+use app\modules\hlib\lib\Flash;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -47,7 +50,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['management'],
+                        'actions' => ['management', 'commands'],
                         'allow' => true,
                         'roles' => ['superadmin'],
                     ],
@@ -112,6 +115,36 @@ class SiteController extends Controller
     public function actionManagement()
     {
         return $this->render('management');
+    }
+
+    /**
+     * Lance une commande console depuis la page web
+     *
+     * @return string
+     * @throws InvalidConfigException
+     */
+    public function actionCommands()
+    {
+        $model = Yii::createObject(ConsoleCommandForm::class);
+        $consoleOutput = '';
+        if (Yii::$app->request->isPost) {
+            try {
+                if (!$model->load(Yii::$app->request->post())) {
+                    throw new Exception('!$model->load()');
+                }
+
+                if (!$model->validate(Yii::$app->request->post())) {
+                    throw new Exception('!$model->validate()');
+                }
+
+                // @see https://www.yiiframework.com/extension/yii2-console-runner
+                Yii::$app->commandRunner->run($model->command, $consoleOutput);
+            } catch (\Exception $x) {
+                Yii::error($x->getMessage());
+                Flash::error("Erreur sur " . __METHOD__);
+            }
+        }
+        return $this->render('commands', compact('model', 'consoleOutput'));
     }
 
     /**

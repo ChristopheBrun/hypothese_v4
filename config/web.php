@@ -83,6 +83,9 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'commandRunner' => [
+            'class' => 'toriphes\console\Runner',
+        ],
         'db' => $db,
         'errorHandler' => [
             'errorAction' => 'site/error',

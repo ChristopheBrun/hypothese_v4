@@ -51,4 +51,9 @@ class TestController extends Controller
 //
         return ExitCode::getReason(ExitCode::OK);
     }
+
+    public function actionTest()
+    {
+        echo __METHOD__;
+    }
 }

@@ -30,15 +30,14 @@
     "nterms/yii2-pagesize-widget": "^2.0",
     "softark/yii2-dual-listbox": "^1.0",
     "ext-simplexml": "*",
-    "kartik-v/yii2-nav-x": "^1.2"
+    "kartik-v/yii2-nav-x": "^1.2",
+    "toriphes/yii2-console-runner": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
     "yiisoft/yii2-gii": "~2.0.0",
     "yiisoft/yii2-faker": "~2.0.0",
-    "codeception/base": "^2.2.3",
-    "codeception/verify": "~0.3.1",
-    "codeception/specify": "~0.4.3"
+    "codeception/codeception": "^4.1"
   },
   "config": {
     "process-timeout": 1800,
