@@ -7,7 +7,7 @@ use app\modules\hlib\helpers\EnumHelper;
 
 /**
  * Class Domaine
- * @package app\modules\ephemerides\enums
+ * @package app\modules\ephemerides\lib\enums
  */
 class Domaine extends EnumHelper
 {

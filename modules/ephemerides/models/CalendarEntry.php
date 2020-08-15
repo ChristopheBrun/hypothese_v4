@@ -7,6 +7,7 @@ use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
 use app\modules\hlib\helpers\hArray;
+use app\modules\hlib\interfaces\EnabledInterface;
 use Carbon\Carbon;
 use SimpleXMLElement;
 use yii\base\InvalidConfigException;
@@ -51,7 +52,7 @@ use yii\web\UploadedFile;
  * @method string resizeOriginalImage()
  * -- FIN propriétés & méthodes fournies par ImageOwner --
  */
-class CalendarEntry extends ActiveRecord
+class CalendarEntry extends ActiveRecord implements EnabledInterface
 {
     const DATE_FORMAT_DAY = 'd-m-Y';
     const DATE_FORMAT_MONTH = 'm-Y';
@@ -257,4 +258,11 @@ class CalendarEntry extends ActiveRecord
         return $date->day;
     }
 
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace app\modules\hlib\widgets;
 
-use app\modules\hlib\helpers\hAssets;
+use app\modules\hlib\helpers\AssetsHelper;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\Widget;
@@ -101,7 +101,7 @@ class GridListHeader extends Widget
                 $out =
                     Html::a($column['label'], Url::to([$this->sortAction, 'orderBy' => $column['orderBy']])) .
                     '&nbsp;&nbsp;' .
-                    hAssets::bootstrapSortGraphicTag(ArrayHelper::getValue($sortClauses,  $column['orderBy']), $column['iconType']);
+                    AssetsHelper::bootstrapSortGraphicTag(ArrayHelper::getValue($sortClauses,  $column['orderBy']), $column['iconType']);
                 break;
             default :
                 throw new InvalidConfigException('Type de colonne inconnu : ' . $column['columnType']);

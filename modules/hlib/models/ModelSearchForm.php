@@ -68,21 +68,21 @@ abstract class ModelSearchForm extends Model
         Yii::$app->session->remove($this->sessionKey);
     }
 
-    /**
-     * Renvoie true si un filtre a été demandé
-     * NB : cette méthode ne garantit pas la validité des filtres saisis. Elle indique simplement qu'il y en a un.
-     *
-     * @return bool
-     */
-    public abstract function hasActiveFilters();
+//    /**
+//     * Renvoie true si un filtre a été demandé
+//     * NB : cette méthode ne garantit pas la validité des filtres saisis. Elle indique simplement qu'il y en a un.
+//     *
+//     * @return bool
+//     */
+//    public abstract function hasActiveFilters();
 
-    /**
-     * Renvoie une chaine de caractères décrivant les filtres actifs
-     *
-     * @param string $sep
-     * @return string
-     */
-    public abstract function displayActiveFilters($sep = ' - ');
+//    /**
+//     * Renvoie une chaine de caractères décrivant les filtres actifs
+//     *
+//     * @param string $sep
+//     * @return string
+//     */
+//    public abstract function displayActiveFilters($sep = ' - ');
 
     /**
      * Creates data provider instance with search query applied

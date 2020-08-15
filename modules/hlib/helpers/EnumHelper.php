@@ -2,6 +2,7 @@
 
 namespace app\modules\hlib\helpers;
 
+use Exception;
 use yii\helpers\ArrayHelper;
 
 
@@ -31,34 +32,11 @@ abstract class EnumHelper
      * Renvoie la liste des clés (numériques en général) de l'enum
      *
      * @return array
+     * @deprecated utiliser getKeys() pour plus de clarté
      */
     public static function values()
     {
         return array_keys(static::getList());
-    }
-
-    /**
-     * Renvoie true si la valeur $valeur fait partie de l'enum
-     *
-     * @param mixed $value
-     * @param bool $strict
-     * @return array
-     */
-    public static function containsValue($value, $strict = false)
-    {
-        return in_array($value, static::values(), $strict);
-    }
-
-    /**
-     * Renvoie le libellé associé à la valeur $value
-     *
-     * @param mixed $value
-     * @param string $default Valeur renvoyée par défaut si $value ne fait pas partie de l'enum
-     * @return mixed
-     */
-    public static function getLabel($value, $default = '')
-    {
-        return ArrayHelper::getValue(static::getList(), $value, $default);
     }
 
     /**
@@ -70,4 +48,30 @@ abstract class EnumHelper
     {
         return array_keys(static::getList());
     }
+
+    /**
+     * Renvoie true si la valeur $valeur fait partie de l'enum
+     *
+     * @param mixed $value
+     * @param bool $strict
+     * @return bool
+     */
+    public static function containsValue($value, $strict = false)
+    {
+        return in_array($value, static::getKeys(), $strict);
+    }
+
+    /**
+     * Renvoie le libellé associé à la valeur $value
+     *
+     * @param mixed $value
+     * @param string $default Valeur renvoyée par défaut si $value ne fait pas partie de l'enum
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getLabel($value, $default = '')
+    {
+        return ArrayHelper::getValue(static::getList(), $value, $default);
+    }
+
 }
