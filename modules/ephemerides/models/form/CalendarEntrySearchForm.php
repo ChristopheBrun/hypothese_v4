@@ -124,7 +124,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
             throw new Exception(HLib::t('messages', 'loadError'));
         }
 
-        if (!$this->load($params)) {
+        if (!$this->validate($params)) {
             throw new Exception(HLib::t('messages', 'validationError'));
         }
 
@@ -134,6 +134,9 @@ class CalendarEntrySearchForm extends ModelSearchForm
         return $dataProvider;
     }
 
+    /**
+     * @param CalendarEntryQuery $query
+     */
     protected function buildFilter(CalendarEntryQuery $query)
     {
         // présence d'une image

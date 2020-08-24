@@ -62,10 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'domaine',
                 'label' => "Domaine",
                 'value' => function (CalendarEntry $model) {
-                    return DisplayModels::widget([
-                        'models' => $model->domaine,
-                        'labelField' => 'label',
-                    ]);
+                    return Domaine::getLabel($model->domaine);
                 },
                 'format' => 'html',
                 'filter' => Domaine::getList(),
