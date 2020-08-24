@@ -9,6 +9,7 @@ use app\modules\hlib\helpers\hFile;
 use app\modules\hlib\helpers\hImage;
 use app\modules\hlib\HLib;
 use app\modules\hlib\lib\Flash;
+use Carbon\Carbon;
 use Exception;
 use Throwable;
 use Yii;
@@ -44,6 +45,7 @@ class CalendarEntryController extends Controller
     /**
      * Lists all CalendarEntry models.
      * @return mixed
+     * @throws Exception
      */
     public function actionIndex()
     {
@@ -55,6 +57,33 @@ class CalendarEntryController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tags' => $tags,
+        ]);
+    }
+
+    /**
+     * Lists all CalendarEntry models.
+     * @return mixed
+     * @throws Exception
+     */
+    public function actionIndexD2()
+    {
+        $searchModel = new CalendarEntrySearchForm();
+
+        $dateParams = [];
+        $date = new Carbon();
+        for ($i = 0; $i < 3; ++$i) {
+            $dateParams[] = ['day' => $date->day, 'month' => $date->month];
+            $date->addDay();
+        }
+        $params = array_merge(Yii::$app->request->queryParams, ['dateParams' => $dateParams]);
+        $dataProvider = $searchModel->search($params);
+        $tags = Tag::find()->orderByLabel()->all();
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'tags' => $tags,
+            'filter' => EphemeridesModule::t('labels', 'D to D+2'),
         ]);
     }
 
@@ -231,6 +260,7 @@ class CalendarEntryController extends Controller
      *
      * @param array $data
      * @return boolean
+     * @throws Exception
      */
     private function prepareTags(array &$data)
     {

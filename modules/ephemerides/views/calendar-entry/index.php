@@ -1,6 +1,7 @@
 <?php
 
 use app\modules\ephemerides\EphemeridesModule;
+use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
@@ -16,8 +17,13 @@ use yii\widgets\Pjax;
 /* @var $searchModel CalendarEntrySearchForm */
 /* @var $dataProvider ActiveDataProvider */
 /* @var $tags Tag[] */
+/* @var $domaines Tag[] */
+/* @var $filter string */
 
 $this->title = EphemeridesModule::t('labels', 'Calendar Entries');
+if (isset($filter)) {
+    $this->title .= " : $filter";
+}
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -26,10 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a("Ajouter une éphéméride", ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(EphemeridesModule::t('labels', 'Add Calendar Entry'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(EphemeridesModule::t('labels', 'D to D+2'), ['index-d2'], ['class' => 'btn btn-default']) ?>
+        <?= Html::a(EphemeridesModule::t('labels', 'Show All'), ['index'], ['class' => 'btn btn-default']) ?>
     </p>
 
     <?= /** @noinspection PhpUnhandledExceptionInspection */
@@ -44,13 +51,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => '',
+                'label' => 'Image',
                 'value' => function (CalendarEntry $model) {
                     return Html::img($model->getImageUrl('xs', 'true'));
                 },
                 'format' => 'html',
             ],
             'title',
+            [
+                'attribute' => 'domaine',
+                'label' => "Domaine",
+                'value' => function (CalendarEntry $model) {
+                    return DisplayModels::widget([
+                        'models' => $model->domaine,
+                        'labelField' => 'label',
+                    ]);
+                },
+                'format' => 'html',
+                'filter' => Domaine::getList(),
+            ],
             [
                 'attribute' => 'tag',
                 'label' => "Catégories",
