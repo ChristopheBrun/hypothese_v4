@@ -15,7 +15,7 @@ class hString extends StringHelper
     /**
      * Transliterate a UTF-8 value to ASCII.
      *
-     * @param  string $value
+     * @param string $value
      * @return string
      */
     public static function ascii($value)
@@ -26,8 +26,8 @@ class hString extends StringHelper
     /**
      * Generate a URL friendly "slug" from a given string.
      *
-     * @param  string $title
-     * @param  string $separator
+     * @param string $title
+     * @param string $separator
      * @return string
      * @deprecated utiliser plutôt yii\helpers\Inflector::slug()
      */
@@ -53,6 +53,15 @@ class hString extends StringHelper
         }
 
         return $string;
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function sanitize($string)
+    {
+        return trim(strip_tags($string));
     }
 
 }

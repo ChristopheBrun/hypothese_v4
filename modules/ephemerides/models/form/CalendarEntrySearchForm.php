@@ -6,6 +6,7 @@ use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\lib\enums\ImageStatus;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\Tag;
+use app\modules\hlib\helpers\hString;
 use app\modules\hlib\HLib;
 use app\modules\hlib\lib\enums\YesNo;
 use app\modules\hlib\models\ModelSearchForm;
@@ -100,9 +101,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
                 'in', 'range' => Domaine::getKeys()],
             // string
             [['title', 'tag', 'body'],
-                'filter', 'filter' => function ($value) {
-                return filter_var($value, FILTER_SANITIZE_STRING);
-            }],
+                'filter', 'filter' => [hString::class, 'sanitize']],
         ];
     }
 

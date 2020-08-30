@@ -8,6 +8,7 @@ use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
 use app\modules\hlib\helpers\hArray;
+use app\modules\hlib\helpers\hString;
 use app\modules\hlib\interfaces\EnabledInterface;
 use Carbon\Carbon;
 use SimpleXMLElement;
@@ -93,9 +94,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
                 'required'],
             //string
             [['title', 'description', 'body', 'notes', 'image', 'image_caption'],
-                'filter', 'filter' => function ($value) {
-                return filter_var($value, FILTER_SANITIZE_STRING);
-            }],
+                'filter', 'filter' => [hString::class, 'sanitize']],
             // boolean
             [['enabled', 'deleteImage'],
                 'boolean'],
