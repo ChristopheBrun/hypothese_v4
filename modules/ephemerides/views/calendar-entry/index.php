@@ -12,6 +12,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\MaskedInput;
 use yii\widgets\Pjax;
 
 /* @var $searchModel CalendarEntrySearchForm */
@@ -45,10 +46,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             [
+                'attribute' => 'event_date',
                 'label' => "Date",
                 'value' => function (CalendarEntry $model) {
                     return Carbon::parse($model->event_date)->format(CalendarEntry::DATE_FORMAT_DAY);
                 },
+                'filter' => MaskedInput::widget(['name' => 'event_date', 'mask'=> '99-99']) .
+                    "<div class='hint-block'>Filtre : jj-mm</div>",
             ],
             [
                 'label' => 'Image',
@@ -64,7 +68,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function (CalendarEntry $model) {
                     return Domaine::getLabel($model->domaine);
                 },
-                'format' => 'html',
                 'filter' => Domaine::getList(),
             ],
             [

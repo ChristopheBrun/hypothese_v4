@@ -12,7 +12,6 @@ use app\modules\hlib\lib\enums\YesNo;
 use app\modules\hlib\models\ModelSearchForm;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use Exception;
-use Yii;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -23,7 +22,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
 {
     /** @var boolean */
     public $enabled;
-    /** @var  int */
+    /** @var  int @see enum ImageStatus */
     public $image;
     /** @var  int */
     public $article;
@@ -36,38 +35,10 @@ class CalendarEntrySearchForm extends ModelSearchForm
     /** @var  string */
     public $body;
     /** @var  string */
-    public $sessionKey;
+    public $event_date;
 
     /** @var array au format ['day' => n° de jour, 'month' => n° de mois] */
     public $dateParams;
-
-    /**
-     * Quelques initialisations...
-     *
-     * @param array $config Tableau de configuration
-     */
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-        $this->image = ImageStatus::ST_ALL;
-        $this->sessionKey = CalendarEntry::class . '.filter';
-    }
-
-    /**
-     * @return array
-     */
-    public function attributeLabels()
-    {
-        return [
-            'enabled' => HLib::t('labels', 'Status'),
-            'image' => HLib::t('labels', 'Image'),
-            'article' => HLib::t('labels', 'Article'),
-            'title' => HLib::t('labels', 'Title'),
-            'body' => HLib::t('labels', 'Text'),
-            'tag' => Yii::t('labels', 'Tag'),
-            'domaine' => "Domaine",
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -100,7 +71,7 @@ class CalendarEntrySearchForm extends ModelSearchForm
             [['domaine'],
                 'in', 'range' => Domaine::getKeys()],
             // string
-            [['title', 'tag', 'body'],
+            [['title', 'tag', 'body', 'event_date'],
                 'filter', 'filter' => [hString::class, 'sanitize']],
         ];
     }
@@ -125,6 +96,14 @@ class CalendarEntrySearchForm extends ModelSearchForm
 
         if (!$this->validate($params)) {
             throw new Exception(HLib::t('messages', 'validationError'));
+        }
+
+        if ($this->event_date) {
+            if (!preg_match('/(\d\d)-(\d\d)/', $this->event_date, $matches)) {
+                throw new Exception(HLib::t('messages', 'validationError'));
+            }
+
+            $this->dateParams[] = ['day' => $matches[1], 'month' => $matches[2]];
         }
 
         $this->buildFilter($query);

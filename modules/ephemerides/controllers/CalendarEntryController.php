@@ -51,12 +51,12 @@ class CalendarEntryController extends Controller
     {
         $searchModel = new CalendarEntrySearchForm();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $tags = Tag::find()->orderByLabel()->all();
+        $dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'tags' => $tags,
+            'tags' => Tag::find()->orderByLabel()->all(),
         ]);
     }
 
