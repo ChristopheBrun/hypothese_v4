@@ -48,15 +48,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
                 'format' => 'html',
             ],
-            'description',
-            'body:ntext',
+            'description:html',
+            'body:html',
             [
                 'attribute' => 'image',
                 'value' => Html::img($model->getImageUrl('xs', 'true')),
                 'format' => 'html',
             ],
             'image_caption',
-            'notes:ntext',
+            'notes:html',
             AssetsHelper::detailViewSeparator(),
             [
                 'attribute' => 'enabled',

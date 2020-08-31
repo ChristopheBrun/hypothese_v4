@@ -2,6 +2,7 @@
 
 use app\modules\ephemerides\EphemeridesModule;
 use app\modules\hlib\HLib;
+use vova07\imperavi\Widget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
@@ -22,9 +23,9 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
+    <?= $form->field($model, 'description')->widget(Widget::class, []) ?>
 
-    <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'body')->widget(Widget::class) ?>
 
     <?= $form->field($model, 'enabled')->checkbox() ?>
 
@@ -53,8 +54,8 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'tags')->listBox($tags, ['id' => 'tags_ids', 'multiple' => true]) ?>
 
-    <?= $form->field($model, 'notes')->textarea()->hint(EphemeridesModule::t('messages',
-        'Notes are for redactors only, they are not published')) ?>
+    <?= $form->field($model, 'notes')->widget(Widget::class)
+        ->hint(EphemeridesModule::t('messages', 'Notes are for redactors only, they are not published')) ?>
 
     <div class="form-group">
         <?= Html::submitButton(HLib::t('labels', 'Save'), ['class' => 'btn btn-success']) ?>
