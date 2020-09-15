@@ -5,6 +5,7 @@
  */
 
 use app\modules\hlib\HLib;
+use app\modules\user\lib\enums\AppRole;
 use app\modules\user\UserModule;
 use kartik\nav\NavX;
 use yii\bootstrap\Html;
@@ -35,9 +36,10 @@ echo NavX::widget([
             'url' => ['/site/index'],
         ],
         [
-            'label' => "Des trucs & des machins",
+            'label' => "Des trucs qui traînent",
             'items' => [
-                ['label' => "Path windows > linux", 'url' => ['/helper/path-windows']],
+                ['label' => "Path windows > linux", 'url' => ['/utilitaires/path-windows']],
+                ['label' => "Lettres et le temps", 'url' => ['/lettres'], 'visible' => Yii::$app->user->can(AppRole::SUPERADMIN),],
             ],
         ],
         [

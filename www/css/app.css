@@ -29,3 +29,8 @@ label.required:after {
     font-size: 0.9em;
     color: darkgray;
 }
+
+.bloc-texte {
+    border: 1px solid gray;
+    padding: 10px;
+}

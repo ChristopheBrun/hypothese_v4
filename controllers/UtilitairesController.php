@@ -15,7 +15,7 @@ use yii\web\Controller;
  * Class HelperController
  * @package app\controllers
  */
-class HelperController extends Controller
+class UtilitairesController extends Controller
 {
 
     /**
