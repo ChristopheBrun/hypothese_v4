@@ -12,8 +12,10 @@ use yii\base\Model;
  */
 class TraitementTexte extends Model
 {
+    /** @var string */
     public $text;
 
+    /** @var string */
     private $sanitizedText;
 
     /**
@@ -22,10 +24,7 @@ class TraitementTexte extends Model
     public function rules()
     {
         return [
-            // string
-            [['sanitizedText'],
-                'filter', 'filter' => [hString::class, 'sanitize']],
-            // on ne touche pas au texte initial
+            // on ne touche pas au texte initial mais on copiera la version nettoyée dans sanitizedText
             [['text'],
                 'safe'],
         ];
@@ -49,9 +48,9 @@ class TraitementTexte extends Model
     public function load($data, $formName = null)
     {
         $out = parent::load($data, $formName);
-        // On copie le texte à traiter dans $sanitizedText pour ne nettoyer que ce dernier attribut
+        // On copie le texte à traiter dans $sanitizedText en le nettoyant
         // Le texte d'origine est conservé intact dans $text
-        $this->sanitizedText = $this->text;
+        $this->setSanitizedText($this->text);
         return $out;
     }
 
@@ -72,9 +71,9 @@ class TraitementTexte extends Model
      */
     private function tagAtoms()
     {
-        foreach ($this->sanitizedText as $i => $char) {
-//            if()
-        }
+//        foreach ($this->sanitizedText as $i => $char) {
+////            if()
+//        }
     }
 
     /**
@@ -83,5 +82,14 @@ class TraitementTexte extends Model
     public function getSanitizedText()
     {
         return $this->sanitizedText;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function setSanitizedText($text)
+    {
+        $this->sanitizedText = hString::sanitize($text);
+        return $this;
     }
 }
