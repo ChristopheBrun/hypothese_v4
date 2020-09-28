@@ -102,9 +102,7 @@ if (!is_null($result)) {
                  </pre>
         </div>
     </div>
-</div>
 
-<?= $this->render('/site/_inner-footer') ?>
-
+    <?= $this->render('/site/_inner-footer') ?>
 </div>
 
