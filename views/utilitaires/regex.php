@@ -91,7 +91,7 @@ if (!is_null($result)) {
         <div class="col-sm-12 explications">
             <ul>
                 <li>Prend une regex et une chaîne à analyser en entrée</li>
-                <li>Renvoie mesrésultats du preg_match().
+                <li>Renvoie les résultats du preg_match().
                 </li>
                 <li>Le traitement se fait en PHP côté serveur :</li>
             </ul>
