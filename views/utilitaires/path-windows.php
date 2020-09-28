@@ -1,28 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Christophe
- * Date: 30/06/2020
- * Time: 14:48
+ * Affichage d'un path linux correct
  */
 
 
-use Carbon\Carbon;
 use yii\bootstrap\Html;
 use yii\web\JqueryAsset;
 
 $this->title = Yii::$app->name;
-$dateStr = Carbon::now()->format('d/m/Y H:i:s');
-
 $this->registerJsFile('@web/js/path-windows.js', ['depends' => [JqueryAsset::class]]);
-
 // @see https://highlightjs.org/download/
 $this->registerJsFile('@web/js/highlight/highlight.pack.js');
 $this->registerCssFile('@web/js/highlight/styles/default.css');
 
 ?>
 
-<div class="panel panel-default" id="homepage">
+<div class="panel panel-default" id="utilitaires-path-windows">
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
@@ -34,7 +27,7 @@ $this->registerCssFile('@web/js/highlight/styles/default.css');
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-12 form-group">
-                <label for="exampleInputEmail1">Copier le path ici</label>
+                <label for="path-windows">Copier le path ici</label>
                 <?= Html::textInput('path-windows', null, ['class' => "form-control", 'id' => 'path-windows']) ?>
             </div>
         </div>
@@ -81,12 +74,7 @@ $('#path-windows-submit').on('click', function () {
         </div>
     </div>
 
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-12">
-                <?= $dateStr ?>
-            </div>
-        </div>
-    </div>
+    <?= $this->render('/site/_inner-footer') ?>
+
 </div>
 

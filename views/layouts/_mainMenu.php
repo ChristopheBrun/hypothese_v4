@@ -39,6 +39,7 @@ echo NavX::widget([
             'label' => "Des trucs qui traînent",
             'items' => [
                 ['label' => "Path windows > linux", 'url' => ['/utilitaires/path-windows']],
+                ['label' => "Expressions régulières", 'url' => ['/utilitaires/regex']],
                 ['label' => "Lettres et le temps", 'url' => ['/lettres'], 'visible' => Yii::$app->user->can(AppRole::SUPERADMIN),],
             ],
         ],
