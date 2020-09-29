@@ -17,6 +17,6 @@ return [
     'There {n, plural, =0{are no results} =1{is one results} other{are # results} fitting your search criteria}' =>
         'Il {n, plural, =0{n\'y} other{y}} a {n, plural, =0{aucun résultat} =1{un résultat} other{# résultats}} correspondant à vos critères de recherche',
     'This object is referenced by another object. Deletion failed' => 'Cet objet est référencé par d\'autres objets. Suppression impossible',
-    'Update successful' => 'Mise à jour réussie',
+    'Update success' => 'Mise à jour réussie',
     'Used by the meta-description tag' => 'Exploité par la balise meta-description',
 ];

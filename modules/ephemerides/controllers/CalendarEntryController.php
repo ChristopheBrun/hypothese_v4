@@ -149,6 +149,7 @@ class CalendarEntryController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $oldAttributes = $model->getAttributes();
+            $create = $model->isNewRecord;
 
             if (!$this->prepareTags($data)) {
                 throw new Exception('!$this->prepareTags()');
@@ -175,7 +176,8 @@ class CalendarEntryController extends Controller
             }
 
             $transaction->commit();
-            Flash::success(HLib::t('messages', "Create success"));
+            $flashMsg = $create ?HLib::t('messages', "Create success"): HLib::t('messages', "Update success");
+            Flash::success($flashMsg);
         } catch (Exception $x) {
             Yii::error($x->getMessage());
             Flash::error("Erreur sur " . __METHOD__);
