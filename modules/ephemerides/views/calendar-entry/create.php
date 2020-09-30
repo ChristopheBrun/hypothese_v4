@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'tags'  => ArrayHelper::map(Tag::find()->all(), 'id', 'label'),
+        'tags'  => ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label'),
         'domaines'  => Domaine::getList(),
     ]) ?>
 
