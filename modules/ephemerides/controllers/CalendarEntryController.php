@@ -176,7 +176,7 @@ class CalendarEntryController extends Controller
             }
 
             $transaction->commit();
-            $flashMsg = $create ?HLib::t('messages', "Create success"): HLib::t('messages', "Update success");
+            $flashMsg = $create ? HLib::t('messages', "Create success") : HLib::t('messages', "Update success");
             Flash::success($flashMsg);
         } catch (Exception $x) {
             Yii::error($x->getMessage());
@@ -325,9 +325,11 @@ class CalendarEntryController extends Controller
             Flash::warning(HLib::t('messages', 'This object is referenced by another object. Deletion failed'));
         }
 
-        // On redirige sur la page d'index avec le bon n°de page
         $currentPage = Yii::$app->session->get(CalendarEntry::class . '.index.page');
-        return $this->redirect(Url::to(['calendar-entry/index', 'page' => $currentPage]));
+        $referrer = Yii::$app->request->getReferrer();
+        $redirectTo = preg_match("/id=$id$/", $referrer) ?
+            Url::to(['calendar-entry/index', 'page' => $currentPage]) : $referrer;
+        return $this->redirect($redirectTo);
     }
 
     /**
