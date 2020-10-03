@@ -12,6 +12,8 @@ use yii\widgets\DetailView;
 /* @var $model CalendarEntry */
 
 $this->title = $model->title;
+
+$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = ['label' => EphemeridesModule::t('labels', 'Calendar Entries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

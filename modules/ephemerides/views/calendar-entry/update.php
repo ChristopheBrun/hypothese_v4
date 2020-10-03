@@ -12,6 +12,8 @@ use yii\helpers\Html;
 $this->title = EphemeridesModule::t('labels', 'Update Calendar Entry: {name}', [
     'name' => $model->title,
 ]);
+
+$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = ['label' => EphemeridesModule::t('labels', 'Calendar Entries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = HLib::t('labels', 'Update');

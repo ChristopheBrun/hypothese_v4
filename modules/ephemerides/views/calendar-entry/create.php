@@ -4,12 +4,14 @@ use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\Tag;
+use app\modules\hlib\HLib;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $model CalendarEntry */
 
 $this->title = EphemeridesModule::t('labels', 'Create Calendar Entry');
+$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = ['label' => EphemeridesModule::t('labels', 'Calendar Entries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

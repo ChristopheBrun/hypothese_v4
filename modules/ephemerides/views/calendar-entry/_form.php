@@ -2,6 +2,7 @@
 
 use app\modules\ephemerides\EphemeridesModule;
 use app\modules\hlib\HLib;
+use kartik\select2\Select2;
 use vova07\imperavi\Widget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -52,7 +53,12 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'domaine')->dropDownList($domaines, ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'tags')->listBox($tags, ['id' => 'tags_ids', 'multiple' => true]) ?>
+    <?= ""; //$form->field($model, 'tags')->listBox($tags, ['id' => 'tags_ids', 'multiple' => true]) ?>
+    <?= $form->field($model, 'tags')->widget(Select2::class, [
+        'data' => $tags,
+        'options' => ['multiple' => true],
+        'pluginOptions' => ['tags' => true, 'maximumInputLength' => 5],
+    ]) ?>
 
     <?= $form->field($model, 'notes')->widget(Widget::class)
         ->hint(EphemeridesModule::t('messages', 'Notes are for redactors only, they are not published')) ?>
