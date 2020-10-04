@@ -27,7 +27,6 @@ if (isset($filter)) {
     $this->title .= " : $filter";
 }
 
-$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

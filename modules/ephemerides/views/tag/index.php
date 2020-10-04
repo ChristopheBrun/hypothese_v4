@@ -11,7 +11,6 @@ use yii\widgets\Pjax;
 /** @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = EphemeridesModule::t('labels', 'Tags');
-$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tag-index">

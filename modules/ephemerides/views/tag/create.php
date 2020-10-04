@@ -9,7 +9,6 @@ use yii\helpers\Html;
 /* @var $model app\modules\ephemerides\models\Tag */
 
 $this->title = EphemeridesModule::t('labels', 'Create Tag');
-$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = ['label' => EphemeridesModule::t('labels', 'Tags'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

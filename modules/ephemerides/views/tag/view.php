@@ -10,7 +10,6 @@ use yii\widgets\DetailView;
 /** @var $model app\modules\ephemerides\models\Tag */
 
 $this->title = sprintf('#%d - %s', $model->id, $model->slug);
-$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Management'), 'url' => ['/site/management']];
 $this->params['breadcrumbs'][] = ['label' => EphemeridesModule::t('labels', 'Tags'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
