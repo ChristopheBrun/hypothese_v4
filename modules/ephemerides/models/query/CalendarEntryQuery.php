@@ -6,6 +6,7 @@ use app\modules\ephemerides\models\CalendarEntry;
 use Carbon\Carbon;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Exception;
 
 
 /**
@@ -26,7 +27,7 @@ class CalendarEntryQuery extends ActiveQuery
      * Renvoie les noms des images classés par ordre alphabétique et indexés par l'identifiant de l'éphéméride
      *
      * @return array
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function getImages()
     {
@@ -61,6 +62,8 @@ class CalendarEntryQuery extends ActiveQuery
     }
 
     /**
+     * Renvoie la dernière éphémérides mise à jour
+     *
      * @return CalendarEntry|array|null
      */
     public function lastUpdated()
@@ -72,7 +75,7 @@ class CalendarEntryQuery extends ActiveQuery
      * Renvoie le nombre de jours calendaires pour lesquels existe au moins une éphéméride active
      *
      * @return int
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function countDaysWithEntries()
     {
@@ -145,7 +148,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param null $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
      * @param string $dayCompOperator
      * @return CalendarEntry|null
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function lastEntryBeforeCalendarDate($date, $format = null, $dayCompOperator = '<')
     {
@@ -182,10 +185,10 @@ class CalendarEntryQuery extends ActiveQuery
      * Renvoie la première éphéméride trouvée après $date.
      *
      * @param mixed $date La date de référence. Elle doit être soit un timestamp, soit une date formatée
-     * @param string $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
+     * @param string|null $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
      * @param string $dayCompOperator
      * @return CalendarEntry|null
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function nextEntryAfterCalendarDate($date, $format = null, $dayCompOperator = '>')
     {
@@ -234,7 +237,7 @@ class CalendarEntryQuery extends ActiveQuery
      *
      * @param $entryId
      * @return int
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public static function setImageAsNull($entryId)
     {
