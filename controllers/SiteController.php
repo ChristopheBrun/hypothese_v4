@@ -50,7 +50,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['management', 'commands'],
+                        'actions' => ['commands'],
                         'allow' => true,
                         'roles' => ['superadmin'],
                     ],
@@ -105,16 +105,6 @@ class SiteController extends Controller
 
         $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
         return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'searchModel', 'tags'));
-    }
-
-    /**
-     * Page d'administration
-     *
-     * @return string
-     */
-    public function actionManagement()
-    {
-        return $this->render('management');
     }
 
     /**

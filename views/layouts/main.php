@@ -33,7 +33,7 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?= $this->render('_mainMenu') ?>
+    <?= $this->render('//site/_mainMenu') ?>
     <div class="container">
         <?= /** @noinspection PhpUnhandledExceptionInspection */
         Breadcrumbs::widget([

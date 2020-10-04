@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Barre de menu principale
+ * Barre de menu principale du site
  */
 
 use app\modules\hlib\HLib;
@@ -44,9 +44,18 @@ echo NavX::widget([
             ],
         ],
         [
-            'label' => HLib::t('labels', "Management"),
-            'url' => ['/site/management'],
+            'label' => "Administration",
             'visible' => Yii::$app->user->can('superadmin'),
+            'items' => [
+                ['label' => "Commandes web", 'url' => ['/site/commands']],
+                '<li class="divider"></li>',
+                ['label' => "Utilisateurs", 'url' => ['/user/user']],
+                ['label' => "Rôles", 'url' => ['/user/role']],
+                ['label' => "Permissions", 'url' => ['/user/permission']],
+                '<li class="divider"></li>',
+                ['label' => "Ephémérides", 'url' => ['/ephemerides/calendar-entry']],
+                ['label' => "Catégories", 'url' => ['/ephemerides/tag']],
+            ],
         ],
         [
             'label' => 'Contact',
