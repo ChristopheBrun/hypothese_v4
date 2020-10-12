@@ -31,8 +31,6 @@ class LettresController extends Controller
                 if (!$model->validate()) {
                     throw new WarningException('!$model->validate()');
                 }
-
-                $model->tagText();
             }
         } catch (WarningException $x) {
             Flash::warning("Il y a des erreurs de validation");

@@ -3,6 +3,7 @@
 
 namespace app\models;
 
+use app\components\CharStats;
 use app\modules\hlib\helpers\hString;
 use yii\base\Model;
 
@@ -15,7 +16,7 @@ class TraitementTexte extends Model
     /** @var string */
     public $text;
 
-    /** @var string */
+    /** @var string Texte nettoyé. Cet attribut est automatiquement renseigné à partir de $text lors du load() */
     private $sanitizedText;
 
     /**
@@ -59,24 +60,6 @@ class TraitementTexte extends Model
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     *
-     */
-    public function tagText()
-    {
-        $this->tagAtoms();
-    }
-
-    /**
-     *
-     */
-    private function tagAtoms()
-    {
-//        foreach ($this->sanitizedText as $i => $char) {
-////            if()
-//        }
-    }
-
-    /**
      * @return mixed
      */
     public function getSanitizedText()
@@ -85,11 +68,31 @@ class TraitementTexte extends Model
     }
 
     /**
+     * @param string $text
      * @return mixed
      */
-    public function setSanitizedText($text)
+    public function setSanitizedText(string $text)
     {
         $this->sanitizedText = hString::sanitize($text);
         return $this;
+    }
+
+    /**
+     * @return CharStats
+     */
+    public function getCharStats()
+    {
+        $out = new CharStats();
+        $data = $this->getSanitizedText();
+        $out->nbChars = mb_strlen($data);
+        $res = preg_match_all('/(\p{L})/', $data, $matches);
+        $out->nbLetters = $res !== false ? count($matches[1]) : 0;
+        $res = preg_match_all('/(\d)/', $data, $matches);
+        $out->nbDigits = $res !== false ? count($matches[1]) : 0;
+        $res = preg_match_all('/(\s)/', $data, $matches);
+        $out->nbSeparators = $res !== false ? count($matches[1]) : 0;
+       $res = preg_match_all('/(\p{P})/', $data, $matches);
+        $out->nbPunctuation = $res !== false ? count($matches[1]) : 0;
+        return $out;
     }
 }
