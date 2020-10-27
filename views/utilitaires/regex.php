@@ -12,7 +12,7 @@ use yii\bootstrap\Html;
 /** @var bool|int $result */
 /** @var array $matches */
 
-$this->title = Yii::$app->name;
+$this->title = "Expressions régulières";
 
 ?>
 
