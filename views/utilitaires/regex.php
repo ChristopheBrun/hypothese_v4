@@ -20,7 +20,7 @@ $this->title = "Expressions régulières";
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Regex PHP</h1>
+                <h1>Testez vos expressions régulières PHP</h1>
             </div>
         </div>
     </div>
