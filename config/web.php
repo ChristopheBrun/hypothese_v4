@@ -53,6 +53,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
+        '@webroot' => '/www',
     ],
     'container' => [
         'definitions' => require(__DIR__ . '/classMap.php'),

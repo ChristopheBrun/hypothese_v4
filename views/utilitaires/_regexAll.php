@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /** @var bool|int $result */
 /** @var array $matches Résultats pour un appel à preg_match_all() */
+/** @var array $parentheses */
 
 $display = !is_null($result) && $result !== false;
 
@@ -34,7 +35,7 @@ $display = !is_null($result) && $result !== false;
 
     for ($i = 1; $i < count($matches); ++$i) {
         $detailViewAttributes[] = [
-            'label' => "Parenthèses capturante n°$i",
+            'label' => "Parenthèses capturante n°$i : <span class='regex-str'>{$parentheses[$i - 1]}</spanclass>",
             'format' => 'html',
             'value' => function () use ($matches, $i) {
                 $out = "<ul>";

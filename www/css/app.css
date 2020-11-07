@@ -34,3 +34,9 @@ label.required:after {
     border: 1px solid gray;
     padding: 10px;
 }
+
+.regex-str {
+    color: #3875d7;
+    font-style: italic;
+    margin-left: 30px;
+}

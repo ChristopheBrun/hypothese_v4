@@ -11,6 +11,7 @@ use yii\bootstrap\Html;
 /** @var string $pregmatch @see enum PregmatchType */
 /** @var bool|int $result */
 /** @var array $matches */
+/** @var array $parentheses */
 
 $this->title = "Expressions régulières";
 
@@ -69,9 +70,9 @@ $this->title = "Expressions régulières";
         </div>
 
         <?php if ($pregmatch == PregmatchType::SIMPLE): ?>
-            <?= $this->render('_regexSimple', compact('result', 'matches')) ?>
+            <?= $this->render('_regexSimple', compact('result', 'matches', 'parentheses')) ?>
         <?php else : ?>
-            <?= $this->render('_regexAll', compact('result', 'matches')) ?>
+            <?= $this->render('_regexAll', compact('result', 'matches', 'parentheses')) ?>
         <?php endif ?>
 
         <?= Html::endForm() ?>

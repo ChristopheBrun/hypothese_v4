@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\lib\enums\PregmatchType;
+use app\lib\helpers\UtilitairesHelper;
 use app\modules\hlib\lib\Flash;
 use Exception;
 use Yii;
@@ -45,6 +46,7 @@ class UtilitairesController extends Controller
                 $string = Yii::$app->request->post('string');
                 $regex = trim(Yii::$app->request->post('regex'));
                 $pregmatch = Yii::$app->request->post('pregmatch');
+                $parentheses = UtilitairesHelper::parseParenthesesRegex($regex);
 
                 $result =
                     $pregmatch == PregmatchType::SIMPLE ?
@@ -61,7 +63,7 @@ class UtilitairesController extends Controller
             Flash::error($x->getMessage());
         }
 
-        return $this->render('regex', compact('string', 'regex', 'pregmatch', 'result', 'matches'));
+        return $this->render('regex', compact('string', 'regex', 'pregmatch', 'result', 'matches', 'parentheses'));
     }
 
 }
