@@ -43,7 +43,8 @@ class CalendarEntryController extends Controller
     }
 
     /**
-     * Lists all CalendarEntry models.
+     * Liste des éphémérides
+     *
      * @return mixed
      * @throws Exception
      */
@@ -61,12 +62,20 @@ class CalendarEntryController extends Controller
     }
 
     /**
-     * Lists all CalendarEntry models.
+     * Liste des éphémérides compris entre J et J+2
+     *
      * @return mixed
      * @throws Exception
      */
     public function actionIndexD2()
     {
+        // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
+        if (array_key_exists('event_date', Yii::$app->request->queryParams)) {
+            return $this->redirect(array_merge(['index'], Yii::$app->request->queryParams));
+        }
+
+        // Si aucun filtre n'est demandé manuellement sur la date, on peut rester sur cette page et
+        // traiter les autres filtres en plus du filtre local 'J à J+2'
         $searchModel = new CalendarEntrySearchForm();
 
         $dateParams = [];
@@ -196,7 +205,7 @@ class CalendarEntryController extends Controller
      * @param CalendarEntry $model
      * @param array $data
      * @param array $oldAttributes
-     * @param UploadedFile $uploadedFile Vaut NULL si aucune image n'est téléchargée
+     * @param UploadedFile|null $uploadedFile Vaut NULL si aucune image n'est téléchargée
      * @return bool
      * @throws Exception
      */
