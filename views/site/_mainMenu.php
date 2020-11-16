@@ -4,7 +4,6 @@
  * Barre de menu principale du site
  */
 
-use app\modules\hlib\HLib;
 use app\modules\user\lib\enums\AppRole;
 use app\modules\user\UserModule;
 use kartik\nav\NavX;
@@ -48,6 +47,7 @@ echo NavX::widget([
             'visible' => Yii::$app->user->can('superadmin'),
             'items' => [
                 ['label' => "Commandes web", 'url' => ['/site/commands']],
+                ['label' => "Tests", 'url' => ['/test/index']],
                 '<li class="divider"></li>',
                 ['label' => "Utilisateurs", 'url' => ['/user/user']],
                 ['label' => "Rôles", 'url' => ['/user/role']],

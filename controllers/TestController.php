@@ -2,7 +2,12 @@
 
 namespace app\controllers;
 
+use app\modules\hlib\lib\Flash;
+use app\modules\user\lib\enums\AppRole;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\Response;
 
 
 /**
@@ -17,48 +22,59 @@ class TestController extends Controller
     public function behaviors()
     {
         return [
-//            'verbs' => [
-//                'class' => VerbFilter::class,
-//                'actions' => [
-//                    'testBasicAuth' => ['get'],
-//                ],
-//            ],
-//            'access' => [
-//                'class' => AccessControl::class,
-//                'rules' => [
-//                    [
-//                        'actions' => ['index', 'contact', 'error', 'captcha'],
-//                        'allow' => true,
-//                    ],
-//                ],
-//            ],
-//            'authentication' => [
-//                'class' => HttpBasicAuth::class,
-//                'only' => ['test-basic-auth'],
-//            ],
-//            'contentNegociation' => [
-//                'class' => ContentNegotiator::class,
-//                'only' => ['test-basic-auth'],
-//                'formats' => [
-//                    'application/json' => Response::FORMAT_JSON,
-//                ],
-//            ]
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [AppRole::SUPERADMIN],
+                    ],
+                ],
+            ],
         ];
     }
 
-//    /**
-//     * Permet de vérifier que l'authentification BasicAuth passe bien
-//     * Points de blocage possibles : mauvaisé clé d'API, Apache ne transmet pas PHP_AUTH_USER
-//     *
-//     * @return Response|string
-//     */
-//    public function actionTestBasicAuth()
-//    {
-//        $out = new APIResult();
-//        $out->data['date'] = date('Y-m-d H:i:s');
-//        $out->data['infos'] = "Authentification réussie";
-//        return $out;
-//    }
+    /**
+     * @return Response|string
+     */
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
+    /**
+     * @return Response|string
+     */
+    public function actionYiiError()
+    {
+        $msg = "Appel de Yii::error() + envoi des notifications";
+        Yii::error($msg);
+        Flash::error($msg);
+        return $this->render('index');
+    }
+
+    /**
+     * @return Response|string
+     */
+    public function actionSendEmail()
+    {
+        $to = Yii::$app->params['adminEmail'];
+        $msg = "Envoi d'un mail à : $to";
+        $ok = Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['fromEmail'])
+            ->setTo($to)
+            ->setSubject(__METHOD__)
+            ->setTextBody($msg)
+//            ->setHtmlBody("<b>$msg</b>")
+            ->send();
+        if ($ok) {
+            Flash::success($msg);
+        } else {
+            Flash::error($msg);
+        }
+
+        return $this->render('index');
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////////////

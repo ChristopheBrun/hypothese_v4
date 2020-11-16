@@ -1,5 +1,8 @@
 <?php
 
+use yii\log\EmailTarget;
+use yii\log\FileTarget;
+
 switch (YII_ENV) {
     case 'dev':
         $db = require_once __DIR__ . '/private/db.dev.php';
@@ -66,6 +69,7 @@ $config = [
     //----------------------------------------------
     'params' => [
         'adminEmail' => 'superadmin@hypothese.net',
+        'fromEmail' => 'no-reply@hypothese.net',
         'images' => [
             'driver' => 'gd',
             'webDirectory' => 'images',
@@ -105,9 +109,18 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => EmailTarget::class,
+                    'levels' => ['error'],
+                    'message' => [
+                        'from' => 'supervision@hypothese.net',
+                        'to' => 'superadmin@hypothese.net',
+                        'subject' => "Erreur bloquante",
+                    ],
+                ]
             ],
         ],
         'mailer' => [
