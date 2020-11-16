@@ -9,32 +9,36 @@ use app\modules\user\models\query\UserQuery;
 use Yii;
 use app\modules\user\UserModule;
 use app\modules\hlib\HLib;
+use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
+use yii\filters\auth\HttpBasicAuth;
 use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
  *
- * @property integer          $id
- * @property string           $email
- * @property string           $password_hash
- * @property string           $password_updated_at
- * @property integer          $password_usage
- * @property string           $auth_key
- * @property string           $confirmed_at
- * @property string           $blocked_at
- * @property integer          $registered_from
- * @property integer          $logged_in_from
- * @property string           $logged_in_at
- * @property string           $created_at
- * @property string           $updated_at
+ * @property integer $id
+ * @property string $email
+ * @property string $password_hash
+ * @property string $password_updated_at
+ * @property integer $password_usage
+ * @property string $auth_key
+ * @property string $confirmed_at
+ * @property string $blocked_at
+ * @property integer $registered_from
+ * @property integer $logged_in_from
+ * @property string $logged_in_at
+ * @property string $created_at
+ * @property string $updated_at
  *
- * @property Profile[]        $profiles
- * @property Profile          $profile
+ * @property Profile[] $profiles
+ * @property Profile $profile
  * @property AuthAssignment[] $authorizations
- * @property AuthItem[]       $roles
- * @property AuthItem[]       $permissions
+ * @property AuthItem[] $roles
+ * @property AuthItem[] $permissions
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -122,7 +126,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getProfiles()
     {
@@ -130,7 +134,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getAuthorizations()
     {
@@ -138,7 +142,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getRoles()
     {
@@ -147,7 +152,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getPermissions()
     {
@@ -158,10 +164,11 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      * @return UserQuery the active query used by this AR class.
+     * @throws InvalidConfigException
      */
     public static function find()
     {
-        return new UserQuery(get_called_class());
+        return Yii::createObject(UserQuery::class, [get_called_class()]);
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -191,8 +198,14 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $token = Token::find()->byType(TokenType::ACCESS)->byCode($token)->one();
-        return $token ? static::findIdentity($token->user_id) : null;
+        Yii::debug($type, 'CBN');
+        switch ($type) {
+            case HttpBasicAuth::class :
+                return User::findOne(['auth_key' => $token]);
+            default :
+                $token = Token::find()->byType(TokenType::ACCESS)->byCode($token)->one();
+                return $token ? static::findIdentity($token->user_id) : null;
+        }
     }
 
     /**
@@ -278,7 +291,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      *
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public function afterDelete()
     {

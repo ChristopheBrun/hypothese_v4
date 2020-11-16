@@ -6,4 +6,6 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Sinon on redirige vers index.php
 RewriteRule . index.php
 
-# ...other settings...
+# Authentification BasicAuth >
+# Il faut s'assurer qu'Apache en mode CGI remplit bien les postes PHP_AUTH_USER et PHP_AUTH_PWD dans $_SERVER
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
