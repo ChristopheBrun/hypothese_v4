@@ -120,6 +120,13 @@ $config = [
                         'to' => 'superadmin@hypothese.net',
                         'subject' => "Erreur bloquante",
                     ],
+                    'except' => [
+                        'yii\web\HttException:405',
+                        'yii\web\HttException:404',
+                        'yii\web\HttException:403',
+                        'yii\web\HttException:400',
+                        'yii\debug\Module::checkAccess',
+                    ],
                 ]
             ],
         ],
