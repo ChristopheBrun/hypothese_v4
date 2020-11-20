@@ -9,3 +9,16 @@ RewriteRule . index.php
 # Authentification BasicAuth >
 # Il faut s'assurer qu'Apache en mode CGI remplit bien les postes PHP_AUTH_USER et PHP_AUTH_PWD dans $_SERVER
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
+#BEGIN BAD BOTS @see https://twitter.com/Eroan/status/1329447069468209169
+<IfModule mod-setenvif.c>
+    SetEnvIfNoCase User-Agent ([a-z0-9]{2000,}) bad-bot
+    SetEnvIfNoCase User-Agent (ahrefsbot|dotbot|mj12bot|semrushbot) bad-bot
+    <IfModule mod_authz_core.c>
+        <RequireAll>
+            Require all Granted
+            Require not env bad-bot
+        </RequireAll>
+    </IfModule>
+</IfModule>
+#END BAD BOTS

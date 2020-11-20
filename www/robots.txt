@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /wp-admin/
+
+User-agent: Ahrefsbot
+User-agent: DotBot
+User-agent: MJ12Bot
+User-agent: SemrushBot
+Disallow: /
