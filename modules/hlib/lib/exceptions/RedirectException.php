@@ -9,8 +9,6 @@ use Throwable;
 /**
  * Class RedirectException
  * @package app\modules\hlib\lib
- *
- * Exception qui peut être associée à un Flash de réussite
  */
 class RedirectException extends Exception
 {
