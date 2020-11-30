@@ -6,10 +6,13 @@ use app\models\ConsoleCommandForm;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
+use app\modules\hlib\lib\exceptions\ModelLoadException;
+use app\modules\hlib\lib\exceptions\ModelValidationException;
+use app\modules\hlib\lib\exceptions\WarningException;
 use app\modules\hlib\lib\Flash;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\db\Exception;
+use Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -128,8 +131,9 @@ class SiteController extends Controller
                 }
 
                 // @see https://www.yiiframework.com/extension/yii2-console-runner
+                /** @noinspection PhpUndefinedFieldInspection */
                 Yii::$app->commandRunner->run($model->command, $consoleOutput);
-            } catch (\Exception $x) {
+            } catch (Exception $x) {
                 Yii::error($x->getMessage());
                 Flash::error("Erreur sur " . __METHOD__);
             }
@@ -180,8 +184,27 @@ class SiteController extends Controller
     {
         $model = new ContactForm();
         $formSubmitted = false;
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            $formSubmitted = true;
+        if (Yii::$app->request->isPost) {
+            try {
+                if (!$model->load(Yii::$app->request->post())) {
+                    throw new ModelLoadException($model, Yii::$app->request->post());
+                }
+
+                if (!$model->validate()) {
+                    throw new ModelValidationException($model);
+                }
+
+                if (!$model->sendMail()) {
+                    throw new Exception("Erreur lors de l'envoi du mail");
+                }
+
+                $formSubmitted = true;
+                Flash::success("Votre message a bien été envoyé");
+            } catch (WarningException $x) {
+                Flash::warning($x->getMessage());
+            } catch (Exception $x) {
+                Flash::error("Une erreur est survenue. Veuillez ré-essayer ultérieurement");
+            }
         }
 
         return $this->render('contact', compact('model', 'formSubmitted'));

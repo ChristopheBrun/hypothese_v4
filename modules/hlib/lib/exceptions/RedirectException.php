@@ -1,7 +1,8 @@
 <?php
 
-namespace app\modules\hlib\lib;
+namespace app\modules\hlib\lib\exceptions;
 
+use Exception;
 use Throwable;
 
 
@@ -11,7 +12,7 @@ use Throwable;
  *
  * Exception qui peut être associée à un Flash de réussite
  */
-class RedirectException extends \Exception
+class RedirectException extends Exception
 {
     public $route;
 

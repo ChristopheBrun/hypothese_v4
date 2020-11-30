@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\TraitementTexte;
 use app\modules\hlib\lib\Flash;
-use app\modules\hlib\lib\WarningException;
+use app\modules\hlib\lib\exceptions\WarningException;
 use Exception;
 use Yii;
 use yii\web\Controller;

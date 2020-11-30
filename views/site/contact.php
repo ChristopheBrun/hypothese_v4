@@ -1,15 +1,14 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-
-/* @var $model app\models\ContactForm */
-
-/* @var $formSubmitted boolean */
-
+use app\models\ContactForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+
+/* @var $this yii\web\View */
+/* @var $form ActiveForm */
+/* @var $model ContactForm */
+/* @var boolean $formSubmitted */
 
 $this->title = 'Contact';
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,11 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="panel-body">
-        <?php if ($formSubmitted): ?>
-            <div class="row alert alert-success">
-                Merci pour votre message. Je vous répondrai dès que possible.
-            </div>
-        <?php endif ?>
         <div class="row">
             <div class="col-sm-6">
                 <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
@@ -42,8 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'body')->textarea(['rows' => 6, 'readonly' => $formSubmitted]) ?>
 
-                <?= /** @noinspection PhpUnhandledExceptionInspection */
-                $formSubmitted ? '' : $form->field($model, 'verifyCode')->widget(Captcha::class, [
+                <?= $formSubmitted ? '' : $form->field($model, 'verifyCode')->widget(Captcha::class, [
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                 ]) ?>
 

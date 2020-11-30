@@ -1,7 +1,9 @@
 <?php
 
-namespace app\modules\hlib\lib;
+namespace app\modules\hlib\lib\exceptions;
 
+
+use Exception;
 
 /**
  * Class SuccessException
@@ -9,7 +11,7 @@ namespace app\modules\hlib\lib;
  *
  * Exception qui peut être associée à un Flash de réussite
  */
-class SuccessException extends \Exception
+class SuccessException extends Exception
 {
 
 }

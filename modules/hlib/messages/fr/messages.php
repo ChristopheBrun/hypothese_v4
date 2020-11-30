@@ -10,6 +10,8 @@ return [
 
     'Delete success' => 'Suppression réussie',
 
+    "Load error" => "Une erreur est survenue pendant le chargement des données",
+
     'Select a value in the list' => "Sélectionnez une valeur dans la liste",
     'There are errors in your form' => 'Il y a des erreurs dans votre formulaire',
     'The requested page does not exist' => 'La page demandée n\'existe pas',
@@ -19,4 +21,6 @@ return [
     'This object is referenced by another object. Deletion failed' => 'Cet objet est référencé par d\'autres objets. Suppression impossible',
     'Update success' => 'Mise à jour réussie',
     'Used by the meta-description tag' => 'Exploité par la balise meta-description',
+
+    "Validation error" => "Votre formulaire est invalide. Veuillez vérifier la conformité des valeurs que vous avez saisies",
 ];
