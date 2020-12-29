@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\components\APIResult;
-use yii\filters\auth\HttpBasicAuth;
+use app\filters\HttpBasicAuth;
 use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\Response;

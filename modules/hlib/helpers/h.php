@@ -3,6 +3,8 @@
 namespace app\modules\hlib\helpers;
 
 use Yii;
+use yii\db\Connection;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
@@ -16,7 +18,7 @@ class h
      * Le paramètre $data accepte plusieurs types. Si c'est un scalaire, la valeur sera rendue telle quelle. Sinon, il sera formatté
      * en fonction de sa classe. Si aucun format n'est explicitement prévu, il sera rendu avec le VarDumper.
      *
-     * @param mixed  $data
+     * @param mixed $data
      * @param string $file
      * @param string $line
      * @param string $method
@@ -44,8 +46,7 @@ class h
         if (is_scalar($data)) {
             // Un scalaire est affiché directement
             $out .= $data;
-        }
-        elseif (is_array($data)) {
+        } elseif (is_array($data)) {
             if (count($data) && array_key_exists(0, $data) && is_a($data[0], '\yii\db\ActiveRecord')) {
                 // Tableau de ActiveRecord : on affiche explicitement les attributs
                 $tmp = array();
@@ -54,31 +55,22 @@ class h
                     $tmp[] = $it->getAttributes();
                 }
                 $out .= print_r($tmp, true);
-            }
-            else {
+            } else {
                 // Tableau normal
                 $out .= print_r($data, true);
             }
-        }
-        elseif (is_a($data, '\yii\db\Query')) {
+        } elseif (is_a($data, '\yii\db\Query')) {
             /** @var \yii\db\ActiveQuery $data */
-            /** @noinspection PhpUndefinedFieldInspection */
             $out .= $data->sql;
-        }
-        elseif (is_a($data, '\yii\db\Command')) {
+        } elseif (is_a($data, '\yii\db\Command')) {
             /** @var \yii\db\Command $data */
             /** @noinspection PhpUndefinedMethodInspection */
             $out .= $data->getText();
-        }
-        elseif (is_a($data, '\Exception')) {
-            /** @noinspection PhpUndefinedMethodInspection */
+        } elseif (is_a($data, '\Exception')) {
             $out .= $data->getMessage();
-        }
-        elseif (is_a($data, '\DOMDocument')) {
-            /** @noinspection PhpUndefinedMethodInspection */
+        } elseif (is_a($data, '\DOMDocument')) {
             $out .= $data->saveXML();
-        }
-        else {
+        } else {
             // Dans le doute...
             $out = "**** Classe inconnue : " . get_class($data) . PHP_EOL;
             $out .= VarDumper::dumpAsString($data);
@@ -138,22 +130,17 @@ class h
         if (isset($_SERVER)) {
             if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
                 $realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-            }
-            elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
+            } elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
                 $realip = $_SERVER["HTTP_CLIENT_IP"];
-            }
-            else {
+            } else {
                 $realip = $_SERVER["REMOTE_ADDR"];
             }
-        }
-        else {
+        } else {
             if (getenv('HTTP_X_FORWARDED_FOR')) {
                 $realip = getenv('HTTP_X_FORWARDED_FOR');
-            }
-            elseif (getenv('HTTP_CLIENT_IP')) {
+            } elseif (getenv('HTTP_CLIENT_IP')) {
                 $realip = getenv('HTTP_CLIENT_IP');
-            }
-            else {
+            } else {
                 $realip = getenv('REMOTE_ADDR');
             }
         }
@@ -177,7 +164,6 @@ class h
     }
 
     /**
-     *
      * @return bool
      */
     public static function isOSWindows()
@@ -185,53 +171,6 @@ class h
         $info = php_uname('s');
         return preg_match("/win/i", $info);
     }
-
-    /**
-     * Génère un mot de passe de $length caractères pris dans la collection $possible
-     *
-     * @param int    $length
-     * @param string $possible Liste des caractères autorisés
-     * @return string
-     * @deprecated Utiliser les fonction Yii de la classe Security à la place
-     */
-    public static function generatePassword($length = 8, $possible = '$=@#0123456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ')
-    {
-        $password = '';
-        $possible_length = strlen($possible) - 1;
-        $char = '';
-        while ($length--) {
-            $except = substr($password, -$possible_length / 2);
-            for ($n = 0; $n < 5; $n++) {
-                $char = $possible{mt_rand(0, $possible_length)};
-                if (strpos($except, $char) === false) {
-                    break;
-                }
-            };
-
-            $password .= $char;
-        }
-
-        return $password;
-    }
-
-//    /**
-//     * @param DOMNode $node
-//     * @return string
-//     * @internal requires vendors/xmlTreeDump
-//     */
-//    public static function xmlTreeDump(DOMNode $node)
-//    {
-//        $iterator = new DOMRecursiveIterator($node);
-//        $decorated = new DOMRecursiveDecoratorStringAsCurrent($iterator);
-//        $tree = new RecursiveTreeIterator($decorated);
-//        $out = "";
-//        /** @noinspection PhpUnusedLocalVariableInspection */
-//        foreach ($tree as $key => $value) {
-//            $out .= $value . "\n";
-//        }
-//
-//        return $out;
-//    }
 
     /**
      * Renvoie une chaine au format "99@99999999" où le premier chiffre correspond à l'identifiant de l'utilisateur
@@ -288,8 +227,7 @@ class h
     {
         if (static::isOSWindows()) {
             return substr($locale, 0, 2);
-        }
-        else {
+        } else {
             return $locale;
         }
     }
@@ -324,6 +262,96 @@ class h
         }
 
         return substr($fullI18NCode, 0, 2);
+    }
+
+    /**
+     * Renvoie le nom complet de la classe pointée par $key dans les définitions du Container de l'application
+     * Ce nom permet d'accéder aux constantes ou à l'opérateur d'accès statique ::
+     *
+     * @param string $key Identifiant de la classe modèle
+     * @return string Identifiant de la classe concrète
+     */
+    public static function getClass($key)
+    {
+        $def = ArrayHelper::getValue(Yii::$container->getDefinitions(), $key);
+        $class = $def ? ArrayHelper::getValue($def, 'class') : $key;
+        return $class;
+    }
+
+    /**
+     * Indique si la colonne $column existe ou pas dans la base de données
+     *
+     * @param string $schema Nom de la base
+     * @param string $table Nom de la table
+     * @param string $column Nom de la colonne
+     * @param string $connectionName Nom de la variable de type Connection à utiliser pour accéder à la base
+     * @return boolean
+     * @throws Exception
+     */
+    public static function columnExists($schema, $table, $column, $connectionName = 'db')
+    {
+        /** @var Connection $cnx */
+        $cnx = Yii::$app->$connectionName;
+        /** @noinspection SqlResolve */
+        $sql = "SELECT count(*) cpt FROM INFORMATION_SCHEMA . COLUMNS 
+          WHERE TABLE_SCHEMA = '$schema' AND TABLE_NAME ='$table' AND column_name = '$column'";
+        $out = intval($cnx->createCommand($sql)->queryScalar());
+        return $out > 0;
+    }
+
+    /**
+     * Indique si l'application tourne en mode console (true) ou si on est sur une page web (false)
+     *
+     * @return bool
+     */
+    public static function isConsole()
+    {
+        return Yii::$app->request->getIsConsoleRequest();
+    }
+
+    /**
+     * Returns a file size limit in bytes based on the PHP upload_max_filesize and post_max_size
+     * @see https://stackoverflow.com/questions/13076480/php-get-actual-maximum-upload-size
+     *
+     * @return float|int
+     */
+    public static function fileUploadMaxSize()
+    {
+        static $max_size = -1;
+
+        if ($max_size < 0) {
+            // Start with post_max_size.
+            $post_max_size = static::parseFileMaxSize(ini_get('post_max_size'));
+            if ($post_max_size > 0) {
+                $max_size = $post_max_size;
+            }
+
+            // If upload_max_size is less, then reduce. Except if upload_max_size is
+            // zero, which indicates no limit.
+            $upload_max = static::parseFileMaxSize(ini_get('upload_max_filesize'));
+            if ($upload_max > 0 && $upload_max < $max_size) {
+                $max_size = $upload_max;
+            }
+        }
+        return $max_size;
+    }
+
+    /**
+     * @see https://stackoverflow.com/questions/13076480/php-get-actual-maximum-upload-size
+     *
+     * @param $size
+     * @return float
+     */
+    protected static function parseFileMaxSize($size)
+    {
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size); // Remove the non-unit characters from the size.
+        $size = preg_replace('/[^0-9.]/', '', $size); // Remove the non-numeric characters from the size.
+        if ($unit) {
+            // Find the position of the unit in the ordered string which is the power of magnitude to multiply a kilobyte by.
+            return round($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+        } else {
+            return round($size);
+        }
     }
 
 }

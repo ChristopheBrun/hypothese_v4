@@ -4,6 +4,7 @@ namespace app\modules\hlib\helpers;
 
 use Closure;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -19,9 +20,9 @@ class ModelHelper
     /**
      * @param string $modelClass
      * @param ActiveRecord[] $existingModels
-     * @param Closure $skipIf
+     * @param Closure|null $skipIf
      * @return array
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @todo_cbn tester & documenter cette méthode
      */
     public static function createMultipleFromPost($modelClass, array $existingModels = null, Closure $skipIf = null)
@@ -102,22 +103,18 @@ class ModelHelper
     public static function retrieveDefaultLabel(ActiveRecord $model, $default = '-')
     {
         if ($model->hasAttribute('label')) {
-            /** @noinspection PhpUndefinedFieldInspection */
             return $model->label;
         }
 
         if ($model->hasAttribute('title')) {
-            /** @noinspection PhpUndefinedFieldInspection */
             return $model->title;
         }
 
         if ($model->hasAttribute('name')) {
-            /** @noinspection PhpUndefinedFieldInspection */
             return $model->name;
         }
 
         if ($model->hasMethod('formatName')) {
-            /** @noinspection PhpUndefinedMethodInspection */
             return $model->formatName();
         }
 
@@ -131,7 +128,7 @@ class ModelHelper
      * @param ActiveRecord $model
      * @param array $attributes
      * @return ActiveRecord
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function setShortDates(ActiveRecord $model, array $attributes)
     {

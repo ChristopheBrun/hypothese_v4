@@ -2,6 +2,7 @@
 
 namespace app\modules\user\models;
 
+use app\modules\hlib\helpers\h;
 use app\modules\user\lib\enums\AuthItemType;
 use app\modules\user\lib\enums\TokenType;
 use app\modules\user\models\query\AuthAssignmentQuery;
@@ -198,9 +199,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        Yii::debug($type, 'CBN');
         switch ($type) {
-            case HttpBasicAuth::class :
+            case h::getClass(HttpBasicAuth::class) :
                 return User::findOne(['auth_key' => $token]);
             default :
                 $token = Token::find()->byType(TokenType::ACCESS)->byCode($token)->one();

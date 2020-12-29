@@ -7,7 +7,9 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
 
 # Authentification BasicAuth >
-# Il faut s'assurer qu'Apache en mode CGI remplit bien les postes PHP_AUTH_USER et PHP_AUTH_PWD dans $_SERVER
+# Il faut s'assurer qu'Apache en mode CGI remplit bien les postes PHP_AUTH_USER et PHP_AUTH_PW dans $_SERVER
+# PHP (CGI mode) HTTP Authorization with ModRewrite (puis ajouter le code PHP pour parser HTTP_AUTHORIZATION)
+# @see https://www.php.net/manual/fr/features.http-auth.php
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
 #BEGIN BAD BOTS @see https://twitter.com/Eroan/status/1329447069468209169
