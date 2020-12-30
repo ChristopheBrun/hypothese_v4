@@ -2,9 +2,6 @@
 
 namespace app\components;
 
-// L'autoloader n'est pas encore chargé, il faut faire le require explicitement
-require_once(__DIR__ . '/../modules/hlib/components/Application.php');
-
 /**
  * Class Application
  * @package app\components
