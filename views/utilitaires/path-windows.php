@@ -1,17 +1,19 @@
 <?php
-/**
- * Affichage d'un path linux correct
- */
-
 
 use yii\bootstrap\Html;
 use yii\web\JqueryAsset;
+use yii\web\View;
 
 $this->title = Yii::$app->name;
 $this->registerJsFile('@web/js/path-windows.js', ['depends' => [JqueryAsset::class]]);
+
 // @see https://highlightjs.org/download/
+$this->registerCssFile('@web/js/highlight/styles/agate.css');
 $this->registerJsFile('@web/js/highlight/highlight.pack.js');
-$this->registerCssFile('@web/js/highlight/styles/default.css');
+$this->registerJs(<<<JS
+    // noinspection JSUnresolvedFunction,JSUnresolvedVariable
+    hljs.initHighlightingOnLoad();
+JS, View::POS_END);
 
 ?>
 
@@ -57,21 +59,21 @@ $this->registerCssFile('@web/js/highlight/styles/default.css');
                     </li>
                     <li>Le traitement se fait en javascript dans le navigateur :</li>
                 </ul>
-                <pre>
-                    <code class="javascript">
-$('#path-windows-submit').on('click', function () {
-    let path = $('#path-windows').val();
-    let out = path.replace(/\\/g, '/');
-    if (path.includes(' ')) {
-        out = '"' + out + '"';
-    }
-
-    $('#path-windows-resultat').val(out);
-});
-                    </code>
-                 </pre>
             </div>
         </div>
+        <pre>
+            <code>
+                $('#path-windows-submit').on('click', function () {
+                    let path = $('#path-windows').val();
+                    let out = path.replace(/\\/g, '/');
+                    if (path.includes(' ')) {
+                        out = '"' + out + '"';
+                    }
+
+                    $('#path-windows-resultat').val(out);
+                });
+            </code>
+        </pre>
     </div>
 
     <?= $this->render('/site/_inner-footer') ?>

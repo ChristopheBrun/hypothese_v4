@@ -10,11 +10,18 @@ use Yii;
 use yii\web\Controller;
 
 /**
- * Class HelperController
+ * Class UtilitairesController
  * @package app\controllers
  */
 class UtilitairesController extends Controller
 {
+    /**
+     * @return string
+     */
+    public function actionPenseBete(): string
+    {
+        return $this->render('pense-bete');
+    }
 
     /**
      * Traduit un path windows en path compatible linux
@@ -23,7 +30,7 @@ class UtilitairesController extends Controller
      * @internal fait en javacsript directement sur la page
      *
      */
-    public function actionPathWindows()
+    public function actionPathWindows(): string
     {
         return $this->render('path-windows');
     }
@@ -34,7 +41,7 @@ class UtilitairesController extends Controller
      * @return string
      * @internal fait en javascript directement sur la page
      */
-    public function actionRegex()
+    public function actionRegex(): string
     {
         $string = '';
         $regex = '';

@@ -37,6 +37,7 @@ echo NavX::widget([
         [
             'label' => "Des trucs qui traînent",
             'items' => [
+                ['label' => "Mémos", 'url' => ['/memos']],
                 ['label' => "Path windows > linux", 'url' => ['/utilitaires/path-windows']],
                 ['label' => "Expressions régulières", 'url' => ['/utilitaires/regex']],
                 ['label' => "Lettres et le temps", 'url' => ['/lettres'], 'visible' => Yii::$app->user->can(AppRole::SUPERADMIN),],
@@ -66,7 +67,7 @@ echo NavX::widget([
         Yii::$app->user->isGuest ?
             ['label' => UserModule::t('labels', 'Login'), 'url' => ['/user/security/login']]
             :
-            '<li>' . Html::beginForm(['/user/security/logout'], 'post')
+            '<li>' . Html::beginForm(['/user/security/logout'])
             . Html::submitButton(UserModule::t('labels', "Logout({email})", ['email' => $identity->email]), ['class' => 'btn btn-link logout'])
             . Html::endForm() . '</li>'
     ],

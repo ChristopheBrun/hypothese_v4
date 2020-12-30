@@ -19,6 +19,3 @@ $(function () {
     });
 
 });
-
-// noinspection ES6ModulesDependencies,JSUnresolvedVariable
-hljs.initHighlightingOnLoad();
