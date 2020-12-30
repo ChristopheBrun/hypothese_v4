@@ -16,14 +16,6 @@ use yii\web\Controller;
 class UtilitairesController extends Controller
 {
     /**
-     * @return string
-     */
-    public function actionPenseBete(): string
-    {
-        return $this->render('pense-bete');
-    }
-
-    /**
      * Traduit un path windows en path compatible linux
      *
      * @return string
