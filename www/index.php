@@ -12,8 +12,8 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';
 
-// L'autoloader n'est pas encore actif, il faut faire le require explicitement pour nos clases Application
-// @todo_cbn ce n'est pas le cas quan don initialise yii\base\Application. Voir ce qui manque pour activer l'autoload correctement
+// Il faut faire le require explicitement pour nos clases Application...
+// @todo_cbn ce n'est pas le cas quand on initialise yii\base\Application. Voir ce qui manque pour activer l'autoload correctement
 require_once(__DIR__ . '/../modules/hlib/components/Application.php');
 require_once(__DIR__ . '/../components/Application.php');
 /** @noinspection PhpUnhandledExceptionInspection */
