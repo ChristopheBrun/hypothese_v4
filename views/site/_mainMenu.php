@@ -46,7 +46,8 @@ echo NavX::widget([
             'label' => "Administration",
             'visible' => Yii::$app->user->can('superadmin'),
             'items' => [
-                ['label' => "Commandes web", 'url' => ['/site/commands']],
+                ['label' => "Configuration", 'url' => ['/admin/config']],
+                ['label' => "Commandes web", 'url' => ['/admin/commands']],
                 ['label' => "Tests", 'url' => ['/test/index']],
                 '<li class="divider"></li>',
                 ['label' => "Utilisateurs", 'url' => ['/user/user']],

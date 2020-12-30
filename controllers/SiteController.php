@@ -1,8 +1,7 @@
-<?php /** @noinspection PhpUnused */
+<?php
 
 namespace app\controllers;
 
-use app\models\ConsoleCommandForm;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
@@ -11,7 +10,6 @@ use app\modules\hlib\lib\exceptions\ModelValidationException;
 use app\modules\hlib\lib\exceptions\WarningException;
 use app\modules\hlib\lib\Flash;
 use Yii;
-use yii\base\InvalidConfigException;
 use Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -21,12 +19,16 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
+/**
+ * Class SiteController
+ * @package app\controllers
+ */
 class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'verbs' => [
@@ -52,11 +54,6 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                    [
-                        'actions' => ['commands'],
-                        'allow' => true,
-                        'roles' => ['superadmin'],
-                    ],
                 ],
             ],
 
@@ -66,7 +63,7 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions() : array
     {
         return [
             'error' => [
@@ -85,7 +82,7 @@ class SiteController extends Controller
      * @return string
      * @throws Exception
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         //
         // Page d'accueil publique
@@ -108,37 +105,6 @@ class SiteController extends Controller
 
         $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
         return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'searchModel', 'tags'));
-    }
-
-    /**
-     * Lance une commande console depuis la page web
-     *
-     * @return string
-     * @throws InvalidConfigException
-     */
-    public function actionCommands()
-    {
-        $model = Yii::createObject(ConsoleCommandForm::class);
-        $consoleOutput = '';
-        if (Yii::$app->request->isPost) {
-            try {
-                if (!$model->load(Yii::$app->request->post())) {
-                    throw new Exception('!$model->load()');
-                }
-
-                if (!$model->validate(Yii::$app->request->post())) {
-                    throw new Exception('!$model->validate()');
-                }
-
-                // @see https://www.yiiframework.com/extension/yii2-console-runner
-                /** @noinspection PhpUndefinedFieldInspection */
-                Yii::$app->commandRunner->run($model->command, $consoleOutput);
-            } catch (Exception $x) {
-                Yii::error($x->getMessage());
-                Flash::error("Erreur sur " . __METHOD__);
-            }
-        }
-        return $this->render('commands', compact('model', 'consoleOutput'));
     }
 
     /**
@@ -168,7 +134,7 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionLogout()
+    public function actionLogout(): Response
     {
         Yii::$app->user->logout();
 
