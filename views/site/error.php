@@ -53,11 +53,6 @@ $imgUrl = Url::base(true) . '/images/error_500.png';
         </div>
     </div>
 
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-12">
+    <?= $this->render('/site/_inner-footer') ?>
 
-            </div>
-        </div>
-    </div>
 </div>

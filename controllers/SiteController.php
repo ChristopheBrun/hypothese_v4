@@ -11,13 +11,16 @@ use app\modules\hlib\lib\exceptions\WarningException;
 use app\modules\hlib\lib\Flash;
 use Yii;
 use Exception;
+use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\ErrorAction;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\web\ViewAction;
 
 /**
  * Class SiteController
@@ -41,7 +44,7 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'contact', 'error', 'captcha'],
+                        'actions' => ['index', 'contact', 'error', 'captcha', 'joke'],
                         'allow' => true,
                     ],
                     [
@@ -63,14 +66,18 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions() : array
+    public function actions(): array
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => ErrorAction::class,
+            ],
+            'joke' => [
+                'class' => ViewAction::class,
+                'defaultView' => 'joke',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];

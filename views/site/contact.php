@@ -36,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'body')->textarea(['rows' => 6, 'readonly' => $formSubmitted]) ?>
 
-                <?= $formSubmitted ? '' : $form->field($model, 'verifyCode')->widget(Captcha::class, [
+                <?= /** @noinspection PhpUnhandledExceptionInspection */
+                $formSubmitted ? '' : $form->field($model, 'verifyCode')->widget(Captcha::class, [
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                 ]) ?>
 
@@ -50,12 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-12">
-            </div>
-        </div>
-    </div>
+    <?= $this->render('/site/_inner-footer') ?>
+
 </div>
 
 

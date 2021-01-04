@@ -1,12 +1,13 @@
 <?php
 
+use app\modules\hlib\HLib;
+use yii\helpers\Html;
+
 /**
  * @var $this yii\web\View
  */
 
-use yii\helpers\Html;
-
-$this->title = \app\modules\hlib\HLib::t('labels', 'About');
+$this->title = HLib::t('labels', 'About');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">

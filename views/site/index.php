@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use yii\helpers\Html;
 
 /**
  * Page d'accueil du site
@@ -34,7 +35,8 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
     <div class="panel-footer">
         <div class="row">
             <div class="col-sm-12">
-                Merci de votre visite. N'hésitez pas à me soutenir en cotisant à mon <a href="">teepee</a>.
+                Merci de votre visite. N'hésitez pas à me soutenir en cotisant à
+                mon <?= Html::a("teepee", ['/site/joke']) ?>.
                 <br/>
                 <span style="font-style: italic;font-size: smaller">(non, je plaisante...)</span>
             </div>
