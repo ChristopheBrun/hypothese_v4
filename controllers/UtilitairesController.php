@@ -19,7 +19,7 @@ class UtilitairesController extends Controller
      * Traduit un path windows en path compatible linux
      *
      * @return string
-     * @internal fait en javacsript directement sur la page
+     * @internal fait en javascript directement sur la page
      *
      */
     public function actionPathWindows(): string

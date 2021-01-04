@@ -20,12 +20,14 @@ $this->title = Yii::$app->name;
             <div class="col-sm-12">
                 <ul>
                     <li><?= Html::a('Console Windows / Power Shell', ['/memos/console-windows']) ?></li>
+                    <li><?= Html::a('Configuration PHP', ['/memos/config-php']) ?></li>
                 </ul>
             </div>
 
+        </div>
+
+        <?= $this->render('/site/_inner-footer') ?>
+
     </div>
-
-    <?= $this->render('/site/_inner-footer') ?>
-
 </div>
 

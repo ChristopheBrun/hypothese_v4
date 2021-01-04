@@ -19,15 +19,19 @@ class MemosController extends Controller
     }
 
     /**
-     * Traduit un path windows en path compatible linux
-     *
      * @return string
-     * @internal fait en javacsript directement sur la page
-     *
      */
     public function actionConsoleWindows(): string
     {
         return $this->render('console-windows');
+    }
+
+    /**
+     * @return string
+     */
+    public function actionConfigPhp(): string
+    {
+        return $this->render('config-php');
     }
 
 }

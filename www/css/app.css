@@ -40,3 +40,18 @@ label.required:after {
     font-style: italic;
     margin-left: 30px;
 }
+
+.memo-question {
+    font-weight: bold;
+    size: 1.2em;
+    color: darkorange;
+}
+
+.memo-titre {
+    font-weight: bold;
+    size: 1.2em;
+}
+
+.memo-action-menus {
+    font-style: italic;
+}
