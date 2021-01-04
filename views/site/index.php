@@ -37,8 +37,6 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
             <div class="col-sm-12">
                 Merci de votre visite. N'hésitez pas à me soutenir en cotisant à
                 mon <?= Html::a("teepee", ['/site/joke']) ?>.
-                <br/>
-                <span style="font-style: italic;font-size: smaller">(non, je plaisante...)</span>
             </div>
         </div>
     </div>
