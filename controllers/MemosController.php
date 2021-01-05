@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use yii\web\ViewAction;
 
 /**
  * Class MemosController
@@ -11,27 +12,23 @@ use yii\web\Controller;
 class MemosController extends Controller
 {
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function actionIndex(): string
+    public function actions(): array
     {
-        return $this->render('index');
-    }
-
-    /**
-     * @return string
-     */
-    public function actionConsoleWindows(): string
-    {
-        return $this->render('console-windows');
-    }
-
-    /**
-     * @return string
-     */
-    public function actionConfigPhp(): string
-    {
-        return $this->render('config-php');
+        return [
+            'index' => [
+                'class' => ViewAction::class,
+            ],
+            'console-windows' => [
+                'class' => ViewAction::class,
+                'defaultView' => 'console-windows',
+            ],
+            'config-php' => [
+                'class' => ViewAction::class,
+                'defaultView' => 'config-php',
+            ],
+        ];
     }
 
 }
