@@ -8,6 +8,7 @@ use app\modules\hlib\lib\Flash;
 use Exception;
 use Yii;
 use yii\web\Controller;
+use yii\web\ViewAction;
 
 /**
  * Class UtilitairesController
@@ -15,6 +16,18 @@ use yii\web\Controller;
  */
 class UtilitairesController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function actions(): array
+    {
+        return [
+            'index' => [
+                'class' => ViewAction::class,
+            ],
+        ];
+    }
+
     /**
      * Traduit un path windows en path compatible linux
      *
@@ -39,6 +52,7 @@ class UtilitairesController extends Controller
         $regex = '';
         $pregmatch = PregmatchType::SIMPLE;
         $result = null;
+        $parentheses = null;
         $matches = [];
         try {
             if (Yii::$app->request->isPost) {
