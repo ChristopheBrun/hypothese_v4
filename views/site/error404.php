@@ -13,23 +13,11 @@ use yii\helpers\Url;
  * @var $exception Exception Exception interceptée
  */
 
-$this->title = HLib::t('labels', 'Unknown page');
+$this->title = HLib::t('labels', 'Unknown Page');
 $this->params['breadcrumbs'][] = $this->title;
 
-$imgUrl = Url::base(true) . '/images/error_404.png';
+$imgUrl = Url::base(true) . '/images/error_404.jpg';
 ?>
-<div class=row">
-    <div class="col-sm-12 alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
-
-    <div class="col-sm-6">
-        <?= Html::img($imgUrl, ['alt' => 'unknown page']) ?>
-    </div>
-    <div class="col-sm-6">
-        <p>En fait, cette page n'existe pas...</p>
-    </div>
-</div>
 
 <div class="panel panel-default" id="error-page">
     <div class="panel-heading">

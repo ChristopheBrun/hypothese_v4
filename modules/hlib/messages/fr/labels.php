@@ -51,6 +51,7 @@ return [
     'Submit' => 'Envoyer',
     'Text' => 'Texte',
     'Title' => 'Titre',
+    'Unknown Page' => "Page introuvable",
     'Update' => 'Modifier',
     'Update item' => 'Modifier cet objet',
     'Updated At' => 'Date de modification',
