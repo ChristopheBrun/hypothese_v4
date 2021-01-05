@@ -153,7 +153,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'helpers/<action:[\w-]+>' => 'utilitaires/<action>',
+//                'helpers/<action:[\w-]+>' => 'utilitaires/<action>',
             ],
         ],
         'user' => [
