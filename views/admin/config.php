@@ -1,9 +1,11 @@
 <?php
 
-/** @var string title */
+use yii\bootstrap\Html;
+
 /** @var string $env */
 
-$this->title = Yii::$app->name;
+$this->title = "Configuration";
+$this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
@@ -11,7 +13,7 @@ $this->title = Yii::$app->name;
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Configuration</h1>
+                <h1><?= $this->title ?></h1>
             </div>
         </div>
     </div>
@@ -19,21 +21,13 @@ $this->title = Yii::$app->name;
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-12">
+                <ul>
+                    <li><?= Html::a('phpinfo', ['phpinfo'], ['target' => 'blank']) ?></li>
+                </ul>
+
                 <h2>App config</h2>
-            </div>
-            <div class="col-sm-12">
                 à faire...
                 <?php // @todo_cbn ?>
-            </div>
-        </div>
-
-        <hr/>
-
-        <div class="row">
-            <div class="row">
-                <div class="col-sm-12">
-                    <?= phpinfo() ?>
-                </div>
             </div>
         </div>
     </div>

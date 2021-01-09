@@ -2,7 +2,10 @@
 
 use yii\helpers\Html;
 
-$this->title = Yii::$app->name;
+$this->title = "Utilitaires";
+$this->params['breadcrumbs'][] = $this->title;
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
+Yii::$app->addKeywordsMetaTag('utilitaires');
 
 ?>
 
@@ -10,7 +13,7 @@ $this->title = Yii::$app->name;
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Utilitaires</h1>
+                <h1><?= $this->title ?></h1>
             </div>
         </div>
     </div>

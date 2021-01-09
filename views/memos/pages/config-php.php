@@ -3,8 +3,11 @@
 use yii\helpers\Html;
 use yii\web\View;
 
-$this->title = Yii::$app->name;
-Yii::$app->addKeywordsMetaTags(['PHP', 'PEAR', 'WAMP']);
+$this->title = "Configuration PHP";
+$this->params['breadcrumbs'][] = ['label'=> 'Mémos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
+Yii::$app->addKeywordsMetaTags(['Configuration', 'PHP', 'PEAR', 'WAMP']);
 
 // @see https://highlightjs.org/download/
 $this->registerCssFile('@web/js/highlight/styles/agate.css');
@@ -20,7 +23,7 @@ JS, View::POS_END);
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Configuration PHP</h1>
+                <h1><?= $this->title ?></h1>
             </div>
         </div>
     </div>

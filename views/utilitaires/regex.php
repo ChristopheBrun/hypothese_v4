@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aides pour les regex
  */
@@ -14,6 +15,9 @@ use yii\bootstrap\Html;
 /** @var array $parentheses */
 
 $this->title = "Expressions régulières";
+$this->params['breadcrumbs'][] = ['label' => 'Utilitaires', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
 Yii::$app->addKeywordsMetaTags(["PHP", "Regex", "Expressions régulières", "Expression régulière"]);
 
 ?>

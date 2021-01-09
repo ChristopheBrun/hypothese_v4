@@ -36,8 +36,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Page d'accueil du site
-     *
      * @return string
      * @throws Exception
      */
@@ -46,6 +44,15 @@ class AdminController extends Controller
         return $this->render('config', [
             'env' => YII_ENV,
         ]);
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function actionPhpinfo(): string
+    {
+        return $this->renderPartial('phpinfo');
     }
 
     /**

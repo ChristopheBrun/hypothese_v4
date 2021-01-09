@@ -11,11 +11,17 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model TraitementTexte */
 
+$this->title = "Lettres et le temps";
+$this->params['breadcrumbs'][] = ['label' => 'Utilitaires', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
+Yii::$app->addKeywordsMetaTags(["PHP", "Regex", "Expressions régulières", "Expression régulière"]);
+
 ?>
 
 <div class="lettres-index">
 
-    <h1>Lettres et le temps</h1>
+    <h1><?= $this->title ?></h1>
 
     <div class="hint-block">Ne saissisez que du texte simple</div>
 

@@ -4,9 +4,13 @@ use yii\bootstrap\Html;
 use yii\web\JqueryAsset;
 use yii\web\View;
 
-$this->title = Yii::$app->name;
-$this->registerJsFile('@web/js/path-windows.js', ['depends' => [JqueryAsset::class]]);
+$this->title = "Path windows pour console Linux";
+$this->params['breadcrumbs'][] = ['label' => 'Utilitaires', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
+Yii::$app->addKeywordsMetaTags(['Windows', 'Linux', 'Unix', "path"]);
 
+$this->registerJsFile('@web/js/path-windows.js', ['depends' => [JqueryAsset::class]]);
 // @see https://highlightjs.org/download/
 $this->registerCssFile('@web/js/highlight/styles/agate.css');
 $this->registerJsFile('@web/js/highlight/highlight.pack.js');
@@ -21,7 +25,7 @@ JS, View::POS_END);
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Path windows pour console Linux</h1>
+                <h1><?= $this->title ?></h1>
             </div>
         </div>
     </div>

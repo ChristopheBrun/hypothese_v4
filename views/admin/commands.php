@@ -1,15 +1,18 @@
 <?php
 
+use app\models\ConsoleCommandForm;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Html;
+
 /**
  * @var $model ConsoleCommandForm
  * @var $consoleOutput string
  */
 
-use app\models\ConsoleCommandForm;
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Html;
-
 $this->title = Yii::t('app', 'yiiCommands');
+$this->title = "Commandes";
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="row">
     <div class="panel panel-default" id="homepage">
