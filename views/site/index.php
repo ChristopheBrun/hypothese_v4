@@ -16,6 +16,7 @@ use yii\helpers\Html;
  */
 
 $this->title = Yii::$app->name;
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
 Yii::$app->addKeywordsMetaTags(['PHP']);
 
 $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
@@ -45,6 +46,7 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
             'models' => $dailyEntries,
             'tags' => $tags,
             'showTagsAsButtons' => false,
+            'tagsButtonsRoute' => ['/site/pas-cliquer'],
         ]) ?>
     </div>
 

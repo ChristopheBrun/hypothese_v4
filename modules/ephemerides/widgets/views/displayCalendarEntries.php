@@ -12,6 +12,7 @@ use yii\helpers\Url;
  * @var CalendarEntry[] $models
  * @var Tag[] $tags
  * @var bool $showTagsAsButtons
+ * @var string|array $tagsButtonsRoute
  */
 
 if (!$models) {
@@ -56,9 +57,12 @@ if (!$models) {
                             <?= Html::a(
                                 Html::encode($tag->label),
                                 Url::to(['/calendar-entries/post-search', 'tag' => $tag->id]), ['class' => 'btn btn-primary']
-                            ) // @todo_cbn méthode à implémenter             ?>
+                            ) ?>
                         <?php else : ?>
-                            <button class="button btn-info"><?= $tag->label ?></button>
+                            <?= Html::a(
+                                Html::encode($tag->label),
+                                Url::to($tagsButtonsRoute), ['class' => 'btn btn-primary']
+                            ) ?>
                         <?php endif ?>
                     <?php endforeach ?>
                 </div>

@@ -39,7 +39,8 @@ Yii::$app->addKeywordsMetaTags(["PHP", "Regex", "Expressions régulières", "Exp
 
         <h2>Statistiques</h2>
 
-        <?= DetailView::widget([
+        <?= /** @noinspection PhpUnhandledExceptionInspection */
+        DetailView::widget([
             'model' => $model,
             'attributes' => [
                 [

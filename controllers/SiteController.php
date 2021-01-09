@@ -43,7 +43,7 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'contact', 'error', 'captcha', 'joke'],
+                        'actions' => ['index', 'contact', 'error', 'captcha', 'joke', 'pas-cliquer'],
                         'allow' => true,
                     ],
                     [
@@ -74,6 +74,10 @@ class SiteController extends Controller
             'joke' => [
                 'class' => ViewAction::class,
                 'defaultView' => 'joke',
+            ],
+            'pas-cliquer' => [
+                'class' => ViewAction::class,
+                'defaultView' => 'pas-cliquer',
             ],
             'captcha' => [
                 'class' => CaptchaAction::class,

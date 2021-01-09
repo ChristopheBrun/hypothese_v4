@@ -23,6 +23,9 @@ class DisplayCalendarEntries extends hWidget
     /** @var bool $showTagsAsButtons */
     public bool $showTagsAsButtons = true;
 
+    /** @var string|array $tagsButtonsRoute */
+    public $tagsButtonsRoute = null;
+
     /** @var string $templateName Préfixe du template à utiliser pour le rendu de la liste */
     public string $templateName = 'displayCalendarEntries';
 
@@ -48,6 +51,7 @@ class DisplayCalendarEntries extends hWidget
             'models' => $this->models,
             'tags' => $this->tags,
             'showTagsAsButtons' => $this->showTagsAsButtons,
+            'tagsButtonsRoute' => $this->tagsButtonsRoute,
         ]);
     }
 
