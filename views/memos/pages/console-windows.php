@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\web\View;
 
 $this->title = Yii::$app->name;
+Yii::$app->addKeywordsMetaTags(['Windows', 'console', 'Power Shell', "Variable d'environnement"]);
 
 // @see https://highlightjs.org/download/
 $this->registerCssFile('@web/js/highlight/styles/agate.css');

@@ -14,6 +14,7 @@ use yii\bootstrap\Html;
 /** @var array $parentheses */
 
 $this->title = "Expressions régulières";
+Yii::$app->addKeywordsMetaTags(["PHP", "Regex", "Expressions régulières", "Expression régulière"]);
 
 ?>
 

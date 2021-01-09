@@ -54,6 +54,8 @@ AppAsset::register($this);
     </div>
 </footer>
 
+<?php $this->registerMetaTag(['name' => 'keywords', 'content' => implode(',', Yii::$app->getKeywordsMetaTags())]) ?>
+
 <?php $this->endBody() ?>
 </body>
 

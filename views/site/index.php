@@ -16,6 +16,8 @@ use yii\helpers\Html;
  */
 
 $this->title = Yii::$app->name;
+Yii::$app->addKeywordsMetaTags(['PHP']);
+
 $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
 
 ?>

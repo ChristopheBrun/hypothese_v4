@@ -10,6 +10,9 @@ use yii\base\InvalidConfigException;
  */
 class Application extends \yii\web\Application
 {
+    /** @var string[] $keywordsMetaTags */
+    protected array $keywordsMetaTags = [];
+
     /**
      * Permet de s'assurer que le site utilise le bon encodage et la bonne localisation
      *
@@ -29,6 +32,34 @@ class Application extends \yii\web\Application
         // Réglage de la timezone sinon date() renvoie l'heure UTC
         $timezone = $config['params']['timezone'] ?? 'Europe/Paris';
         date_default_timezone_set($timezone);
+    }
+
+    /**
+     * @param string $tag
+     * @return $this
+     */
+    public function addKeywordsMetaTag(string $tag): Application
+    {
+        $this->keywordsMetaTags[] = $tag;
+        return $this;
+    }
+
+    /**
+     * @param array $tags
+     * @return $this
+     */
+    public function addKeywordsMetaTags(array $tags): Application
+    {
+        $this->keywordsMetaTags = array_merge($this->keywordsMetaTags, $tags);
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getKeywordsMetaTags(): array
+    {
+        return array_unique($this->keywordsMetaTags);
     }
 
 }
