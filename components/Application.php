@@ -8,12 +8,14 @@ namespace app\components;
  */
 class Application extends \app\modules\hlib\components\Application
 {
-//    /**
-//     *
-//     */
-//    public function init()
-//    {
-//        parent::init();
+    /**
+     *
+     */
+    public function init()
+    {
+        parent::init();
+        setlocale(LC_ALL, 'fr_FR');
+//
 //
 //        // On initialise les singletons pour qu'ils s'abonnent aux événements qu'ils doivent suivre
 ////        MailerEventHandler::singleton();
@@ -24,6 +26,6 @@ class Application extends \app\modules\hlib\components\Application
 //        // @todo_cbn voir pourquoi les modules déclarés dans 'bootstrap' n'ont pas l'air d'être automatiquement chargés
 //        HLib::registerTranslations();
 //        UserModule::registerTranslations();
-//    }
+    }
 
 }

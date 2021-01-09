@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpUnused */
+<?php /** @noinspection PhpMissingFieldTypeInspection */
+
+/** @noinspection PhpUnused */
 
 namespace app\modules\ephemerides\models;
 
@@ -40,7 +42,7 @@ use yii\web\UploadedFile;
  * @property CalendarEntryTag[] $calendarEntryTags
  * @property Tag[] $tags
  *
- * -- propriétés & méthodes fournies par ImageOwner --
+ * -- DEBUT propriétés & méthodes fournies par ImageOwner --
  * @property array $thumbnailsSizes
  *
  * @method string getImagesDirectoryPath($absolute = false)
@@ -64,12 +66,12 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     public $uploadedImage;
 
     /** @var  bool */
-    public $deleteImage = false;
+    public bool $deleteImage = false;
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'calendar_entry';
     }
@@ -77,7 +79,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             // date
@@ -113,7 +115,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             [
@@ -148,7 +150,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'event_date' => 'Date',
@@ -173,7 +175,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
      * @inheritdoc
      * @return CalendarEntryQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function find(): CalendarEntryQuery
     {
         return new CalendarEntryQuery();
     }
@@ -183,7 +185,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
      *
      * @return ActiveQuery
      */
-    public function getCalendarEntryTags()
+    public function getCalendarEntryTags(): ActiveQuery
     {
         return $this->hasMany(CalendarEntryTag::class, ['calendar_entry_id' => 'id']);
     }
@@ -194,7 +196,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getTags()
+    public function getTags(): ActiveQuery
     {
         return $this->hasMany(Tag::class, ['id' => 'tag_id'])->viaTable('calendar_entry_tag', ['calendar_entry_id' => 'id']);
     }
@@ -208,7 +210,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
      *
      * @return array
      */
-    public function getTagsIds()
+    public function getTagsIds(): array
     {
         return hArray::getColumn($this->tags, 'id');
     }
@@ -218,7 +220,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
      *
      * @return array
      */
-    public function getTagsNames()
+    public function getTagsNames(): array
     {
         return hArray::getColumn($this->tags, 'label');
     }
@@ -229,7 +231,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         // $this->event_date est au format SQL : 2010-08-20 00:00:00
         // Pour le slug, seule la partie 'date' nous intéresse, la partie 'heure' doit être supprimée
@@ -240,7 +242,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @return int
      */
-    public function year()
+    public function year(): int
     {
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return $date->year;
@@ -249,7 +251,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @return int
      */
-    public function month()
+    public function month(): int
     {
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return $date->month;
@@ -258,7 +260,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @return int
      */
-    public function day()
+    public function day(): int
     {
         $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
         return $date->day;

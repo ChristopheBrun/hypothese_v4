@@ -12,6 +12,8 @@ return [
 
     "Load error" => "Une erreur est survenue pendant le chargement des données",
 
+    "Missing parameters : {0}" => "Paramètres manquants : {0}",
+
     'Select a value in the list' => "Sélectionnez une valeur dans la liste",
     'There are errors in your form' => 'Il y a des erreurs dans votre formulaire',
     'The requested page does not exist' => 'La page demandée n\'existe pas',

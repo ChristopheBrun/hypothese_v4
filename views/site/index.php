@@ -1,10 +1,18 @@
 <?php
 
+use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
+use app\modules\ephemerides\models\Tag;
+use app\modules\ephemerides\widgets\DisplayCalendarEntries;
 use Carbon\Carbon;
 use yii\helpers\Html;
 
 /**
  * Page d'accueil du site
+ *
+ * @var CalendarEntrySearchForm $searchModel
+ * @var CalendarEntry[] $dailyEntries
+ * @var Tag[] $tags
  */
 
 $this->title = Yii::$app->name;
@@ -30,6 +38,12 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
                 </p>
             </div>
         </div>
+        <?= /** @noinspection PhpUnhandledExceptionInspection */
+        DisplayCalendarEntries::widget([
+            'models' => $dailyEntries,
+            'tags' => $tags,
+            'showTagsAsButtons' => false,
+        ]) ?>
     </div>
 
     <div class="panel-footer">

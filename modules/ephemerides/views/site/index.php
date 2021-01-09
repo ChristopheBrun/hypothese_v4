@@ -5,7 +5,9 @@ use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use Carbon\Carbon;
 
 /**
- * Page d'accueil du site
+ * Page d'accueil de l'ancien site
+ * @deprecated
+ * @archive
  *
  * @var yii\web\View            $this
  * @var CalendarEntryAlias $lastUpdatedEntry

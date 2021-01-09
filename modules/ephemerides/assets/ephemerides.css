@@ -1,0 +1,48 @@
+/* cartouche éphéméride de la page d'accueil du site */
+.calendar-entry-block {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.calendar-entry-block h2 {
+    font-size: 1.4em;
+    margin-top: 5px;
+}
+
+.calendar-entry-block h3 {
+    margin-top: 5px;
+}
+
+.calendar-entry-block .event-date {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-style: italic;
+    color: #8c8c8c;
+    font-size: 1.2em;
+}
+
+.calendar-entry-block .calendar-entry-tags {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.calendar-entry-tags {
+    font-weight: bold;
+    color: grey;
+}
+
+.calendar-entry-tags a {
+    margin-bottom: 5px;
+}
+
+.calendar-entry-text {
+    margin-bottom: 15px;
+}
+
+/* backend calendarEntries */
+#models-list li .disabled {
+    color: #8c8c8c;
+    font-style: italic;
+}

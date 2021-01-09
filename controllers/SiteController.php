@@ -14,9 +14,7 @@ use Yii;
 use Exception;
 use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-//use yii\web\ErrorAction;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -92,27 +90,13 @@ class SiteController extends Controller
      */
     public function actionIndex(): string
     {
-        //
-        // Page d'accueil publique
-        //
-
         // Récupération d'une liste éventuellement filtrée selon les critères du moteur de recherche
         $searchModel = new CalendarEntrySearchForm();
 
-        // date de la dernière mise à jour sur des éphémérides
-        $lastUpdatedEntry = CalendarEntry::find()->lastUpdated();
-
         // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
         $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags')->all();
-
-        $previousEntry = $nextEntry = null;
-        if (!count($dailyEntries)) {
-            $previousEntry = CalendarEntry::find()->lastEntryBeforeCalendarDate(time());
-            $nextEntry = CalendarEntry::find()->nextEntryAfterCalendarDate(time());
-        }
-
-        $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
-        return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'searchModel', 'tags'));
+        $tags = Tag::find()->orderByLabel()->all();
+        return $this->render('index', compact('dailyEntries', 'searchModel', 'tags'));
     }
 
     /**

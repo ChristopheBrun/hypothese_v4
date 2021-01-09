@@ -1,6 +1,8 @@
 <?php
 /**
  * Bloc d'affichage d'une éphéméride en frontend.
+ * @deprecated
+ * @archive
  *
  * @var CalendarEntry $entry
  * @var View $this
