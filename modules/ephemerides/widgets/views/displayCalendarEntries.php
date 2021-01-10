@@ -1,7 +1,7 @@
 <?php
 
 use app\modules\ephemerides\models\CalendarEntry;
-use app\modules\ephemerides\models\Tag;
+use app\modules\hlib\helpers\hString;
 use Carbon\Carbon;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -10,9 +10,8 @@ use yii\helpers\Url;
  * Affichage d'une liste d'éphémérides
  *
  * @var CalendarEntry[] $models
- * @var Tag[] $tags
- * @var bool $showTagsAsButtons
- * @var string|array $tagsButtonsRoute
+ * @var string|array $tagsButtonsAltRoute
+ * @var bool $showAdminButton
  */
 
 if (!$models) {
@@ -39,7 +38,7 @@ if (!$models) {
                     <i class="far fa-calendar-alt"></i>
                     <?php
                     $carbon = new Carbon($entry->event_date, 'Europe/Paris');
-                    echo $carbon->formatLocalized('%d %B %Y');
+                    echo hString::forceUTF8($carbon->formatLocalized('%d %B %Y'));
                     ?>
                 </div>
 
@@ -53,19 +52,26 @@ if (!$models) {
 
                 <div class="calendar-entry-tags">
                     <?php foreach ($entry->tags as $tag) : ?>
-                        <?php if ($showTagsAsButtons && count($entry->tags)) : ?>
+                        <?php if ($tagsButtonsAltRoute === null && count($entry->tags)) : ?>
                             <?= Html::a(
                                 Html::encode($tag->label),
                                 Url::to(['/calendar-entries/post-search', 'tag' => $tag->id]), ['class' => 'btn btn-primary']
                             ) ?>
-                        <?php else : ?>
+                        <?php elseif ($tagsButtonsAltRoute !== null) : ?>
                             <?= Html::a(
                                 Html::encode($tag->label),
-                                Url::to($tagsButtonsRoute), ['class' => 'btn btn-primary']
+                                Url::to($tagsButtonsAltRoute), ['class' => 'btn btn-primary']
                             ) ?>
                         <?php endif ?>
                     <?php endforeach ?>
                 </div>
+
+                <?php if ($showAdminButton) : ?>
+                    <?= Html::a(
+                        "Voir la fiche en backend",
+                        Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id]), ['class' => 'btn btn-info']
+                    ) ?>
+                <?php endif ?>
             </div>
         </div>
     </div>

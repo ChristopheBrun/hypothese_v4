@@ -17,8 +17,9 @@ return [
 
     'Date' => 'Date',
     'Delete' => 'Supprimer',
-    'Disabled' => 'Désactivé',
     'Description' => 'Description',
+    'Disabled' => 'Désactivé',
+    "Display" => "Afficher",
     'Edit' => 'Editer',
     'Enabled' => 'Activé',
 

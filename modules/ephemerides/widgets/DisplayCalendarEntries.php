@@ -4,7 +4,6 @@
 namespace app\modules\ephemerides\widgets;
 
 use app\modules\ephemerides\models\CalendarEntry;
-use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\widgets\hWidget;
 use yii\base\InvalidConfigException;
 
@@ -14,20 +13,30 @@ use yii\base\InvalidConfigException;
  */
 class DisplayCalendarEntries extends hWidget
 {
-    /** @var CalendarEntry[]|CalendarEntry $models */
+    /**
+     * @var CalendarEntry[]|CalendarEntry $models
+     *      Liste des éphémérides à afficher (un bloc par éphéméride)
+     */
     public $models;
 
-    /** @var Tag[] $tags */
-    public array $tags = [];
+    /**
+     * @var string|array $tagsButtonsAltRoute
+     *      null => les catégories sont affichées sous forme d'un bouton avec un lien vers les éphémérides de cette catégorie
+     *      route renseignée => les catégories sous la forme d'un lien utilisant cette route
+     */
+    public $tagsButtonsAltRoute = null;
 
-    /** @var bool $showTagsAsButtons */
-    public bool $showTagsAsButtons = true;
-
-    /** @var string|array $tagsButtonsRoute */
-    public $tagsButtonsRoute = null;
-
-    /** @var string $templateName Préfixe du template à utiliser pour le rendu de la liste */
+    /**
+     * @var string $templateName
+     *      Préfixe du template à utiliser pour le rendu de la liste
+     */
     public string $templateName = 'displayCalendarEntries';
+
+    /**
+     * @var bool $showAdminButton
+     *      true => on affiche un bouton avec un lien vers l'écran de vue backend pour l'éphéméride
+     */
+    public bool $showAdminButton = false;
 
     /**
      * @throws InvalidConfigException
@@ -49,9 +58,8 @@ class DisplayCalendarEntries extends hWidget
 
         return $this->render($this->templateName, [
             'models' => $this->models,
-            'tags' => $this->tags,
-            'showTagsAsButtons' => $this->showTagsAsButtons,
-            'tagsButtonsRoute' => $this->tagsButtonsRoute,
+            'tagsButtonsAltRoute' => $this->tagsButtonsAltRoute,
+            'showAdminButton' => $this->showAdminButton,
         ]);
     }
 

@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a(HLib::t('labels', 'Display'), ['display', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([

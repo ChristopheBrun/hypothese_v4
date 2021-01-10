@@ -18,7 +18,7 @@ class hString extends StringHelper
      * @param string $value
      * @return string
      */
-    public static function ascii($value)
+    public static function ascii(string $value): string
     {
         return (new Stringy($value))->toAscii();
     }
@@ -31,7 +31,7 @@ class hString extends StringHelper
      * @return string
      * @deprecated utiliser plutôt yii\helpers\Inflector::slug()
      */
-    public static function slugify($title, $separator = '-')
+    public static function slugify(string $title, $separator = '-'): string
     {
         // NB : on force le transtypage en (string) ici car il ne marche pas toujours tout seul.
         // ex : dans Url::to(), liste des arguments de l'url, Stringy n'est pas transtypé...
@@ -41,15 +41,16 @@ class hString extends StringHelper
     /**
      * Force l'encodage d'une chaine en UTF-8
      *
-     * @param $string
+     * @param string $string
      * @return string
      */
-    public static function forceUTF8($string)
+    public static function forceUTF8(string $string): string
     {
         if (!mb_check_encoding($string, 'UTF-8') ||
             $string !== mb_convert_encoding(mb_convert_encoding($string, 'UTF-32', 'UTF-8'), 'UTF-8', 'UTF-32')
         ) {
-            $string = mb_convert_encoding($string, 'UTF-8');
+//            $string = mb_convert_encoding($string, 'UTF-8');
+            $string = utf8_encode($string);
         }
 
         return $string;
@@ -59,7 +60,7 @@ class hString extends StringHelper
      * @param string $string
      * @return string
      */
-    public static function sanitize($string)
+    public static function sanitize(string $string): string
     {
         return trim(strip_tags($string));
     }

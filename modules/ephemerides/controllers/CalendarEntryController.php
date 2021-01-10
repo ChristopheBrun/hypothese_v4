@@ -30,7 +30,7 @@ class CalendarEntryController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'verbs' => [
@@ -97,14 +97,29 @@ class CalendarEntryController extends Controller
     }
 
     /**
-     * Displays a single CalendarEntry model.
+     * Fiche en lecture seule
+     *
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id)
     {
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Affiche l'éphéméride dans un widget telle qu'elle est censée être vue sur le frontend
+     *
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDisplay(int $id)
+    {
+        return $this->render('display', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -135,7 +150,7 @@ class CalendarEntryController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -153,7 +168,7 @@ class CalendarEntryController extends Controller
      * @param array $data
      * @return bool
      */
-    private function processForm(CalendarEntry $model, array $data)
+    private function processForm(CalendarEntry $model, array $data): bool
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
@@ -209,7 +224,7 @@ class CalendarEntryController extends Controller
      * @return bool
      * @throws Exception
      */
-    private function processModelImage(CalendarEntry $model, array $data, array $oldAttributes, UploadedFile $uploadedFile = null)
+    private function processModelImage(CalendarEntry $model, array $data, array $oldAttributes, UploadedFile $uploadedFile = null): bool
     {
         $saveModel = false;
 
@@ -273,7 +288,7 @@ class CalendarEntryController extends Controller
      * @return boolean
      * @throws Exception
      */
-    private function prepareTags(array &$data)
+    private function prepareTags(array &$data): bool
     {
         $currentTags = ArrayHelper::getColumn(Tag::find()->all(), 'id');
         $updatedTags = ArrayHelper::getValue($data, 'CalendarEntry.tags', []);
@@ -304,8 +319,9 @@ class CalendarEntryController extends Controller
      * @param array $data
      * @return bool
      * @throws \yii\db\Exception
+     * @throws Exception
      */
-    private function processTags(CalendarEntry $model, array $data)
+    private function processTags(CalendarEntry $model, array $data): bool
     {
         $updatedTagsIds = ArrayHelper::getValue($data, 'CalendarEntry.tags', []);
         return CalendarEntryTagQuery::updateTagsForCalendarEntry($model->getTagsIds(), $updatedTagsIds, $model->id);
@@ -318,7 +334,7 @@ class CalendarEntryController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
         try {
             $model = $this->findModel($id);
@@ -348,7 +364,7 @@ class CalendarEntryController extends Controller
      * @return CalendarEntry the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): CalendarEntry
     {
         if (($model = CalendarEntry::findOne($id)) !== null) {
             return $model;

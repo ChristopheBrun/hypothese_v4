@@ -4,6 +4,7 @@ use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
 use app\modules\ephemerides\widgets\DisplayCalendarEntries;
+use app\modules\user\lib\enums\AppRole;
 use Carbon\Carbon;
 use yii\helpers\Html;
 
@@ -44,9 +45,8 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
         <?= /** @noinspection PhpUnhandledExceptionInspection */
         DisplayCalendarEntries::widget([
             'models' => $dailyEntries,
-            'tags' => $tags,
-            'showTagsAsButtons' => false,
-            'tagsButtonsRoute' => ['/site/pas-cliquer'],
+            'tagsButtonsAltRoute' => ['/site/pas-cliquer'],
+            'showAdminButton' => Yii::$app->user->can(AppRole::SUPERADMIN),
         ]) ?>
     </div>
 

@@ -14,7 +14,8 @@ class Application extends \app\modules\hlib\components\Application
     public function init()
     {
         parent::init();
-        setlocale(LC_ALL, 'fr_FR');
+        setlocale(LC_TIME, 'fr_FR', 'French_France');
+        setlocale(LC_CTYPE, 'fr_FR', 'French_France');
 //
 //
 //        // On initialise les singletons pour qu'ils s'abonnent aux événements qu'ils doivent suivre
