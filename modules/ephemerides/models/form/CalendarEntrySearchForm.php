@@ -72,7 +72,8 @@ class CalendarEntrySearchForm extends ModelSearchForm
                 'in', 'range' => Domaine::getKeys()],
             // string
             [['title', 'tag', 'body', 'event_date'],
-                'filter', 'filter' => [hString::class, 'sanitize']],
+                'filter', 'filter' => [hString::class, 'sanitize'],
+                'skipOnEmpty' => true],
         ];
     }
 
