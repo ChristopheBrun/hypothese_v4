@@ -24,12 +24,15 @@ if (!$models) {
     <div class="calendar-entry-block">
         <div class="row">
             <div class="col-sm-4">
-                <div>
+                <div class="image">
                     <?php if ($entry->hasImage() & file_exists($entry->getImagePath('std', true))): ?>
                         <?= Html::img($entry->getImageUrl('lg'), ['class' => 'img-responsive img-thumbnail', 'alt' => $entry->getSlug()]) ?>
                     <?php else : ?>
                         &nbsp;-&nbsp;
                     <?php endif ?>
+                </div>
+                <div class="legende">
+                    <?= $entry->image_caption ?>
                 </div>
             </div>
 
@@ -46,11 +49,11 @@ if (!$models) {
                     <h2><?= Html::encode($entry->title) ?></h2>
                 </div>
 
-                <div class="calendar-entry-text">
+                <div class="description">
                     <?= nl2br($entry->description) ?>
                 </div>
 
-                <div class="calendar-entry-tags">
+                <div class="tags">
                     <?php foreach ($entry->tags as $tag) : ?>
                         <?php if ($tagsButtonsAltRoute === null && count($entry->tags)) : ?>
                             <?= Html::a(

@@ -28,21 +28,27 @@
     margin-bottom: 10px;
 }
 
-.calendar-entry-tags {
+.calendar-entry-block .tags {
     font-weight: bold;
     color: grey;
 }
 
-.calendar-entry-tags a {
+.calendar-entry-block .tags a {
     margin-bottom: 5px;
 }
 
-.calendar-entry-text {
+.calendar-entry-block .description {
     margin-bottom: 15px;
 }
 
 /* backend calendarEntries */
 #models-list li .disabled {
+    color: #8c8c8c;
+    font-style: italic;
+}
+
+.calendar-entry-block .legende {
+    text-align: center;
     color: #8c8c8c;
     font-style: italic;
 }
