@@ -21,7 +21,7 @@ switch ($env) {
         break;
     case 'prod' :
         define('YII_ENV', 'prod');
-        defined('YII_DEBUG') or define('YII_DEBUG', true);
+        defined('YII_DEBUG') or define('YII_DEBUG', false);
         break;
     default :
         define('YII_ENV', '???');
