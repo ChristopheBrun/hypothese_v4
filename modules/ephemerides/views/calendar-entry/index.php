@@ -6,7 +6,6 @@ use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\AssetsHelper;
-use app\modules\hlib\HLib;
 use app\modules\hlib\widgets\DisplayModels;
 use Carbon\Carbon;
 use yii\data\ActiveDataProvider;
