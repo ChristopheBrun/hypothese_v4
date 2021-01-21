@@ -13,8 +13,8 @@ switch (YII_ENV) {
         $pwd = require_once __DIR__ . '/private/pwd.prod.php';
         break;
     default :
-        /** @noinspection PhpUnhandledExceptionInspection */
-        throw new Exception("Environnement non défini : " . YII_ENV);
+        // Environnement non défini
+        die('nope !');
 }
 
 /**
