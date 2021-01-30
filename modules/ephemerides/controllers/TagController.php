@@ -2,11 +2,13 @@
 
 namespace app\modules\ephemerides\controllers;
 
+use app\modules\user\lib\enums\AppRole;
 use Throwable;
 use Yii;
 use app\modules\ephemerides\models\Tag;
 use app\modules\ephemerides\models\form\TagSearchForm;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -19,9 +21,18 @@ class TagController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
+            'access-admin' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [AppRole::SUPERADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -55,7 +66,7 @@ class TagController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -87,7 +98,7 @@ class TagController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -109,7 +120,7 @@ class TagController extends Controller
      * @throws Throwable
      * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
         $this->findModel($id)->delete();
 
@@ -123,7 +134,7 @@ class TagController extends Controller
      * @return Tag the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): Tag
     {
         if (($model = Tag::findOne($id)) !== null) {
             return $model;

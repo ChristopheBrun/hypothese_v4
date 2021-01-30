@@ -8,55 +8,46 @@ use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\hString;
 use app\modules\hlib\HLib;
 use app\modules\hlib\lib\enums\YesNo;
-use app\modules\hlib\models\ModelSearchForm;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use Exception;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * CalendarEntrySearchForm
  * Modèle pour le formulaire de recherche
  */
-class CalendarEntrySearchForm extends ModelSearchForm
+class CalendarEntrySearchForm extends CalendarEntry
 {
-    /** @var boolean */
-    public $enabled;
-    /** @var  int @see enum ImageStatus */
-    public $image;
-    /** @var  int */
-    public $article;
-    /** @var  int */
-    public $tag;
-    /** @var  string */
-    public $title;
-    /** @var  string */
-    public $body;
-    /** @var  string */
-    public $event_date;
+    /** @var string|null id de la catégorie demandée */
+    public ?string $tag = null;
 
-    /** @var array au format ['day' => n° de jour, 'month' => n° de mois] */
-    public $dateParams;
+    /** @var array Liste des jours demandés */
+    public array $dateParams = []; // au format [['day' => n° de jour, 'month' => n° de mois], ...]
+    // @internal $dateParams doit être public pour pouvoir être traité dans validate()
 
     /**
      * @inheritdoc
+     * @noinspection PhpUnusedParameterInspection
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             // fk
             [['tag'],
                 'exist', 'targetClass' => Tag::class, 'targetAttribute' => 'id'],
             // filtres
-            [['image', 'enabled', 'article'],
+            [['image', 'enabled'],
                 'filter', 'filter' => function ($value) {
                 // Ce sont des chaînes de caractères qui nous arrivent mais on veut des entiers pour garantir la validité des comparaisons strictes
                 return $value !== "" ? (int)$value : $value;
             }],
             [['dateParams'],
                 'each', 'rule' => [
-                'filter', 'filter' => function ($value) {
-                    $day = $value['day'];
-                    $month = $value['month'];
+                function ($attribute, $params, $validator, $current) {
+                    $day = $current['day'];
+                    $month = $current['month'];
                     return $day > 0 && $day < 32 && $month > 0 && $month < 13;
                 }]
             ],
@@ -73,38 +64,42 @@ class CalendarEntrySearchForm extends ModelSearchForm
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function search(array $params)
+    public function scenarios(): array
     {
-        $query = CalendarEntry::find();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
 
-        if (!$params) {
-            return $dataProvider;
-        }
+    /**
+     * @param array $params
+     * @return ActiveDataProvider
+     * @throws Exception
+     */
+    public function search(array $params): ActiveDataProvider
+    {
+        $this->load($params);
 
-        if (!$this->load($params)) {
-            throw new Exception(HLib::t('messages', 'loadError'));
-        }
-
-        if (!$this->validate($params)) {
-            throw new Exception(HLib::t('messages', 'validationError'));
-        }
-
-        if ($this->event_date) {
-            if (!preg_match('/(\d\d)-(\d\d)/', $this->event_date, $matches)) {
+        // Si une recherche par date est demandée, les infos sont dans le champ 'event_date' au format jj-mm
+        if (ArrayHelper::getValue($params, 'event_date')) {
+            if (!preg_match('/(\d\d)-(\d\d)/', $params['event_date'], $matches)) {
                 throw new Exception(HLib::t('messages', 'validationError'));
             }
 
             $this->dateParams[] = ['day' => $matches[1], 'month' => $matches[2]];
         }
 
-        $this->buildFilter($query);
-        $query->joinWith('tags');
+        $query = CalendarEntry::find()->with('tags');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $this->buildFilter($query);
         return $dataProvider;
     }
 
@@ -113,13 +108,13 @@ class CalendarEntrySearchForm extends ModelSearchForm
      */
     protected function buildFilter(CalendarEntryQuery $query)
     {
-        // présence d'une image
-        // NB : on n'utilise pas de switch ici car nous avons besoin d'une comparaison stricte sur la valeur de $this->image
-        if ($this->image === ImageStatus::ST_WITH) {
-            $query->andWhere(['not', ['image' => null]]);
-        } elseif ($this->image === ImageStatus::ST_WITHOUT) {
-            $query->andWhere(['image' => null]);
-        }
+//        // présence d'une image
+//        // NB : on n'utilise pas de switch ici car nous avons besoin d'une comparaison stricte sur la valeur de $this->image
+//        if ($this->image === ImageStatus::ST_WITH) {
+//            $query->andWhere(['not', ['image' => null]]);
+//        } elseif ($this->image === ImageStatus::ST_WITHOUT) {
+//            $query->andWhere(['image' => null]);
+//        }
 
         // Filtre par date
         if ($this->dateParams) {
@@ -135,17 +130,14 @@ class CalendarEntrySearchForm extends ModelSearchForm
             $query->andWhere($sqlStr);
         }
 
-        $query->andFilterWhere([
-            'enabled' => $this->enabled,
-            'tag.id' => $this->tag,
-        ]);
+        $query->andFilterWhere(['enabled' => $this->enabled]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'label', $this->body]);
+        $query->andFilterWhere(['like', 'description', $this->description]);
 
-        if (trim($this->title)) {
-            $query->andWhere('MATCH (title) AGAINST (:title)', ['title' => "\"$this->title\""]);
-        }
-
-        if (trim($this->body)) {
-            $query->andWhere('MATCH (body) AGAINST (:body)', ['body' => "\"$this->body\""]);
+        if ($this->tag) {
+            $query->innerJoinWith('tags');
+            $query->andWhere(['tag.id' => $this->tag]);
         }
     }
 

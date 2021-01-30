@@ -9,12 +9,14 @@ use app\modules\hlib\helpers\hFile;
 use app\modules\hlib\helpers\hImage;
 use app\modules\hlib\HLib;
 use app\modules\hlib\lib\Flash;
+use app\modules\user\lib\enums\AppRole;
 use Carbon\Carbon;
 use Exception;
 use Throwable;
 use Yii;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -33,6 +35,15 @@ class CalendarEntryController extends Controller
     public function behaviors(): array
     {
         return [
+            'access-admin' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [AppRole::SUPERADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -81,10 +92,10 @@ class CalendarEntryController extends Controller
         $dateParams = [];
         $date = new Carbon();
         for ($i = 0; $i < 3; ++$i) {
-            $dateParams[] = ['day' => $date->day, 'month' => $date->month];
+            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
             $date->addDay();
         }
-        $params = array_merge(Yii::$app->request->queryParams, ['dateParams' => $dateParams]);
+        $params = array_merge(Yii::$app->request->queryParams, $dateParams);
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
 
