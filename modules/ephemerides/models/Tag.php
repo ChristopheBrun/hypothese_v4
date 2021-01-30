@@ -31,7 +31,7 @@ class Tag extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'tag';
     }
@@ -39,7 +39,7 @@ class Tag extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['label'],
@@ -55,7 +55,7 @@ class Tag extends ActiveRecord
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             [
@@ -85,7 +85,7 @@ class Tag extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => HLib::t('labels', 'ID'),
@@ -99,7 +99,7 @@ class Tag extends ActiveRecord
      * @inheritdoc
      * @return TagQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function find(): TagQuery
     {
         return new TagQuery();
     }
@@ -107,7 +107,7 @@ class Tag extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getCalendarEntryTags()
+    public function getCalendarEntryTags(): ActiveQuery
     {
         return $this->hasMany(CalendarEntryTag::class, ['tag_id' => 'id']);
     }
@@ -116,10 +116,14 @@ class Tag extends ActiveRecord
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getCalendarEntries()
+    public function getCalendarEntries(): ActiveQuery
     {
         return $this->hasMany(CalendarEntry::class, ['id' => 'calendar_entry_id'])->viaTable('calendar_entry_tag', ['tag_id' => 'id']);
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Calcule un 'slug' pour ce modèle
@@ -127,9 +131,39 @@ class Tag extends ActiveRecord
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return Inflector::slug($this->label);
+    }
+
+    /**
+     * @return int
+     */
+    public function countEnabledCalendarEntries(): int
+    {
+        $out = 0;
+        foreach ($this->calendarEntries as $calendarEntry) {
+            if ($calendarEntry->enabled) {
+                ++$out;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return int
+     */
+    public function countDisabledCalendarEntries(): int
+    {
+        $out = 0;
+        foreach ($this->calendarEntries as $calendarEntry) {
+            if (!$calendarEntry->enabled) {
+                ++$out;
+            }
+        }
+
+        return $out;
     }
 
 }
