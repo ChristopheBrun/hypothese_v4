@@ -1,7 +1,6 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 
 use app\modules\ephemerides\EphemeridesModule;
-use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\hlib\helpers\AssetsHelper;
 use app\modules\hlib\HLib;
@@ -38,10 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'event_date',
             'title',
-            [
-                'attribute' => 'domaine',
-                'value' => Domaine::getLabel($model->domaine),
-            ],
             [
                 'attribute' => 'tags',
                 'value' => DisplayModels::widget([

@@ -5,7 +5,6 @@
 namespace app\modules\ephemerides\models;
 
 use app\modules\ephemerides\EphemeridesModule;
-use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
@@ -30,7 +29,6 @@ use yii\web\UploadedFile;
  * @property string $event_date
  * @property string $title
  * @property string $description
- * @property string $domaine @see enum Domaine
  * @property string $body
  * @property string $image
  * @property string $image_caption
@@ -102,9 +100,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             // boolean
             [['enabled', 'deleteImage'],
                 'boolean'],
-            // enum
-            [['domaine'],
-                'in', 'range' => Domaine::getKeys()],
             //
             [['uploadedImage'],
                 'file', 'extensions' => 'png, jpg, jpeg, gif'], // seuls formats reconnus par le driver GD

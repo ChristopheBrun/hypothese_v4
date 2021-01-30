@@ -1,7 +1,6 @@
 <?php
 
 use app\modules\ephemerides\EphemeridesModule;
-use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
@@ -18,7 +17,6 @@ use yii\widgets\Pjax;
 /* @var $searchModel CalendarEntrySearchForm */
 /* @var $dataProvider ActiveDataProvider */
 /* @var $tags Tag[] */
-/* @var $domaines Tag[] */
 /* @var $filter string */
 
 $this->title = EphemeridesModule::t('labels', 'Calendar Entries');
@@ -63,14 +61,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             'title',
-            [
-                'attribute' => 'domaine',
-                'label' => "Domaine",
-                'value' => function (CalendarEntry $model) {
-                    return Domaine::getLabel($model->domaine);
-                },
-                'filter' => Domaine::getList(),
-            ],
             [
                 'attribute' => 'tag',
                 'label' => "Catégories",

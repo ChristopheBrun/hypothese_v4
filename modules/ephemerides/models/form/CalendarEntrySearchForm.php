@@ -2,7 +2,6 @@
 
 namespace app\modules\ephemerides\models\form;
 
-use app\modules\ephemerides\lib\enums\Domaine;
 use app\modules\ephemerides\lib\enums\ImageStatus;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\Tag;
@@ -28,8 +27,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
     public $article;
     /** @var  int */
     public $tag;
-    /** @var  string */
-    public $domaine;
     /** @var  string */
     public $title;
     /** @var  string */
@@ -68,8 +65,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
                 'in', 'range' => YesNo::getKeys()],
             [['image'],
                 'in', 'range' => ImageStatus::getKeys()],
-            [['domaine'],
-                'in', 'range' => Domaine::getKeys()],
             // string
             [['title', 'tag', 'body', 'event_date'],
                 'filter', 'filter' => [hString::class, 'sanitize'],
@@ -143,7 +138,6 @@ class CalendarEntrySearchForm extends ModelSearchForm
         $query->andFilterWhere([
             'enabled' => $this->enabled,
             'tag.id' => $this->tag,
-            'domaine' => $this->domaine,
         ]);
 
         if (trim($this->title)) {

@@ -11,7 +11,6 @@ use yii\widgets\MaskedInput;
 /* @var $model app\modules\ephemerides\models\CalendarEntry */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $tags array [id => label] liste des tags disponibles */
-/* @var $domaines array [code_str => label] liste des domaines disponibles */
 
 ?>
 
@@ -51,9 +50,6 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'image_caption') ?>
 
-    <?= $form->field($model, 'domaine')->dropDownList($domaines, ['prompt' => '']) ?>
-
-    <?= ""; //$form->field($model, 'tags')->listBox($tags, ['id' => 'tags_ids', 'multiple' => true]) ?>
     <?= $form->field($model, 'tags')->widget(Select2::class, [
         'data' => $tags,
         'options' => ['multiple' => true],

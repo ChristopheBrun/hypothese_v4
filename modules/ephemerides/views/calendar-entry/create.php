@@ -1,8 +1,7 @@
 <?php
 
-use app\modules\ephemerides\lib\enums\Domaine;
-use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\HLib;
 use yii\helpers\ArrayHelper;
@@ -21,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'tags'  => ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label'),
-        'domaines'  => Domaine::getList(),
     ]) ?>
 
 </div>
