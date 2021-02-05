@@ -37,12 +37,7 @@ class CalendarEntrySearchForm extends CalendarEntry
             // fk
             [['tag'],
                 'exist', 'targetClass' => Tag::class, 'targetAttribute' => 'id'],
-            // filtres
-            [['image', 'enabled'],
-                'filter', 'filter' => function ($value) {
-                // Ce sont des chaînes de caractères qui nous arrivent mais on veut des entiers pour garantir la validité des comparaisons strictes
-                return $value !== "" ? (int)$value : $value;
-            }],
+            // tableau de dates
             [['dateParams'],
                 'each', 'rule' => [
                 function ($attribute, $params, $validator, $current) {
@@ -108,14 +103,6 @@ class CalendarEntrySearchForm extends CalendarEntry
      */
     protected function buildFilter(CalendarEntryQuery $query)
     {
-//        // présence d'une image
-//        // NB : on n'utilise pas de switch ici car nous avons besoin d'une comparaison stricte sur la valeur de $this->image
-//        if ($this->image === ImageStatus::ST_WITH) {
-//            $query->andWhere(['not', ['image' => null]]);
-//        } elseif ($this->image === ImageStatus::ST_WITHOUT) {
-//            $query->andWhere(['image' => null]);
-//        }
-
         // Filtre par date
         if ($this->dateParams) {
             $sqlArray = [];
