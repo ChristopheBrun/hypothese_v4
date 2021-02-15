@@ -25,7 +25,7 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'description')->widget(Widget::class, []) ?>
 
-    <?= $form->field($model, 'twitter')->textInput(['size' => 255]) ?>
+    <?= $form->field($model, 'twitter')->textarea() ?>
 
     <?= $form->field($model, 'body')->widget(Widget::class) ?>
 
