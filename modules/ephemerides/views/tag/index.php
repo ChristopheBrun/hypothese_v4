@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             'label',
+            'rank',
             [
                 'label' => "Ephémérides actives",
                 'value' => function (Tag $model) {

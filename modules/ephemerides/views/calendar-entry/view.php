@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             'description:html',
+            'twitter',
             'body:html',
             [
                 'attribute' => 'image',

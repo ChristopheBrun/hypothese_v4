@@ -29,6 +29,7 @@ use yii\web\UploadedFile;
  * @property string $event_date
  * @property string $title
  * @property string $description
+ * @property string $twitter
  * @property string $body
  * @property string $image
  * @property string $image_caption
@@ -97,6 +98,8 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
                 'default', 'value' => ''],
             [['title', 'image', 'image_caption'],
                 'filter', 'filter' => [hString::class, 'sanitize']],
+            [['twitter'],
+                'string', 'max' => 255],
             // boolean
             [['enabled', 'deleteImage'],
                 'boolean'],
@@ -153,6 +156,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             'event_date' => 'Date',
             'title' => "Titre",
             'description' => "Description",
+            'twitter' => "Texte compatible Twitter",
             'body' => "Article",
             'image' => "Image",
             'image_caption' => "Légende",

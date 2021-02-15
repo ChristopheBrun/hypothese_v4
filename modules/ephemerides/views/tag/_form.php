@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'rank')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton(HLib::t('labels', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

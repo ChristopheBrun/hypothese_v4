@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 use yii\db\Migration;
 
@@ -7,12 +7,14 @@ use yii\db\Migration;
  */
 class m210130_111654_alterTable_calendar_entry extends Migration
 {
+    private $tableName = 'calendar_entry';
+
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->dropColumn('calendar_entry', 'domaine');
+        $this->dropColumn($this->tableName, 'domaine');
     }
 
     /**

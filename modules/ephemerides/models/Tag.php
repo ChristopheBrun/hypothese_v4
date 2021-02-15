@@ -4,7 +4,6 @@ namespace app\modules\ephemerides\models;
 
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\HLib;
-
 use app\modules\ephemerides\models\query\TagQuery;
 use SimpleXMLElement;
 use yii\base\InvalidConfigException;
@@ -20,6 +19,7 @@ use yii\helpers\Url;
  *
  * @property string $id
  * @property string $label
+ * @property int $rank
  * @property string $created_at
  * @property string $updated_at
  *
@@ -49,6 +49,9 @@ class Tag extends ActiveRecord
                 'filter', 'filter' => 'strip_tags'],
             [['label'],
                 'filter', 'filter' => 'trim'],
+            // int
+            [['rank'],
+                'integer'],
         ];
     }
 
@@ -90,6 +93,7 @@ class Tag extends ActiveRecord
         return [
             'id' => HLib::t('labels', 'ID'),
             'label' => HLib::t('labels', 'Label'),
+            'rank' => "Rang",
             'created_at' => HLib::t('labels', 'Created At'),
             'updated_at' => HLib::t('labels', 'Updated At'),
         ];

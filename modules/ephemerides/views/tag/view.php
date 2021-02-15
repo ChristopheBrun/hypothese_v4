@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'label',
+            'rank',
             AssetsHelper::detailViewSeparator(),
             [
                 'label' => EphemeridesModule::t('labels', 'Nb References'),
