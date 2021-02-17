@@ -100,7 +100,9 @@ class SiteController extends Controller
         // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
         $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags')->all();
         CalendarEntry::orderByTagRank($dailyEntries);
+
         $tags = Tag::find()->orderByLabel()->all();
+
         return $this->render('index', compact('dailyEntries', 'searchModel', 'tags'));
     }
 
