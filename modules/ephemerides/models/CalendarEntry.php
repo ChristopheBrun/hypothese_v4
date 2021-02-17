@@ -17,6 +17,7 @@ use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
@@ -273,5 +274,25 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     public function isEnabled(): bool
     {
         return $this->enabled;
+    }
+
+    /**
+     * Classe un tableau d'éphémérides selon le rang attribué à ses catégories.
+     * On ne garde que le plus bas - donc le plus prioritaire - des rangs trouvés.
+     * @param CalendarEntry[] $calendarEntries
+     * @internal Sert essentiellement àordonner les éphémérides par grands thèmes : Musique, sciences, etc...
+     */
+    public static function orderByTagRank(array &$calendarEntries)
+    {
+        ArrayHelper::multisort($calendarEntries, function (CalendarEntry $calendarEntry) {
+            $out = PHP_INT_MAX;
+            foreach ($calendarEntry->tags as $tag) {
+                if (!is_null($tag->rank)) {
+                    $out = min($out, $tag->rank);
+                }
+            }
+
+            return $out;
+        });
     }
 }
