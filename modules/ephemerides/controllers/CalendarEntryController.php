@@ -73,6 +73,76 @@ class CalendarEntryController extends Controller
     }
 
     /**
+     * Liste des éphémérides du jour J
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function actionIndexD()
+    {
+        // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
+        if (array_key_exists('event_date', Yii::$app->request->queryParams)) {
+            return $this->redirect(array_merge(['index'], Yii::$app->request->queryParams));
+        }
+
+        // Si aucun filtre n'est demandé manuellement sur la date, on peut rester sur cette page et
+        // traiter les autres filtres en plus du filtre local 'J'
+        $searchModel = new CalendarEntrySearchForm();
+
+        $dateParams = [];
+        $date = new Carbon();
+        for ($i = 0; $i < 1; ++$i) {
+            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
+            $date->addDay();
+        }
+        $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+        $dataProvider = $searchModel->search($params);
+        $tags = Tag::find()->orderByLabel()->all();
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'tags' => $tags,
+            'filter' => EphemeridesModule::t('labels', 'D'),
+        ]);
+    }
+
+   /**
+     * Liste des éphémérides du jour J
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function actionIndexD1()
+    {
+        // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
+        if (array_key_exists('event_date', Yii::$app->request->queryParams)) {
+            return $this->redirect(array_merge(['index'], Yii::$app->request->queryParams));
+        }
+
+        // Si aucun filtre n'est demandé manuellement sur la date, on peut rester sur cette page et
+        // traiter les autres filtres en plus du filtre local 'J'
+        $searchModel = new CalendarEntrySearchForm();
+
+        $dateParams = [];
+        $date = new Carbon();
+        $date->addDay();
+        for ($i = 0; $i < 1; ++$i) {
+            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
+        }
+        $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+        $dataProvider = $searchModel->search($params);
+        $tags = Tag::find()->orderByLabel()->all();
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'tags' => $tags,
+            'filter' => EphemeridesModule::t('labels', 'D'),
+        ]);
+    }
+
+    /**
      * Liste des éphémérides compris entre J et J+2
      *
      * @return mixed

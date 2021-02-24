@@ -35,7 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(EphemeridesModule::t('labels', 'Add Calendar Entry'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(EphemeridesModule::t('labels', 'D to D+2'), ['index-d2'], ['class' => 'btn btn-default']) ?>
+        <?= Html::a(EphemeridesModule::t('labels', 'D'), ['index-d'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(EphemeridesModule::t('labels', 'D+1'), ['index-d1'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(EphemeridesModule::t('labels', 'D to D+2'), ['index-d2'], ['class' => 'btn btn-info']) ?>
         <?= Html::a(EphemeridesModule::t('labels', 'Show All'), ['index'], ['class' => 'btn btn-default']) ?>
     </p>
 

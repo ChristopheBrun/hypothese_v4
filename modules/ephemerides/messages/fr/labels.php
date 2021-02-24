@@ -7,6 +7,8 @@ return [
     "Create Tag" => "Ajouter une catégorie",
     "Current image" => "Image actuelle",
 
+    "D" => "J",
+    "D+1" => "J+1",
     "D to D+2" => "J à J+2",
 
     "Nb References" => "Nb de références",
