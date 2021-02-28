@@ -100,6 +100,20 @@ class CalendarEntryQuery extends ActiveQuery
     }
 
     /**
+     * Sélectionne les éphémérides du jour calendaire (mois/jour) correspondant à $date
+     *
+     * @param int $month
+     * @param int $day
+     * @return static
+     */
+    public function byMonthAndDay($month, $day)
+    {
+        return $this
+            ->andWhere('DAY(event_date) = :day', ['day' => $day])
+            ->andWhere('MONTH(event_date) = :month', ['month' => $month]);
+    }
+
+    /**
      * @param string $order
      * @return static
      */

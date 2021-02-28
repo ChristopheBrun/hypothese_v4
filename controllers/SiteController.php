@@ -101,6 +101,13 @@ class SiteController extends Controller
         $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags')->all();
         CalendarEntry::orderByTagRank($dailyEntries);
 
+        // Si on est le 28 février d'une année non bissextile (sans 29 février), on ajoute les éphémérides du 29/02
+        $tomorrow = date('m-d', time() + 60 * 60 * 24);
+        if (date('m-d') == '02-28' && $tomorrow != '02-29') {
+            $tomorrowEntries = CalendarEntry::find()->enabled()->byMonthAndDay(2, 29)->orderByDate()->with('tags')->all();
+            $dailyEntries = array_merge($dailyEntries, $tomorrowEntries);
+        }
+
         $tags = Tag::find()->orderByLabel()->all();
 
         return $this->render('index', compact('dailyEntries', 'searchModel', 'tags'));
