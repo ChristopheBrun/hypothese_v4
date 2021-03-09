@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'description:html',
             'twitter',
+            'notes:html',
             'body:html',
             [
                 'attribute' => 'image',
@@ -54,7 +55,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             'image_caption',
-            'notes:html',
             AssetsHelper::detailViewSeparator(),
             [
                 'attribute' => 'enabled',
