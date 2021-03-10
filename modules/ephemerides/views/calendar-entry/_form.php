@@ -30,9 +30,9 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'notes')->widget(Widget::class)
         ->hint(EphemeridesModule::t('messages', 'Notes are for redactors only, they are not published')) ?>
 
-    <?= $form->field($model, 'body')->widget(Widget::class) ?>
-
-    <?= $form->field($model, 'enabled')->checkbox() ?>
+    <?php if ($model->body) : ?>
+        <?= $form->field($model, 'body')->widget(Widget::class) ?>
+    <?php endif ?>
 
     <div class="form-group">
         <?= Html::label(EphemeridesModule::t('labels', 'Current image') . ' : ' . $model->image,
@@ -58,6 +58,8 @@ use yii\widgets\MaskedInput;
         'options' => ['multiple' => true],
         'pluginOptions' => ['tags' => true, 'maximumInputLength' => 5],
     ]) ?>
+
+    <?= $form->field($model, 'enabled')->checkbox() ?>
 
     <div class="form-group">
         <?= Html::submitButton(HLib::t('labels', 'Save'), ['class' => 'btn btn-success']) ?>
