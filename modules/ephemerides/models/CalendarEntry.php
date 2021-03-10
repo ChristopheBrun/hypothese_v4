@@ -35,7 +35,8 @@ use yii\web\UploadedFile;
  * @property string $image
  * @property string $image_caption
  * @property integer $enabled
- * @property integer $notes
+ * @property string $notes
+ * @property string $source_images
  * @property string $created_at
  * @property string $updated_at
  *
@@ -95,11 +96,11 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             [['title', 'event_date'],
                 'required'],
             //string
-            [['image', 'image_caption'],
+            [['image', 'image_caption', 'source_image'],
                 'default', 'value' => ''],
-            [['title', 'image', 'image_caption'],
+            [['title', 'image', 'image_caption', 'source_image'],
                 'filter', 'filter' => [hString::class, 'sanitize']],
-            [['twitter'],
+            [['twitter', 'source_image'],
                 'string', 'max' => 255],
             // boolean
             [['enabled', 'deleteImage'],
@@ -164,6 +165,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             'uploadedImage' => "Image",
             'enabled' => "Activé",
             'notes' => "Notes",
+            'source_image' => "Source de l'image",
             'created_at' => "Date création",
             'updated_at' => "Date maj",
             'tags' => "Catégories",

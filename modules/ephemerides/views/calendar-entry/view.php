@@ -55,6 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             'image_caption',
+            'source_image',
             AssetsHelper::detailViewSeparator(),
             [
                 'attribute' => 'enabled',

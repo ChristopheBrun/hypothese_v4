@@ -40,20 +40,18 @@ use yii\widgets\MaskedInput;
         <br/>
 
         <?php if ($model->hasImage()) : ?>
-
             <?= Html::img($model->getImageUrl('std', true), ['alt' => $model->getSlug()]) ?>
             <?= $form->field($model, 'deleteImage')->checkbox() ?>
-
         <?php else : ?>
-
             <div><?= Yii::t('messages', 'There is no image for this object') ?></div>
-
         <?php endif ?>
     </div>
 
     <?= $form->field($model, 'uploadedImage')->fileInput() ?>
 
     <?= $form->field($model, 'image_caption') ?>
+
+    <?= $form->field($model, 'source_image')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'tags')->widget(Select2::class, [
         'data' => $tags,
