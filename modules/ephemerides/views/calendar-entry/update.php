@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = HLib::t('labels', 'Update');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(HLib::t('labels', 'View'), ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a("Fiche backend", ['view', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a("Fiche frontend", ['show', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= $this->render('_form', [

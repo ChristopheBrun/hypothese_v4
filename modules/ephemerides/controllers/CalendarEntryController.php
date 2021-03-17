@@ -35,12 +35,17 @@ class CalendarEntryController extends Controller
     public function behaviors(): array
     {
         return [
-            'access-admin' => [
+            'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => [AppRole::SUPERADMIN],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['?'],
+                        'actions' => ['show'],
                     ],
                 ],
             ],
@@ -107,7 +112,7 @@ class CalendarEntryController extends Controller
         ]);
     }
 
-   /**
+    /**
      * Liste des éphémérides du jour J
      *
      * @return mixed
@@ -198,9 +203,9 @@ class CalendarEntryController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDisplay(int $id)
+    public function actionShow(int $id)
     {
-        return $this->render('display', [
+        return $this->render('show', [
             'model' => $this->findModel($id),
         ]);
     }

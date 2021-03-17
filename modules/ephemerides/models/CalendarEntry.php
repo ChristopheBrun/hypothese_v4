@@ -83,10 +83,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     public function rules(): array
     {
         return [
-            // date
-//            ['event_date', 'filter', 'filter' => function ($value) {
-//                return hDate::convertDateToSQLFormat($value);
-//            }],
             ['event_date',
                 'filter', 'filter' => function ($value) {
                 // en entrée : dd-MM-yyyy ; en sortie : format compatible SQL
@@ -296,5 +292,21 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
 
             return $out;
         });
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrlShow()
+    {
+        return Url::to(['/ephemerides/calendar-entry/show', 'id' => $this->id], true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrlView()
+    {
+        return Url::to(['/ephemerides/calendar-entry/view', 'id' => $this->id], true);
     }
 }

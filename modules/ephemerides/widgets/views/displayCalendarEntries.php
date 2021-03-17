@@ -72,8 +72,12 @@ if (!$models) {
                 <?php if ($showAdminButton) : ?>
                     <?= Html::a(
                         "Voir la fiche en backend",
-                        Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id]), ['class' => 'btn btn-info']
-                    ) ?>
+                        Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id], true),
+                        ['class' => 'btn btn-info']) ?>
+                    <?= Html::a(
+                        "Voir la fiche en frontend",
+                        Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
+                        ['class' => 'btn btn-info']) ?>
                 <?php endif ?>
             </div>
         </div>

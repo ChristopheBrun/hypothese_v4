@@ -6,6 +6,7 @@ use app\modules\hlib\helpers\AssetsHelper;
 use app\modules\hlib\HLib;
 use app\modules\hlib\widgets\DisplayModels;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $model CalendarEntry */
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a(HLib::t('labels', 'Display'), ['display', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a("Fiche frontend", ['show', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -47,6 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'description:html',
             'twitter',
+            [
+                'label' => "URL fiche frontend",
+                'value' => Url::to(['/ephemerides/calendar-entry/show', 'id' => $model->id], true),
+                'format'=> 'url',
+            ],
             'notes:html',
             'body:html',
             [
