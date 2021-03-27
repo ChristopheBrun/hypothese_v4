@@ -83,9 +83,10 @@ if (!$models) {
 
                 <?php if ($showDirectLink) : ?>
                     <?= Html::a(
-                        "Lien permanent",
+                        $entry->title,
                         Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
                         ['class' => 'btn btn-default']) ?>
+                (lien permanent)
                 <?php endif ?>
             </div>
         </div>
