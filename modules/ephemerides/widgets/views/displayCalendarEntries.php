@@ -12,6 +12,7 @@ use yii\helpers\Url;
  * @var CalendarEntry[] $models
  * @var string|array $tagsButtonsAltRoute
  * @var bool $showAdminButton
+ * @var bool $showDirectLink
  */
 
 if (!$models) {
@@ -78,6 +79,13 @@ if (!$models) {
                         "Voir la fiche en frontend",
                         Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
                         ['class' => 'btn btn-info']) ?>
+                <?php endif ?>
+
+                <?php if ($showDirectLink) : ?>
+                    <?= Html::a(
+                        "Lien permanent",
+                        Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
+                        ['class' => 'btn btn-default']) ?>
                 <?php endif ?>
             </div>
         </div>

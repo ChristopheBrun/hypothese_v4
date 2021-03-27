@@ -14,29 +14,31 @@ use yii\base\InvalidConfigException;
 class DisplayCalendarEntries extends hWidget
 {
     /**
-     * @var CalendarEntry[]|CalendarEntry $models
-     *      Liste des éphémérides à afficher (un bloc par éphéméride)
+     * @var CalendarEntry[]|CalendarEntry Liste des éphémérides à afficher (un bloc par éphéméride)
      */
     public $models;
 
     /**
-     * @var string|array $tagsButtonsAltRoute
+     * @var string|array
      *      null => les catégories sont affichées sous forme d'un bouton avec un lien vers les éphémérides de cette catégorie
      *      route renseignée => les catégories sous la forme d'un lien utilisant cette route
      */
     public $tagsButtonsAltRoute = null;
 
     /**
-     * @var string $templateName
-     *      Préfixe du template à utiliser pour le rendu de la liste
+     * @var string Préfixe du template à utiliser pour le rendu de la liste
      */
     public string $templateName = 'displayCalendarEntries';
 
     /**
-     * @var bool $showAdminButton
-     *      true => on affiche un bouton avec un lien vers l'écran de vue backend pour l'éphéméride
+     * @var bool true => on affiche un bouton avec un lien vers l'écran de vue backend pour l'éphéméride
      */
     public bool $showAdminButton = false;
+
+    /**
+     * @var bool true => on affiche un lien vers la fiche frontend
+     */
+    public bool $showDirectLink = false;
 
     /**
      * @throws InvalidConfigException
@@ -60,6 +62,7 @@ class DisplayCalendarEntries extends hWidget
             'models' => $this->models,
             'tagsButtonsAltRoute' => $this->tagsButtonsAltRoute,
             'showAdminButton' => $this->showAdminButton,
+            'showDirectLink' => $this->showDirectLink,
         ]);
     }
 
