@@ -5,6 +5,7 @@ use app\modules\hlib\helpers\hString;
 use Carbon\Carbon;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 
 /**
  * Affichage d'une liste d'éphémérides
@@ -17,6 +18,21 @@ use yii\helpers\Url;
 
 if (!$models) {
     return;
+}
+
+if ($showDirectLink) {
+    $js = <<<JS
+    $('.copy-link').on('click', function () {
+        console.log('.copy-link click');
+        var temp = $("<input>");
+        $("body").append(temp);
+        temp.val($(this).prev().attr('href')).select();
+        document.execCommand("copy");
+        temp.remove();
+        console.log($(this).prev().attr('href'));
+    });
+JS;
+    $this->registerJs($js, View::POS_END);
 }
 
 ?>
@@ -85,8 +101,10 @@ if (!$models) {
                     <?= Html::a(
                         $entry->title,
                         Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
-                        ['class' => 'btn btn-default']) ?>
-                (lien permanent)
+                        ['class' => 'btn btn-info frontend-link']) ?>
+                    <button class="btn btn-default copy-link"><i class="fas fa-clipboard"></i>&nbsp;Copier le
+                        lien
+                    </button>
                 <?php endif ?>
             </div>
         </div>
