@@ -88,10 +88,10 @@ JS;
 
                 <?php if ($showDirectLink) : ?>
                     <?= Html::a(
-                        $entry->title,
+                        "<i class='fas fa-link'></i>&nbsp;$entry->title",
                         Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
                         ['class' => 'btn btn-info frontend-link']) ?>
-                    <button class="btn btn-default copy-link"><i class="fas fa-clipboard"></i>&nbsp;Copier le
+                    <button class="btn btn-default copy-link"><i class="far fa-copy"></i>&nbsp;Copier le
                         lien
                     </button>
                 <?php endif ?>
