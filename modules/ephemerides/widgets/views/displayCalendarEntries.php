@@ -86,17 +86,6 @@ JS;
                     <?php endforeach ?>
                 </div>
 
-                <?php if ($showAdminButton) : ?>
-                    <?= Html::a(
-                        "Voir la fiche en backend",
-                        Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id], true),
-                        ['class' => 'btn btn-info']) ?>
-                    <?= Html::a(
-                        "Voir la fiche en frontend",
-                        Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
-                        ['class' => 'btn btn-info']) ?>
-                <?php endif ?>
-
                 <?php if ($showDirectLink) : ?>
                     <?= Html::a(
                         $entry->title,
@@ -105,6 +94,19 @@ JS;
                     <button class="btn btn-default copy-link"><i class="fas fa-clipboard"></i>&nbsp;Copier le
                         lien
                     </button>
+                <?php endif ?>
+
+                <?php if ($showAdminButton) : ?>
+                    <div style="margin-top: 5px">
+                        <?= Html::a(
+                            "Voir la fiche en backend",
+                            Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id], true),
+                            ['class' => 'btn btn-info']) ?>
+                        <?= Html::a(
+                            "Voir la fiche en frontend",
+                            Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
+                            ['class' => 'btn btn-info']) ?>
+                    </div>
                 <?php endif ?>
             </div>
         </div>
