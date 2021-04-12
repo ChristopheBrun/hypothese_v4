@@ -94,10 +94,10 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             //string
             [['image', 'image_caption', 'source_image'],
                 'default', 'value' => ''],
-            [['title', 'image', 'image_caption', 'source_image'],
+            [['image', 'image_caption', 'source_image'],
                 'filter', 'filter' => [hString::class, 'sanitize']],
             [['twitter', 'source_image'],
-                'string', 'max' => 255],
+                'string', 'max' => 500],
             // boolean
             [['enabled', 'deleteImage'],
                 'boolean'],
@@ -105,7 +105,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             [['uploadedImage'],
                 'file', 'extensions' => 'png, jpg, jpeg, gif'], // seuls formats reconnus par le driver GD
             // safe
-            [['description', 'notes', 'body'],
+            [['description', 'notes', 'body', 'title'],
                 'safe']
         ];
     }

@@ -21,7 +21,7 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'event_date')->textInput(['type' => 'date'])
         ->widget(MaskedInput::class, ['mask' => '9999-99-99']) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textarea() ?>
 
     <?= $form->field($model, 'description')->widget(Widget::class, []) ?>
 
