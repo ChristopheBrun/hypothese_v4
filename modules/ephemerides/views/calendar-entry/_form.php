@@ -21,9 +21,9 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'event_date')->textInput(['type' => 'date'])
         ->widget(MaskedInput::class, ['mask' => '9999-99-99']) ?>
 
-    <?= $form->field($model, 'title')->textarea()->widget(Widget::class) ?>
+    <?= $form->field($model, 'title')->widget(Widget::class) ?>
 
-    <?= $form->field($model, 'description')->widget(Widget::class) ?>
+    <?= $form->field($model, 'description')->widget(Widget::class, ['settings' => ['minHeight' => '200px']]) ?>
 
     <?= $form->field($model, 'twitter')->textarea() ?>
 
