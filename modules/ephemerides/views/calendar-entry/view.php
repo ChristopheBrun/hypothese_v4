@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'event_date',
-            'title',
+            'title:html',
             [
                 'attribute' => 'tags',
                 'value' => DisplayModels::widget([
