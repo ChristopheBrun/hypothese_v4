@@ -1,8 +1,5 @@
 <?php
 
-use yii\log\EmailTarget;
-use yii\log\FileTarget;
-
 switch (YII_ENV) {
     case 'dev':
         $db = require_once __DIR__ . '/private/db.dev.php';
@@ -109,11 +106,11 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => FileTarget::class,
+                    'class' => yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
                 [
-                    'class' => EmailTarget::class,
+                    'class' => yii\log\EmailTarget::class,
                     'levels' => ['error'],
                     'message' => [
                         'from' => 'supervision@hypothese.net',
@@ -157,7 +154,7 @@ $config = [
             ],
         ],
         'user' => [
-            'identityClass' => 'app\modules\user\models\User',
+            'identityClass' => app\modules\user\models\User::class,
             'authTimeout' => 14400, // 4 * 60 * 60 = 4 heures
             'enableAutoLogin' => 'true',
             'loginUrl' => '/login',

@@ -46,13 +46,12 @@ class User extends ActiveRecord implements IdentityInterface
     const SCENARIO_REGISTER = 'register';
     const SCENARIO_PASSWORD = 'password';
 
-    /** @var  string */
-    public $email_confirm;
+    public string $email_confirm;
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'user';
     }
@@ -60,7 +59,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return array
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_REGISTER] = ['email'];
@@ -71,7 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['email', 'filter', 'filter' => 'trim'],
@@ -88,7 +87,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array_merge(
             parent::behaviors(), [
@@ -105,7 +104,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         UserModule::registerTranslations();
         return [
@@ -129,7 +128,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return ActiveQuery
      */
-    public function getProfiles()
+    public function getProfiles(): ActiveQuery
     {
         return $this->hasMany(Profile::class, ['user_id' => 'id']);
     }
@@ -137,7 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return ActiveQuery
      */
-    public function getAuthorizations()
+    public function getAuthorizations(): ActiveQuery
     {
         return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
     }
@@ -146,7 +145,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getRoles()
+    public function getRoles(): ActiveQuery
     {
         return $this->hasMany(AuthItem::class, ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id'])
             ->where(['auth_item.type' => AuthItemType::ROLE]);
@@ -156,7 +155,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getPermissions()
+    public function getPermissions(): ActiveQuery
     {
         return $this->hasMany(AuthItem::class, ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id'])
             ->where(['auth_item.type' => AuthItemType::PERMISSION]);
@@ -167,7 +166,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @return UserQuery the active query used by this AR class.
      * @throws InvalidConfigException
      */
-    public static function find()
+    public static function find(): UserQuery
     {
         return Yii::createObject(UserQuery::class, [get_called_class()]);
     }
@@ -183,7 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Null should be returned if such an identity cannot be found
      * or the identity is not in an active state (disabled, deleted, etc.)
      */
-    public static function findIdentity($id)
+    public static function findIdentity($id): IdentityInterface
     {
         return static::findOne(['id' => $id]);
     }
@@ -197,7 +196,7 @@ class User extends ActiveRecord implements IdentityInterface
      * Null should be returned if such an identity cannot be found
      * or the identity is not in an active state (disabled, deleted, etc.)
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken($token, $type = null): ?IdentityInterface
     {
         switch ($type) {
             case h::getClass(HttpBasicAuth::class) :
@@ -229,7 +228,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @return string a key that is used to check the validity of a given identity ID.
      * @see validateAuthKey()
      */
-    public function getAuthKey()
+    public function getAuthKey(): string
     {
         return $this->auth_key;
     }
@@ -241,10 +240,11 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $authKey the given auth key
      * @return bool whether the given auth key is valid.
      * @see getAuthKey()
+     * @noinspection PhpMissingParamTypeInspection
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool
     {
-        return $this->auth_key = $authKey;
+        return $this->auth_key == $authKey;
     }
 
 //    /**
@@ -260,7 +260,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @return string
      */
-    public function formatName()
+    public function formatName(): string
     {
         return $this->profiles ? $this->profiles[0]->formatName() : '';
     }
@@ -269,7 +269,7 @@ class User extends ActiveRecord implements IdentityInterface
      * @param bool $mailtoLink
      * @return string
      */
-    public function formatNameAndMail($mailtoLink = true)
+    public function formatNameAndMail($mailtoLink = true): string
     {
         $name = $this->formatName();
         return $mailtoLink ?
@@ -284,7 +284,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return Profile|null
      */
-    public function getProfile()
+    public function getProfile(): ?Profile
     {
         return $this->profiles ? $this->profiles[0] : null;
     }
