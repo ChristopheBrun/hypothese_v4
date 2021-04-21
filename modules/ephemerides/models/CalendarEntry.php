@@ -92,7 +92,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
             [['title', 'event_date'],
                 'required'],
             //string
-            [['image', 'image_caption', 'source_image'],
+            [['image', 'image_caption', 'source_image', 'body'],
                 'default', 'value' => ''],
             [['image', 'image_caption', 'source_image'],
                 'filter', 'filter' => [hString::class, 'sanitize']],
