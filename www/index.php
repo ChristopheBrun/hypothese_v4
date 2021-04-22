@@ -6,7 +6,11 @@
  * 2 - Initialisation de l'application et lancement
  */
 
-require_once __DIR__ . '/../config/web.env.php';
+define('YII_ENV', 'dev');
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+//define('YII_ENV', 'prod');
+//defined('YII_DEBUG') or define('YII_DEBUG', false);
+
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 

@@ -1,13 +1,19 @@
 <?php
 
+// @internal On utilise require et non require_once car Codeception appelle le fichier de config plusieurs fois, en ce
+// cas require_once va renvoyer true et les variables seront mal initialisées
 switch (YII_ENV) {
     case 'dev':
-        $db = require_once __DIR__ . '/private/db.dev.php';
-        $pwd = require_once __DIR__ . '/private/pwd.dev.php';
+        $db = require __DIR__ . '/private/db.dev.php';
+        $pwd = require __DIR__ . '/private/pwd.dev.php';
+        break;
+    case 'test':
+        $db = require __DIR__ . '/private/db.test.php';
+        $pwd = require __DIR__ . '/private/pwd.test.php';
         break;
     case 'prod':
-        $db = require_once __DIR__ . '/private/db.prod.php';
-        $pwd = require_once __DIR__ . '/private/pwd.prod.php';
+        $db = require __DIR__ . '/private/db.prod.php';
+        $pwd = require __DIR__ . '/private/pwd.prod.php';
         break;
     default :
         // Environnement non défini
@@ -36,13 +42,16 @@ $config = [
     'bootstrap' => [
         'log',
         'hlib',
-        'user', //le composant web/user
+        //le composant web/user
+        'user',
+        // le module user
         function () {
             return Yii::$app->getModule('user');
-        }, // le module user
+        },
         'ephemerides',
     ],
     'on beforeRequest' => function () {
+        // on doit passer par du https
         if (!Yii::$app->request->isSecureConnection) {
             $url = Yii::$app->request->getAbsoluteUrl();
             $url = str_replace('http:', 'https:', $url);
@@ -59,7 +68,7 @@ $config = [
         'definitions' => require(__DIR__ . '/classMap.php'),
     ],
     'language' => 'fr-FR',
-    'version' => '4.0.02',
+    'version' => '4.0.03',
 
     //----------------------------------------------
     // Paramètres
@@ -71,6 +80,7 @@ $config = [
             'driver' => 'gd',
             'webDirectory' => 'images',
         ],
+        'captchaEnabled' => true,
     ],
 
     //----------------------------------------------
@@ -151,6 +161,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
 //                'helpers/<action:[\w-]+>' => 'utilitaires/<action>',
+                'debug/<controller>/<action>' => 'debug/<controller>/<action>',
             ],
         ],
         'user' => [
@@ -187,12 +198,20 @@ $config = [
 ];
 
 // Surcharge de la configuration avec les autres données condidentielles ou privées
+// @internal On utilise require et non require_once car Codeception appelle le fichier de config plusieurs fois, en ce
+// cas require_once va renvoyer true et la config risque d'être mal initialisée
 switch (YII_ENV) {
+    case 'dev' :
+        require __DIR__ . '/config.dev.php';
+        break;
+    case 'test' :
+        require __DIR__ . '/config.test.php';
+        break;
     case 'prod' :
-        require_once __DIR__ . '/private/config.prod.php';
+        require __DIR__ . '/config.prod.php';
         break;
     default :
-        require_once __DIR__ . '/private/config.dev.php';
+        die ('nope nope !');
 }
 
 // La barre de debug
@@ -201,7 +220,7 @@ if (YII_DEBUG) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['127.0.0.1', '::1', '88.187.229.52'],
+//        'allowedIPs' => ['127.0.0.1', '::1', '88.187.229.52'],
     ];
 }
 

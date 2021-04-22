@@ -16,10 +16,11 @@ class ModelValidationException extends WarningException
     /**
      * ModelLoadException constructor.
      * @param Model $model
+     * @param bool $sendWarning
      */
-    public function __construct(Model $model)
+    public function __construct(Model $model, bool $sendWarning = true)
     {
-        Yii::warning(['!$model->validate()', $model]);
+        $sendWarning && Yii::warning(['!$model->validate()', $model, $model->getErrors()]);
         parent::__construct(HLib::t('messages', "Validation error"));
     }
 }

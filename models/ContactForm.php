@@ -10,31 +10,40 @@ use yii\base\Model;
  */
 class ContactForm extends Model
 {
-    public $name;
-    public $email;
-    public $subject;
-    public $body;
-    public $verifyCode;
+    public string $name = '';
+    public string $email = '';
+    public string $subject = '';
+    public string $body = '';
+    public string $verifyCode = '';
 
     /**
      * @return array the validation rules.
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body', 'verifyCode'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+            // required
+            [['name', 'email', 'subject', 'body'],
+                'required'],
+            [['verifyCode'],
+                'required', 'when' => function () {
+                return Yii::$app->params['captchaEnabled'];
+            }],
+            // email
+            ['email',
+                'email'],
+            // captcha
+            ['verifyCode',
+                'captcha', 'when' => function () {
+                return Yii::$app->params['captchaEnabled'];
+            }],
         ];
     }
 
     /**
      * @return array customized attribute labels
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'name' => Yii::t('app', 'yourName'),
@@ -50,7 +59,7 @@ class ContactForm extends Model
      *
      * @return bool
      */
-    public function sendMail()
+    public function sendMail(): bool
     {
         $infos = sprintf("Mail envoyé par : %s (%s)", $this->email, $this->name);
         return Yii::$app->mailer->compose()

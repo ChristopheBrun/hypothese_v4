@@ -51,6 +51,7 @@ AppAsset::register($this);
         <p class="pull-left">&copy; Hypothese.net &copy; 2013 - <?= date('Y'); ?></p>
 
         <p class="pull-right"><?= HLib::t('labels', 'Version') . ' ' . Yii::$app->version ?></p>
+        <p class="pull-right"><?= YII_ENV != 'prod' ? 'YII_ENV = ' . YII_ENV : '' ?>&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
 </footer>
 

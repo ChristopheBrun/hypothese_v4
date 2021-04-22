@@ -18,6 +18,7 @@ use app\modules\hlib\HLib;
 use yii\base\ActionEvent;
 use yii\base\Component;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
 use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -36,19 +37,17 @@ class UserEventHandler extends Component
      * Stockage des utilisateurs récupérés dans onBeforeUpdateUser()
      * @var array id => User
      */
-    protected $userDirtyAttributes = [];
+    protected array $userDirtyAttributes = [];
 
-    /** @var  UserEventHandler */
-    protected static $singleton;
+    protected static ?UserEventHandler $singleton= null;
 
     /**
      * Singleton à appeler au lancement de l'application ou du module pour qu'on puisse s'abonner aux événements qui nous intéressent
+     * @return UserEventHandler
      * @see \app\components\Application::init()
      *
-     * @return UserEventHandler
-     * @throws NotSupportedException
      */
-    public static function singleton()
+    public static function singleton(): UserEventHandler
     {
         if (!static::$singleton) {
             static::$singleton = new static();
@@ -59,19 +58,20 @@ class UserEventHandler extends Component
 
     /**
      * UserEventHandler constructor.
+     * Ne pas appeler directement pour exploiter le singleton
      *
      * @param array $config
      * @throws NotSupportedException
      */
     public function __construct($config = [])
     {
-        parent::__construct($config);
-        if (!static::$singleton) {
-            static::$singleton = $this;
-            $this->subscribeEvents();
-        } else {
+        if (static::$singleton) {
             throw new NotSupportedException(HLib::t('messages', "Only one instance allowed"));
         }
+
+        parent::__construct($config);
+        static::$singleton = $this;
+        $this->subscribeEvents();
     }
 
     /**
@@ -98,11 +98,10 @@ class UserEventHandler extends Component
 
     /**
      * @return UserMail
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
-    protected function getMailer()
+    protected function getMailer(): UserMail
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return Yii::createObject(UserMail::class);
     }
 
@@ -116,7 +115,7 @@ class UserEventHandler extends Component
      *  - affichage d'un message flash
      *
      * @param ActionEvent $event
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function onAfterRegister(ActionEvent $event)
     {
@@ -210,7 +209,7 @@ class UserEventHandler extends Component
      *  - envoi d'un mail avec le lien pour confirmer son mot de passe
      *
      * @param ActionEvent $event
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function onAfterCreateUser(ActionEvent $event)
     {
@@ -241,7 +240,8 @@ class UserEventHandler extends Component
      *  - selon la configuration du module, reset possible du mot de passe
      *
      * @param ActionEvent $event
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function onAfterUpdateUser(ActionEvent $event)
     {
@@ -279,7 +279,8 @@ class UserEventHandler extends Component
      *  - selon la configuration du module, reset possible du mot de passe
      *
      * @param ActionEvent $event
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function onAfterUpdateOwnUser(ActionEvent $event)
     {

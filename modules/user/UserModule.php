@@ -2,6 +2,7 @@
 
 namespace app\modules\user;
 
+use app\modules\hlib\helpers\h;
 use app\modules\user\lib\UserEventHandler;
 use Yii;
 use yii\base\BootstrapInterface;
@@ -18,40 +19,40 @@ class UserModule extends Module implements BootstrapInterface
     //
 
     /** @var int Durée de validité d'un jeton de confirmation, en secondes */
-    public $confirmationToken_rememberFor = 3600; // 60*60 secondes = 1h
+    public int $confirmationToken_rememberFor = 3600; // 60*60 secondes = 1h
 
     /** @var int */
-    public $password_minLength = 6;
+    public int $password_minLength = 6;
 
     /** @var string Route de redirection après avoir créé son mot de passe */
-    public $password_redirectAfterConfirm = '/';
+    public string $password_redirectAfterConfirm = '/';
 
     /** @var string Route de redirection après avoir changé son mot de passe */
-    public $password_redirectAfterReset = '/';
+    public string $password_redirectAfterReset = '/';
 
     /** @var int Durée de validité d'un jeton de reset du mot de passe, en secondes */
-    public $password_rememberResetTokenFor = 3600; // 60*60 secondes = 1h
+    public int $password_rememberResetTokenFor = 3600; // 60*60 secondes = 1h
 
     /** @var bool Indique s'il faut obliger l'utilisateur à renouveler son mot de passe après qu'il a modifié son email */
-    public $password_resetAfterEmailChange = false;
+    public bool $password_resetAfterEmailChange = false;
 
     /** @var string Route de redirection après authentification */
-    public $redirectAfterLogin = '/';
+    public string $redirectAfterLogin = '/';
 
     /** @var string Route de redirection après déconnexion */
-    public $redirectAfterLogout = '/';
+    public string $redirectAfterLogout = '/';
 
     /** @var string Route de redirection après inscription */
-    public $redirectAfterRegister = '/';
+    public string $redirectAfterRegister = '/';
 
     /** @var bool $registration_confirmationRequired true => on passe par un mail de confirmation avant d'activer le compte sur le site */
-    public $registration_confirmationRequired = false;
+    public bool $registration_confirmationRequired = false;
 
     /** @var bool Active ou désactive les page d'inscription */
-    public $registration_enable = true;
+    public bool $registration_enable = true;
 
     /** @var int Durée d'une session, en secondes */
-    public $session_rememberFor = 86400; // 60*60*24 secondes = 1j
+    public int $session_rememberFor = 86400; // 60*60*24 secondes = 1j
 
     //
     //
@@ -59,14 +60,16 @@ class UserModule extends Module implements BootstrapInterface
 
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
      */
     public function init()
     {
         parent::init();
         static::registerTranslations();
-        // Lancement du gestionnaire d'événements (singleton)
-        Yii::createObject(UserEventHandler::class);
+
+        // initialisation des gestionnaires d'événements
+        /** @var UserEventHandler $class */
+        $class = h::getClass(UserEventHandler::class);
+        $class::singleton();
     }
 
     /**
@@ -101,10 +104,10 @@ class UserModule extends Module implements BootstrapInterface
      * @param string $category
      * @param string $message
      * @param array $params
-     * @param string $language
+     * @param string|null $language
      * @return mixed
      */
-    public static function t($category, $message, $params = [], $language = null)
+    public static function t(string $category, string $message, array $params = [], string $language = null)
     {
         return Yii::t('modules/user/' . $category, $message, $params, $language);
     }

@@ -36,10 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'body')->textarea(['rows' => 6, 'readonly' => $formSubmitted]) ?>
 
-                <?= /** @noinspection PhpUnhandledExceptionInspection */
-                $formSubmitted ? '' : $form->field($model, 'verifyCode')->widget(Captcha::class, [
+                <?php if(!$formSubmitted && Yii::$app->params['captchaEnabled']) : ?>
+
+                <?=
+                    /** @noinspection PhpUnhandledExceptionInspection */
+                    $form->field($model, 'verifyCode')->widget(Captcha::class, [
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                 ]) ?>
+
+                <?php endif ?>
 
                 <div class="form-group">
                     <?= Html::submitButton(Yii::t('app', 'sendMessage'), ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>

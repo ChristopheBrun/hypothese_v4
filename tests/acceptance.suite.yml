@@ -2,8 +2,8 @@ class_name: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://hypothese-v4
+            url: http://hypothese-v4/index-test.php
         - Yii2:
             part: orm
-            entryScript: index-test.php
+            configFile: '/config/web.php'
             cleanup: false
