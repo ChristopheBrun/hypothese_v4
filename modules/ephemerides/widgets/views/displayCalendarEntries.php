@@ -91,9 +91,11 @@ JS;
                         "<i class='fas fa-link'></i>&nbsp;$entry->title",
                         Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
                         ['class' => 'btn btn-info frontend-link']) ?>
-                    <button class="btn btn-default copy-link"><i class="far fa-copy"></i>&nbsp;Copier le
-                        lien
-                    </button>
+                    <?php if ($showAdminButton) : ?>
+                        <button class="btn btn-default copy-link">
+                            <i class="far fa-copy"></i>&nbsp;Copier le lien
+                        </button>
+                    <?php endif ?>
                 <?php endif ?>
 
                 <?php if ($showAdminButton) : ?>
