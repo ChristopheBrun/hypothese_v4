@@ -111,6 +111,6 @@ JS;
                     </div>
                 <?php endif ?>
             </div>
-        </div>aa
+        </div>
     </div>
 <?php endforeach ?>
