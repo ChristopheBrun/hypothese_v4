@@ -47,7 +47,7 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
             'models' => $dailyEntries,
             'tagsButtonsAltRoute' => ['/site/pas-cliquer'],
             'showAdminButton' => Yii::$app->user->can(AppRole::SUPERADMIN),
-            'showDirectLink' => true,
+            // 'showDirectLink' => true,
         ]) ?>
     </div>
 
