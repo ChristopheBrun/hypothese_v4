@@ -28,6 +28,11 @@ class UtilsController extends Controller
         $dirname = '';
         $chaineASupprimer = '';
 
+        if(!is_dir($dirname)) {
+            echo "\nRépertoire introuvable : $dirname\n";
+            return ExitCode::getReason(ExitCode::USAGE);
+        }
+
         $files = FileHelper::findFiles($dirname);
         foreach ($files as $filename) {
             $newName = str_replace($chaineASupprimer, '', $filename);

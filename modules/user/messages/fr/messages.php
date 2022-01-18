@@ -34,6 +34,7 @@ return [
     "The password must contain at least {errors}" => "Le mot de passe doit contenir au moins {errors}",
     "This account is already confirmed" => "Ce compte est déjà confirmé",
     "This email address is already used" => "Cette adresse mail est déjà utilisée",
+    "User created : {0}" => "Utilisateur créé : {0}",
     "Unkown user" => "Utilisateur inconnu",
 
     "We are sending you a mail with the instructions to reset your password" =>

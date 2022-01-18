@@ -1,14 +1,15 @@
 <?php
 
+use app\modules\user\UserModule;
 use yii\helpers\Html;
-
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\user\models\User */
 
-$this->title = Yii::t('labels', 'Create User');
+$this->title = UserModule::t('labels', 'Create User');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('labels', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="user-create">
 

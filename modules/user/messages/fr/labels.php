@@ -39,6 +39,7 @@ return [
     "Password Usage" => "Nb d'utilisations du mot de passe",
     "Permission" => "Permission",
     "Permissions" => "Permissions",
+    "Profile" => "Profil",
     "Profiles" => "Profils",
     "Register" => "Inscrivez-vous",
     "Registered From" => "IP inscription",

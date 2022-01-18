@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(UserModule::t('labels', 'Create User'), ['create'], ['class' => 'btn btn-success', 'onClick' => "alert('A faire'); return false"]) ?>
+        <?= Html::a(UserModule::t('labels', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -41,10 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             [
                 'attribute' => 'profileName',
-                'label' => UserModule::t('labels', 'Profiles'),
+                'label' => UserModule::t('labels', 'Profile'),
                 'value' => function (User $model) {
                     return DisplayModelsWithLinks::widget([
-                        'models' => $model->profiles,
+                        'models' => $model->profile,
                         'labelMethod' => 'formatName',
                         'controllerRoute' => '/user/profile',
                     ]);

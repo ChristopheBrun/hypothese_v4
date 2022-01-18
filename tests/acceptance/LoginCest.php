@@ -1,21 +1,24 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 use yii\helpers\Url;
 
 class LoginCest
 {
-//    public function ensureThatLoginWorks(AcceptanceTester $I)
-//    {
-//        $I->amOnPage(Url::toRoute('/site/login'));
-//        $I->see('Login', 'h1');
-//
-//        $I->amGoingTo('try to login with correct credentials');
-//        $I->fillField('input[name="LoginForm[username]"]', 'admin');
-//        $I->fillField('input[name="LoginForm[password]"]', 'admin');
-//        $I->click('login-button');
-//        $I->wait(2); // wait for button to be clicked
-//
-//        $I->expectTo('see user info');
-//        $I->see('Logout');
-//    }
+    public function _before(AcceptanceTester $I)
+    {
+        $I->amOnPage(Url::toRoute('/user/security/login'));
+    }
+
+
+    public function ensureThatLoginWorks(AcceptanceTester $I)
+    {
+        $I->see("Veuillez vous authentifier", 'h1');
+
+        $I->amGoingTo('try to login with correct credentials');
+        $I->fillField("Email", 'admin@test.net');
+        $I->fillField("Mot de passe", 'test');
+        $I->click("Connexion");
+        $I->expectTo("Etre authentifié");
+        $I->see("Vous êtes à présent connecté à votre compte utilisateur");
+    }
 }

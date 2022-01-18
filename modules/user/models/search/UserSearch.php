@@ -3,6 +3,7 @@
 namespace app\modules\user\models\search;
 
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\user\models\User;
@@ -13,12 +14,12 @@ use app\modules\user\models\User;
 class UserSearch extends User
 {
     /** @var  string[] A renseignersi l'utilisateur recherché doit avoir au moins un de ces rôles */
-    public $hasRoleIn;
+    public array $hasRoleIn;
 
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id'], 'integer'],
@@ -28,7 +29,7 @@ class UserSearch extends User
     /**
      * @inheritdoc
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -40,9 +41,9 @@ class UserSearch extends User
      * @param array $params
      *
      * @return ActiveDataProvider
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         /** @var User $user */
         $user = Yii::createObject(User::class);

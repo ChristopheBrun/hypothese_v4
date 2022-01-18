@@ -90,7 +90,7 @@ class RegistrationForm extends Model
     }
 
     /**
-     * Actions supplémentaires à encapsules dans la transaction
+     * Actions supplémentaires à encapsuler dans la transaction
      *
      * @return bool
      */

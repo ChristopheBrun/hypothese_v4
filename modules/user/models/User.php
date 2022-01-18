@@ -35,18 +35,16 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property Profile[] $profiles
- * @property Profile $profile
+ * @property ?Profile $profile
  * @property AuthAssignment[] $authorizations
  * @property AuthItem[] $roles
  * @property AuthItem[] $permissions
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const SCENARIO_CREATE = 'create';
     const SCENARIO_REGISTER = 'register';
     const SCENARIO_PASSWORD = 'password';
-
-    public string $email_confirm;
 
     /**
      * @inheritdoc
@@ -62,6 +60,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios(): array
     {
         $scenarios = parent::scenarios();
+        $scenarios[static::SCENARIO_CREATE] = ['email', 'password_hash'];
         $scenarios[static::SCENARIO_REGISTER] = ['email'];
         $scenarios[static::SCENARIO_PASSWORD] = ['password_hash', 'password_updated_at', 'password_usage'];
         return $scenarios;
@@ -77,7 +76,6 @@ class User extends ActiveRecord implements IdentityInterface
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'unique'],
-            ['email_confirm', 'compare', 'compareAttribute' => 'email'],
             //
             [['registered_from', 'confirmed_at', 'blocked_at', 'logged_in_at', 'logged_in_from',
                 'auth_key', 'password_hash', 'password_updated_at', 'password_usage', 'created_at', 'updated_at'], 'safe'],
@@ -110,7 +108,6 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => Yii::t('labels', 'ID'),
             'email' => UserModule::t('labels', 'Email'),
-            'email_confirm' => UserModule::t('labels', 'Email (confirm)'),
             'password_hash' => UserModule::t('labels', 'Password Hash'),
             'password_updated_at' => UserModule::t('labels', 'Password Updated At'),
             'password_usage' => UserModule::t('labels', 'Password Usage'),
@@ -131,6 +128,20 @@ class User extends ActiveRecord implements IdentityInterface
     public function getProfiles(): ActiveQuery
     {
         return $this->hasMany(Profile::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Renvoie le premier profil associé à cet utilisateur
+     * Il s'agit d'une commodité permettant de gérer un profil par défaut, utile pour toutes les applications ne proposant qu'un seul
+     * profil par utilisateur
+     *
+     * @return Profile|null
+     */
+    public function getProfile(): ?Profile
+    {
+        /** @var Profile $profile */
+        $profile = $this->getProfiles()->one();
+        return $profile ?: null;
     }
 
     /**
@@ -209,9 +220,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Returns an ID that can uniquely identify a user identity.
-     * @return string|int an ID that uniquely identifies a user identity.
+     * @return int an ID that uniquely identifies a user identity.
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -240,7 +251,6 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $authKey the given auth key
      * @return bool whether the given auth key is valid.
      * @see getAuthKey()
-     * @noinspection PhpMissingParamTypeInspection
      */
     public function validateAuthKey($authKey): bool
     {
@@ -262,31 +272,19 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function formatName(): string
     {
-        return $this->profiles ? $this->profiles[0]->formatName() : '';
+        return $this->profile ? $this->profile->formatName() : '';
     }
 
     /**
      * @param bool $mailtoLink
      * @return string
      */
-    public function formatNameAndMail($mailtoLink = true): string
+    public function formatNameAndMail(bool $mailtoLink = true): string
     {
         $name = $this->formatName();
         return $mailtoLink ?
             sprintf('%s (<a href="mailto:%s">%s</a>)', $name, $this->email, $this->email)
             : sprintf('%s (%s)', $name, $this->email);
-    }
-
-    /**
-     * Renvoie le premier profil associé à cet utilisateur
-     * Il s'agit d'une commodité permettant de gérer un profil par défaut, utile pour toutes les applications ne proposant qu'un seul
-     * profil par utilisateur
-     *
-     * @return Profile|null
-     */
-    public function getProfile(): ?Profile
-    {
-        return $this->profiles ? $this->profiles[0] : null;
     }
 
     /**

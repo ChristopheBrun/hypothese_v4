@@ -2,15 +2,25 @@
 
 namespace app\modules\user\controllers;
 
+use app\modules\hlib\lib\exceptions\ModelLoadException;
+use app\modules\hlib\lib\exceptions\ModelSaveException;
+use app\modules\hlib\lib\exceptions\ModelValidationException;
+use app\modules\hlib\lib\Flash;
 use app\modules\user\models\search\UserSearch;
+use app\modules\user\UserModule;
+use Exception;
+use Throwable;
 use Yii;
 use app\modules\user\models\User;
 use yii\base\ActionEvent;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * Gestion des actions de backend sur les utilisateurs
@@ -27,7 +37,7 @@ class UserController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'verbs' => [
@@ -49,10 +59,10 @@ class UserController extends Controller
 
     /**
      * Lists all User models.
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return string
+     * @throws InvalidConfigException
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = Yii::createObject(UserSearch::class);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -66,11 +76,11 @@ class UserController extends Controller
     /**
      * Displays a single User model.
      * @param integer $id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
         $model = $this->findModel($id);
         return $this->render('view', [
@@ -81,22 +91,43 @@ class UserController extends Controller
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @return string|Response
+     * @throws InvalidConfigException
      */
     public function actionCreate()
     {
         $model = Yii::createObject(User::class);
 
-        Event::trigger(static::class, static::EVENT_BEFORE_CREATE_USER, new ActionEvent($this->action));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Event::trigger(static::class, static::EVENT_AFTER_CREATE_USER, new ActionEvent($this->action, ['sender' => $model->user]));
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if (Yii::$app->request->isPost) {
+            Event::trigger(static::class, static::EVENT_BEFORE_CREATE_USER, new ActionEvent($this->action));
+            try {
+                if (!$model->load(Yii::$app->request->post())) {
+                    throw new ModelLoadException($model, Yii::$app->request->post());
+                }
+
+                if (!$model->validate()) {
+                    throw new ModelValidationException($model);
+                }
+
+                $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash($model->password_hash);
+                $model->auth_key = '';
+                if (!$model->save()) {
+                    throw new ModelSaveException($model);
+                }
+
+                Flash::success(UserModule::t('messages', "User created : {0}", [$model->email]));
+                Event::trigger(static::class, static::EVENT_AFTER_CREATE_USER, new ActionEvent($this->action, ['sender' => $model]));
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            catch(Exception $x) {
+                Yii::error($x->getMessage());
+                Flash::error($x->getMessage());
+            }
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -104,11 +135,11 @@ class UserController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     * @return mixed
+     * @return Response|string
      * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -127,13 +158,13 @@ class UserController extends Controller
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return Response
      * @throws NotFoundHttpException
-     * @throws \Exception
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Exception
+     * @throws Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): Response
     {
         $this->findModel($id)->delete();
 
@@ -146,9 +177,9 @@ class UserController extends Controller
      * @param integer $id
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
-    protected function findModel($id)
+    protected function findModel(int $id): User
     {
         if (($model = Yii::createObject(User::class)->findOne($id)) !== null) {
             return $model;
