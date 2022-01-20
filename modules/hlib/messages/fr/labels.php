@@ -11,6 +11,7 @@ return [
     'Body' => 'Texte',
     'Cancel' => 'Annuler',
     'Cancel & back to list' => 'Annuler & retour liste',
+    'Create' => "Ajouter",
     'Created At' => 'Date de création',
     'Contact' => 'Contact',
     'Content' => 'Texte',

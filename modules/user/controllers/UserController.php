@@ -2,10 +2,9 @@
 
 namespace app\modules\user\controllers;
 
-use app\modules\hlib\lib\exceptions\ModelLoadException;
-use app\modules\hlib\lib\exceptions\ModelSaveException;
-use app\modules\hlib\lib\exceptions\ModelValidationException;
 use app\modules\hlib\lib\Flash;
+use app\modules\user\models\form\CreateUserForm;
+use app\modules\user\models\form\UpdateUserForm;
 use app\modules\user\models\search\UserSearch;
 use app\modules\user\UserModule;
 use Exception;
@@ -96,30 +95,16 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = Yii::createObject(User::class);
+        $model = Yii::createObject(CreateUserForm::class);
 
         if (Yii::$app->request->isPost) {
             Event::trigger(static::class, static::EVENT_BEFORE_CREATE_USER, new ActionEvent($this->action));
             try {
-                if (!$model->load(Yii::$app->request->post())) {
-                    throw new ModelLoadException($model, Yii::$app->request->post());
-                }
-
-                if (!$model->validate()) {
-                    throw new ModelValidationException($model);
-                }
-
-                $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash($model->password_hash);
-                $model->auth_key = '';
-                if (!$model->save()) {
-                    throw new ModelSaveException($model);
-                }
-
-                Flash::success(UserModule::t('messages', "User created : {0}", [$model->email]));
-                Event::trigger(static::class, static::EVENT_AFTER_CREATE_USER, new ActionEvent($this->action, ['sender' => $model]));
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            catch(Exception $x) {
+                $model->process(Yii::$app->request->post());
+                Flash::success(UserModule::t('messages', "User created : {0}", [$model->user->email]));
+                Event::trigger(static::class, static::EVENT_AFTER_CREATE_USER, new ActionEvent($this->action, ['sender' => $model->user]));
+                return $this->redirect(['view', 'id' => $model->user->id]);
+            } catch (Exception $x) {
                 Yii::error($x->getMessage());
                 Flash::error($x->getMessage());
             }
@@ -133,25 +118,31 @@ class UserController extends Controller
     /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     *
      * @param integer $id
      * @return Response|string
-     * @throws NotFoundHttpException
      * @throws InvalidConfigException
+     * @throws NotFoundHttpException
      */
     public function actionUpdate(int $id)
     {
-        $model = $this->findModel($id);
+        $model = Yii::createObject(['class' => UpdateUserForm::class, 'user' => $this->findModel($id)]);
 
-        Event::trigger(static::class, static::EVENT_BEFORE_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model]));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Event::trigger(static::class, static::EVENT_AFTER_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model]));
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if (Yii::$app->request->isPost) {
+            Event::trigger(static::class, static::EVENT_BEFORE_UPDATE_USER, new ActionEvent($this->action));
+            try {
+                $model->process(Yii::$app->request->post());
+                Flash::success(UserModule::t('messages', "User updated : {0}", [$model->user->email]));
+                Event::trigger(static::class, static::EVENT_AFTER_UPDATE_USER, new ActionEvent($this->action, ['sender' => $model->user]));
+                return $this->redirect(['view', 'id' => $model->user->id]);
+            } catch (Exception $x) {
+                Yii::error($x->getMessage());
+                Flash::error($x->getMessage());
+            }
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -183,8 +174,8 @@ class UserController extends Controller
     {
         if (($model = Yii::createObject(User::class)->findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

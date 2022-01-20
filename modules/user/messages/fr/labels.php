@@ -58,5 +58,6 @@ return [
     "Sign Out ({0})" => "Déconnexion ({0})",
     "Update My Identifiers" => "Modifier mes identifiants",
     "Update My Profile" => "Modifier mon profil",
+    "Update User" => "Modifier un utilisateur",
     "Users" => "Utilisateurs",
 ];

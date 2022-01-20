@@ -3,7 +3,6 @@
 namespace app\modules\user\lib;
 
 use app\modules\user\controllers\MyAccountController;
-use app\modules\user\controllers\RegistrationController;
 use app\modules\user\controllers\SecurityController;
 use app\modules\user\models\User;
 use Yii;
@@ -69,8 +68,6 @@ class UserEventHandler extends Component
      */
     protected function subscribeEvents()
     {
-        Event::on(RegistrationController::class, RegistrationController::EVENT_AFTER_REGISTER, [$this, 'onAfterRegister']);
-
         Event::on(MyAccountController::class, MyAccountController::EVENT_BEFORE_UPDATE_USER, [$this, 'onBeforeUpdateOwnUser']);
         Event::on(MyAccountController::class, MyAccountController::EVENT_AFTER_UPDATE_USER, [$this, 'onAfterUpdateOwnUser']);
 

@@ -10,7 +10,7 @@ use yii\widgets\DetailView;
 /* @var $model app\modules\user\models\User */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => HLib::t('labels', 'Users'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => UserModule::t('labels', 'Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
@@ -32,17 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
     DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'email:email',
-            'confirmation_sent_at',
-            'confirmed_at',
-            'unconfirmed_email:email',
-            'recovery_sent_at',
-            'blocked_at',
             'registered_from',
             'logged_in_from',
             'logged_in_at',
             AssetsHelper::detailViewSeparator(),
+            'id',
             'created_at',
             'updated_at',
         ],

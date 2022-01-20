@@ -29,6 +29,8 @@ use yii\db\ActiveRecord;
  */
 class Profile extends ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
     const SCENARIO_REGISTER = 'register';
 
     /** @var  string */
@@ -52,6 +54,8 @@ class Profile extends ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_REGISTER] = ['first_name', 'last_name'];
+        $scenarios[static::SCENARIO_CREATE] = ['first_name', 'last_name'];
+        $scenarios[static::SCENARIO_UPDATE] = $scenarios[static::SCENARIO_CREATE];
         return $scenarios;
     }
 

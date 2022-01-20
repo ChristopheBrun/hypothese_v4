@@ -43,6 +43,7 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
     const SCENARIO_REGISTER = 'register';
     const SCENARIO_PASSWORD = 'password';
 
@@ -61,6 +62,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_CREATE] = ['email', 'password_hash'];
+        $scenarios[static::SCENARIO_UPDATE] = $scenarios[static::SCENARIO_CREATE];
         $scenarios[static::SCENARIO_REGISTER] = ['email'];
         $scenarios[static::SCENARIO_PASSWORD] = ['password_hash', 'password_updated_at', 'password_usage'];
         return $scenarios;
