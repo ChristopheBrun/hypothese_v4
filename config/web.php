@@ -24,7 +24,7 @@ switch (YII_ENV) {
  * On expose ici la configuration de production qui sera sauvegardée sous Git.
  * La configuration peut être surchargée dans les fichiers config.xxx.php et private/config.xxx.php
  *
- * Ce fichier  est archivé sous Git : NE JAMAIS PUBLIER ICI DES INFORMTIONS CONFIDENTIELLES.
+ * Ce fichier  est archivé sous Git : NE JAMAIS PUBLIER ICI DES INFORMATIONS CONFIDENTIELLES.
  *
  * Les fichiers du sous-répertoire private/ ne sont pas inclus dans Git : c'est là que doivent se trouver les données confidentielles
  * qu'il ne faut pas publier hors de nos serveurs (dont les mots de passe).

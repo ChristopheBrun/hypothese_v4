@@ -51,7 +51,7 @@ class ErrorAction extends \yii\web\ErrorAction
         if ($this->exception instanceof UserException) {
             $message = $this->exception->getMessage();
         } else {
-            $message = $this->defaultMessage ?: HLib::t('messages', 'An error occurred during the process');
+            $message = HLib::t('messages', 'An error occurred during the process');
         }
 
         // Le modèle de page utilisé dépend du code de l'erreur. Par défaut, c'est 'error.php'
@@ -64,6 +64,6 @@ class ErrorAction extends \yii\web\ErrorAction
         }
 
         // On remplace l'appel à renderHtmlResponse() pour passer les arguments à la vue
-        return $this->controller->render($this->view ?: $this->id, compact('name', 'message', 'exception'));
+        return $this->controller->render($this->view ?: $this->id, compact('name', 'message'));
     }
 }

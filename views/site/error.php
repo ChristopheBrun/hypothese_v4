@@ -8,7 +8,6 @@ use yii\helpers\Url;
  * @var $this yii\web\View
  * @var $name string Nom de l'erreur
  * @var $message string Message d'erreur
- * @var $exception Exception Exception interceptée
  */
 
 $this->title = HLib::t('labels', 'Server error');
