@@ -70,6 +70,9 @@ Yii::$app->addKeywordsMetaTags(["PHP", "Regex", "Expressions régulières", "Exp
                     <li>Prend une regex et une chaîne à analyser en entrée</li>
                     <li>Renvoie les résultats du preg_match() ou du preg_match_all()</li>
                     <li>Le traitement se fait en PHP côté serveur</li>
+                    <li>NB : si vous avez besoin d'un outil vraiment complet et puissant, essayez
+                        <?= Html::a("Regex101.com", 'https://regex101.com/', ['target' => 'blank']) ?>
+                    </li>
                 </ul>
             </div>
         </div>
