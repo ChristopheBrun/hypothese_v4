@@ -41,15 +41,17 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="col"></div>
         </div>
-        <div class="row">
-            <div class="col-sm-6 request-new-password">
-                <p class="text-center">
-                    <?= Html::a(UserModule::t('messages', 'Lost password ?'), ['/user/security/request-new-password']) ?>
-                </p>
+        <?php if (0): ?>
+            <div class="row">
+                <div class="col-sm-6 request-new-password">
+                    <p class="text-center">
+                        <?= Html::a(UserModule::t('messages', 'Lost password ?'), ['/user/security/request-new-password']) ?>
+                    </p>
+                </div>
+                <div class="col">
+                </div>
             </div>
-            <div class="col">
-            </div>
-        </div>
+        <?php endif ?>
         <?php if (UserModule::getInstance()->registration_confirmationRequired) : ?>
             <div class="row">
                 <div class="col-sm-6 request-new-confirmation-link">
