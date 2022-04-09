@@ -52,13 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function (CalendarEntry $model) {
                     return Carbon::parse($model->event_date)->format(CalendarEntry::DATE_FORMAT_DAY);
                 },
-                'filter' => MaskedInput::widget(['name' => 'event_date', 'mask'=> '99-99']) .
+                'filter' => MaskedInput::widget(['name' => 'event_date', 'mask' => '99-99']) .
                     "<div class='hint-block'>Filtre : jj-mm</div>",
             ],
             [
                 'label' => 'Image',
                 'value' => function (CalendarEntry $model) {
-                    return Html::img($model->getImageUrl('xs', 'true'));
+                    return $model->image ? Html::img($model->getImageUrl('xs', true)) : '';
                 },
                 'format' => 'html',
             ],

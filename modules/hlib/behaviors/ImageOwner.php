@@ -5,10 +5,10 @@ namespace app\modules\hlib\behaviors;
 use app\modules\hlib\helpers\hFile;
 use app\modules\hlib\helpers\hImage;
 use app\modules\hlib\HLib;
+use Exception;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Component;
-use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\UnknownPropertyException;
 use yii\helpers\ArrayHelper;
@@ -23,31 +23,31 @@ use yii\helpers\ArrayHelper;
 class ImageOwner extends Behavior
 {
     /** @var string */
-    public $idField = 'id';
+    public string $idField = 'id';
 
     /** @var string */
-    public $imageField = 'image';
+    public string $imageField = 'image';
 
     /** @var string */
-    public $slugField = 'slug';
+    public string $slugField = 'slug';
 
     /** @var string */
-    public $imagesDirectoryName = 'images';
+    public string $imagesDirectoryName = 'images';
 
     /** @var string */
-    public $publicDirectory;
+    public string $publicDirectory;
 
     /** @var array */
-    public $originalImageSize;
+    public array $originalImageSize;
 
     /** @var array */
-    public $thumbnailsSizes;
+    public array $thumbnailsSizes;
 
     /**
      * @param Component $owner
      * @throws InvalidConfigException
      */
-    public function attach($owner)
+    public function attach($owner): void
     {
         if (!is_a($owner, 'yii\db\BaseActiveRecord')) {
             throw new InvalidConfigException('Le possesseur de ce behavior doit descendre de yii\db\BaseActiveRecord');
@@ -60,7 +60,7 @@ class ImageOwner extends Behavior
      * @return bool
      * @throws UnknownPropertyException
      */
-    public function hasImage()
+    public function hasImage(): bool
     {
         return $this->owner->__get($this->imageField) != "";
     }
@@ -73,7 +73,7 @@ class ImageOwner extends Behavior
      * @return string
      * @throws UnknownPropertyException
      */
-    public function computeImageName($extension = '')
+    public function computeImageName(string $extension = ''): string
     {
         $imageName = $this->owner->__get($this->slugField) . '-' . $this->owner->__get($this->idField);
         if ($extension != '') {
@@ -91,7 +91,7 @@ class ImageOwner extends Behavior
      * @return string
      * @throws InvalidConfigException
      */
-    public function getImagesDirectoryPath($absolute = false)
+    public function getImagesDirectoryPath(bool $absolute = false): string
     {
         // NB : l'alias @webroot est inconnu pour les applications console, on utilise donc @app + nom du répertoire public
         $pathPrefix = $absolute ? sprintf('%s/%s/', Yii::getAlias('@app'), $this->retrievePublicDirectoryName()) : '';
@@ -103,13 +103,13 @@ class ImageOwner extends Behavior
      * Il s'agit ici d'un chemin relatif par rapport au répertoire public
      * Si $thumbnailAlias est renseigné avec une des clés déclarées dans self::$thumbnail_size, on renvoie l'url de cette vignette.
      *
-     * @param string $thumbnailAlias Alias indiquant la taille demandée pour la vignette. Laisser cet argument à null si on veut l'image d'origine.
+     * @param ?string $thumbnailAlias Alias indiquant la taille demandée pour la vignette. Laisser cet argument à null si on veut l'image d'origine.
      * @param bool $absolute
      * @return string
      * @throws Exception
      * @throws UnknownPropertyException
      */
-    public function getImagePath($thumbnailAlias = null, $absolute = false)
+    public function getImagePath(?string $thumbnailAlias = null, bool $absolute = false): string
     {
         if (!is_null($thumbnailAlias)) {
             // On a demandé une vignette
@@ -130,10 +130,10 @@ class ImageOwner extends Behavior
      * @return string
      * @throws InvalidConfigException
      */
-    public function getImagesDirectoryUrl($absolute = false)
+    public function getImagesDirectoryUrl(bool $absolute = false): string
     {
         $pathPrefix = $absolute ? Yii::getAlias('@web') . '/' : "";
-        return $pathPrefix . $this->getImagesDirectoryPath(false);
+        return $pathPrefix . $this->getImagesDirectoryPath();
     }
 
     /**
@@ -144,17 +144,17 @@ class ImageOwner extends Behavior
      *  - chemin relatif => on préfixe avec le séparateur '/' ce qui suppose que les images sont toujours dans un sous-répertoire par rapport
      *  à la page web qui est lue. Ex : page web dans public_html et images dans public_html/images.
      *
-     * @param string $thumbnailAlias Clé du tableau self::$thumbnail_size de l'objet implémentant ce trait. Si ce paramèetre erste à null, c'est l'image
+     * @param ?string $thumbnailAlias Clé du tableau self::$thumbnail_size de l'objet implémentant ce trait. Si ce paramèetre erste à null, c'est l'image
      * de référence qui sera renvoyée.
      * @param bool $absolute true => URL absolue, false (défaut) => URL relative
      * @return string
      * @throws Exception
      * @throws UnknownPropertyException
      */
-    public function getImageUrl($thumbnailAlias = null, $absolute = false)
+    public function getImageUrl(?string $thumbnailAlias = null, bool $absolute = false): string
     {
         $pathPrefix = $absolute ? Yii::getAlias('@web') . '/' : "/";
-        return $pathPrefix . $this->getImagePath($thumbnailAlias, false);
+        return $pathPrefix . $this->getImagePath($thumbnailAlias);
     }
 
     /**
@@ -163,7 +163,7 @@ class ImageOwner extends Behavior
      * @throws UnknownPropertyException
      * @throws InvalidConfigException
      */
-    public function resizeOriginalImage()
+    public function resizeOriginalImage(): void
     {
         hImage::configure()
             ->make($this->getImagesDirectoryPath(true) . '/' . $this->owner->__get($this->imageField))
@@ -174,14 +174,15 @@ class ImageOwner extends Behavior
 
     /**
      * Fabrique les vignettes prévues par l'application
+     *
      * @throws UnknownPropertyException
      * @throws Exception
      */
-    public function setThumbnails()
+    public function setThumbnails(): void
     {
         $imagesDirectoryPath = $this->getImagesDirectoryPath(true);
         $originalImagePath = $imagesDirectoryPath . '/' . $this->owner->__get($this->imageField);
-        foreach ($this->thumbnailsSizes as $alias => $size) {
+        foreach ($this->thumbnailsSizes as $size) {
             $subdirectory = self::getThumbnailsDirectoryName($size['width'], $size['height']);
             $thumbnailPath = $imagesDirectoryPath . '/' . $subdirectory . '/' . $this->owner->__get($this->imageField);
             hFile::createDirectory(dirname($thumbnailPath), 0744);
@@ -197,9 +198,9 @@ class ImageOwner extends Behavior
      * Suppression de toutes les images associées à l'objet : image originale + vignettes
      *
      * @throws UnknownPropertyException
-     * @throws \Exception
+     * @throws Exception
      */
-    public function deleteImageFiles()
+    public function deleteImageFiles(): void
     {
         /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         if ($this->owner->hasImage()) {
@@ -207,7 +208,7 @@ class ImageOwner extends Behavior
             $originalImagePath = $imagesDirectoryPath . '/' . $this->owner->__get($this->imageField);
             hFile::delete($originalImagePath);
 
-            foreach ($this->thumbnailsSizes as $alias => $size) {
+            foreach ($this->thumbnailsSizes as $size) {
                 $subdirectory = self::getThumbnailsDirectoryName($size['width'], $size['height']);
                 $thumbnailPath = $imagesDirectoryPath . '/' . $subdirectory . '/' . $this->owner->__get($this->imageField);
                 hFile::delete($thumbnailPath);
@@ -220,10 +221,11 @@ class ImageOwner extends Behavior
     /**
      * Renommage des images de l'objet : on renomme non seulement l'image principale mais aussi toutes les vignettes
      * Le nouveau nom de l'image doit avoir été enregistré dans $this. L'ancien nom se trouve dans getOriginal()
+     *
      * @throws UnknownPropertyException
      * @throws Exception
      */
-    public function resetImagesNames()
+    public function resetImagesNames(): void
     {
         $imagesDirectoryPath = $this->getImagesDirectoryPath(true);
         // getOldAttribute est une méthode de l'ActiveRecord et ce behavior ne doit être attaché qu'à des ActiveRecords
@@ -236,7 +238,7 @@ class ImageOwner extends Behavior
         rename($originalImagePath, $newImagePath);
 
         // ... puis les vignettes
-        foreach ($this->thumbnailsSizes as $alias => $sizeArray) {
+        foreach ($this->thumbnailsSizes as $sizeArray) {
             $subdirectory = self::getThumbnailsDirectoryName($sizeArray['width'], $sizeArray['height']);
             $originalThumbnailPath = $imagesDirectoryPath . '/' . $subdirectory . '/' . $originalImageName;
             $newThumbnailPath = $imagesDirectoryPath . '/' . $subdirectory . '/' . $this->owner->__get($this->imageField);
@@ -247,11 +249,11 @@ class ImageOwner extends Behavior
     /**
      * Renvoie la taille de la vignette $alias
      *
-     * @param $alias
+     * @param string $alias
      * @return array ['width' => 555, 'height' => 444], ...]
      * @throws Exception
      */
-    public function getThumbnailSize($alias)
+    public function getThumbnailSize(string $alias): array
     {
         $out = ArrayHelper::getValue($this->thumbnailsSizes, $alias);
         if (!$out) {
@@ -268,7 +270,7 @@ class ImageOwner extends Behavior
      * @param int $thumbnailHeight
      * @return string
      */
-    public static function getThumbnailsDirectoryName($thumbnailWidth, $thumbnailHeight = 0)
+    public static function getThumbnailsDirectoryName(int $thumbnailWidth, int $thumbnailHeight = 0): string
     {
         return $thumbnailWidth . 'x' . $thumbnailHeight;
     }
@@ -282,7 +284,7 @@ class ImageOwner extends Behavior
      * @return string
      * @throws InvalidConfigException
      */
-    private function retrievePublicDirectoryName()
+    private function retrievePublicDirectoryName(): string
     {
         if (isset($this->publicDirectory)) {
             return $this->publicDirectory;

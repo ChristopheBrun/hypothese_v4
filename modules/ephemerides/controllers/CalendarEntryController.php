@@ -22,6 +22,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 /**
@@ -61,10 +62,10 @@ class CalendarEntryController extends Controller
     /**
      * Liste des éphémérides
      *
-     * @return mixed
+     * @return string
      * @throws Exception
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new CalendarEntrySearchForm();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -80,7 +81,7 @@ class CalendarEntryController extends Controller
     /**
      * Liste des éphémérides du jour J
      *
-     * @return mixed
+     * @return string|Response
      * @throws Exception
      */
     public function actionIndexD()
@@ -96,14 +97,12 @@ class CalendarEntryController extends Controller
 
         $dateParams = [];
         $date = new Carbon();
-        for ($i = 0; $i < 1; ++$i) {
-            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
-            $date->addDay();
-        }
+        /** @noinspection DuplicatedCode */
+        $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
         $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -113,9 +112,9 @@ class CalendarEntryController extends Controller
     }
 
     /**
-     * Liste des éphémérides du jour J
+     * Liste des éphémérides du jour J+1
      *
-     * @return mixed
+     * @return string|Response
      * @throws Exception
      */
     public function actionIndexD1()
@@ -132,13 +131,12 @@ class CalendarEntryController extends Controller
         $dateParams = [];
         $date = new Carbon();
         $date->addDay();
-        for ($i = 0; $i < 1; ++$i) {
-            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
-        }
+        /** @noinspection DuplicatedCode */
+        $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
         $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -150,7 +148,7 @@ class CalendarEntryController extends Controller
     /**
      * Liste des éphémérides compris entre J et J+2
      *
-     * @return mixed
+     * @return Response|string
      * @throws Exception
      */
     public function actionIndexD2()
@@ -171,9 +169,9 @@ class CalendarEntryController extends Controller
             $date->addDay();
         }
         $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -185,11 +183,11 @@ class CalendarEntryController extends Controller
     /**
      * Fiche en lecture seule
      *
-     * @param integer $id
-     * @return mixed
+     * @param int $id
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView(int $id)
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -200,10 +198,10 @@ class CalendarEntryController extends Controller
      * Affiche l'éphéméride dans un widget telle qu'elle est censée être vue sur le frontend
      *
      * @param integer $id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionShow(int $id)
+    public function actionShow(int $id): string
     {
         return $this->render('show', [
             'model' => $this->findModel($id),
@@ -213,7 +211,7 @@ class CalendarEntryController extends Controller
     /**
      * Creates a new CalendarEntry model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return Response|string
      */
     public function actionCreate()
     {
@@ -233,7 +231,7 @@ class CalendarEntryController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id
-     * @return mixed
+     * @return Response|string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate(int $id)
@@ -418,9 +416,9 @@ class CalendarEntryController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      *
      * @param integer $id
-     * @return mixed
+     * @return Response
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): Response
     {
         try {
             $model = $this->findModel($id);
@@ -446,6 +444,7 @@ class CalendarEntryController extends Controller
     /**
      * Finds the CalendarEntry model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param integer $id
      * @return CalendarEntry the loaded model
      * @throws NotFoundHttpException if the model cannot be found

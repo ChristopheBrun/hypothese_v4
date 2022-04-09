@@ -277,10 +277,11 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * Classe un tableau d'éphémérides selon le rang attribué à ses catégories.
      * On ne garde que le plus bas - donc le plus prioritaire - des rangs trouvés.
+     *
      * @param CalendarEntry[] $calendarEntries
      * @internal Sert essentiellement àordonner les éphémérides par grands thèmes : Musique, sciences, etc...
      */
-    public static function orderByTagRank(array &$calendarEntries)
+    public static function orderByTagRank(array &$calendarEntries): void
     {
         ArrayHelper::multisort($calendarEntries, function (CalendarEntry $calendarEntry) {
             $out = PHP_INT_MAX;
@@ -297,7 +298,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @return string
      */
-    public function getUrlShow()
+    public function getUrlShow(): string
     {
         return Url::to(['/ephemerides/calendar-entry/show', 'id' => $this->id], true);
     }
@@ -305,7 +306,7 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * @return string
      */
-    public function getUrlView()
+    public function getUrlView(): string
     {
         return Url::to(['/ephemerides/calendar-entry/view', 'id' => $this->id], true);
     }
