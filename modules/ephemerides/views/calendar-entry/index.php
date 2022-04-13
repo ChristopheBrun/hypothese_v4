@@ -28,10 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="calendar-entry-index">
+    <?php Pjax::begin(); ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php Pjax::begin(); ?>
 
     <p>
         <?= Html::a(EphemeridesModule::t('labels', 'Add Calendar Entry'), ['create'], ['class' => 'btn btn-success']) ?>

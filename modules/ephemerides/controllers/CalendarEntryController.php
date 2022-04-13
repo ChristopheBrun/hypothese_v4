@@ -87,7 +87,7 @@ class CalendarEntryController extends Controller
     public function actionIndexD()
     {
         // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
-        if (array_key_exists('event_date', Yii::$app->request->queryParams)) {
+        if (ArrayHelper::getValue(Yii::$app->request->queryParams, 'event_date')) {
             return $this->redirect(array_merge(['index'], Yii::$app->request->queryParams));
         }
 
@@ -99,7 +99,7 @@ class CalendarEntryController extends Controller
         $date = new Carbon();
         /** @noinspection DuplicatedCode */
         $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
-        $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+        $params = ArrayHelper::merge(Yii::$app->request->queryParams, $dateParams);
 
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
@@ -120,7 +120,7 @@ class CalendarEntryController extends Controller
     public function actionIndexD1()
     {
         // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
-        if (array_key_exists('event_date', Yii::$app->request->queryParams)) {
+        if (ArrayHelper::getValue(Yii::$app->request->queryParams, 'event_date')) {
             return $this->redirect(array_merge(['index'], Yii::$app->request->queryParams));
         }
 
@@ -133,7 +133,7 @@ class CalendarEntryController extends Controller
         $date->addDay();
         /** @noinspection DuplicatedCode */
         $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
-        $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+        $params = ArrayHelper::merge(Yii::$app->request->queryParams, $dateParams);
 
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
@@ -141,7 +141,7 @@ class CalendarEntryController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tags' => $tags,
-            'filter' => EphemeridesModule::t('labels', 'D'),
+            'filter' => EphemeridesModule::t('labels', 'D+1'),
         ]);
     }
 
@@ -154,7 +154,7 @@ class CalendarEntryController extends Controller
     public function actionIndexD2()
     {
         // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
-        if (array_key_exists('event_date', Yii::$app->request->queryParams)) {
+        if (ArrayHelper::getValue(Yii::$app->request->queryParams, 'event_date')) {
             return $this->redirect(array_merge(['index'], Yii::$app->request->queryParams));
         }
 
@@ -168,7 +168,7 @@ class CalendarEntryController extends Controller
             $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
             $date->addDay();
         }
-        $params = array_merge(Yii::$app->request->queryParams, $dateParams);
+        $params = ArrayHelper::merge(Yii::$app->request->queryParams, $dateParams);
 
         $dataProvider = $searchModel->search($params);
         $tags = Tag::find()->orderByLabel()->all();
