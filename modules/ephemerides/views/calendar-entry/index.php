@@ -7,6 +7,7 @@ use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\AssetsHelper;
 use app\modules\hlib\widgets\DisplayModels;
 use Carbon\Carbon;
+use yii\bootstrap\BootstrapAsset;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -33,11 +34,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(EphemeridesModule::t('labels', 'Add Calendar Entry'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(EphemeridesModule::t('labels', 'D'), ['index-d'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a(EphemeridesModule::t('labels', 'D+1'), ['index-d1'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a(EphemeridesModule::t('labels', 'D to D+2'), ['index-d2'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a(EphemeridesModule::t('labels', 'Show All'), ['index'], ['class' => 'btn btn-default']) ?>
+        <span class="admin-buttons">
+            <?= Html::a(EphemeridesModule::t('labels', 'Add Calendar Entry'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(EphemeridesModule::t('labels', 'D'), ['index-d'], ['class' => 'btn btn-info']) ?>
+            <?= Html::a(EphemeridesModule::t('labels', 'D+1'), ['index-d1'], ['class' => 'btn btn-info']) ?>
+            <?= Html::a(EphemeridesModule::t('labels', 'D to D+2'), ['index-d2'], ['class' => 'btn btn-info']) ?>
+            <?= Html::a(EphemeridesModule::t('labels', 'Show All'), ['index'], ['class' => 'btn btn-default']) ?>
+        </span>
+        <span class="tools-buttons">
+            <?= Html::a(EphemeridesModule::t(
+                'labels',
+                "Next date with 0 entries : {date}", ['date' => '55-55']),
+                ['index'],
+                ['class' => 'btn btn-default', 'disabled' => true]
+            ) ?>
+        </span>
     </p>
 
     <?= /** @noinspection PhpUnhandledExceptionInspection */

@@ -52,3 +52,8 @@
     color: #8c8c8c;
     font-style: italic;
 }
+
+.calendar-entry-index .tools-buttons {
+    display: inline-block;
+    float: right;
+}

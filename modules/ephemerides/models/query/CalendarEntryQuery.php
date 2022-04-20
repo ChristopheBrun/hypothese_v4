@@ -77,9 +77,11 @@ class CalendarEntryQuery extends ActiveQuery
      * @return int
      * @throws Exception
      */
-    public static function countDaysWithEntries()
+    public static function countDaysWithEntries(): int
     {
-        $sql = 'SELECT COUNT(DISTINCT DAY(event_date), MONTH(event_date)) AS count FROM calendar_entry WHERE enabled = :active';
+        $sql = 'SELECT COUNT(DISTINCT DAY(event_date), MONTH(event_date)) AS count 
+            FROM calendar_entry 
+            WHERE enabled = :active';
         return (int)Yii::$app->db->createCommand($sql, ['active' => true])->queryScalar();
     }
 
@@ -199,23 +201,24 @@ class CalendarEntryQuery extends ActiveQuery
      * Renvoie la première éphéméride trouvée après $date.
      *
      * @param mixed $date La date de référence. Elle doit être soit un timestamp, soit une date formatée
-     * @param string|null $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
+     * @param ?string $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
      * @param string $dayCompOperator
-     * @return CalendarEntry|null
+     * @return ?CalendarEntry
      * @throws Exception
      */
-    public static function nextEntryAfterCalendarDate($date, $format = null, $dayCompOperator = '>')
+    public static function nextEntryAfterCalendarDate($date, ?string $format = null, string $dayCompOperator = '>'): ?CalendarEntry
     {
         $date = is_integer($date) ? Carbon::createFromTimestamp($date) : Carbon::createFromFormat($format, $date);
 
         $dayComp = "DAY(event_date) $dayCompOperator :day";
         $sql = "SELECT *, 100 * MONTH(event_date) + DAY(event_date) AS day_rank
-        FROM calendar_entry
-        WHERE (MONTH(event_date) > :month
-        OR (MONTH(event_date) = :month AND $dayComp))
-        AND (enabled = :active)
-        ORDER BY day_rank, event_date, id
-        LIMIT 1";
+            FROM calendar_entry
+            WHERE (MONTH(event_date) > :month
+            OR (MONTH(event_date) = :month AND $dayComp))
+            AND (enabled = :active)
+            ORDER BY day_rank, event_date, id
+            LIMIT 1
+        ";
 
         $reader = Yii::$app->db
             ->createCommand($sql, ['active' => true, 'day' => $date->day, 'month' => $date->month])
