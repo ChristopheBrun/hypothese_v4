@@ -19,12 +19,11 @@ class DateHelper
      * @param int $time
      * @return false|string
      */
-    public static function timestampToNaturalDate($time)
+    public static function timestampToNaturalDate(int $time)
     {
         if (extension_loaded('intl')) {
             return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [$time]);
-        }
-        else {
+        } else {
             return date('Y-m-d G:i:s', $time);
         }
 
@@ -38,12 +37,11 @@ class DateHelper
      * @param string $date
      * @return false|string
      */
-    public static function dateSQLToNaturalDate($date)
+    public static function dateSQLToNaturalDate(string $date)
     {
         if (extension_loaded('intl')) {
             return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [strtotime($date)]);
-        }
-        else {
+        } else {
             return date('Y-m-d G:i:s', strtotime($date));
         }
     }
@@ -56,7 +54,7 @@ class DateHelper
      * @param string $separator
      * @return bool|string
      */
-    public static function dateFRToSQL($date, $separator = '/')
+    public static function dateFRToSQL(string $date, string $separator = '/')
     {
         $matches = [];
         if (preg_match("#(\d{2})$separator(\d{2})$separator(\d{4})#", $date, $matches)) {
@@ -75,12 +73,35 @@ class DateHelper
      * @param string $separator
      * @return bool|string
      */
-    public static function dateSQLToFR($date, $separator = '/')
+    public static function dateSQLToFR(string $date, string $separator = '/')
     {
         $matches = [];
         if (preg_match("#(\d{4}).(\d{2}).(\d{2})#", $date, $matches)) {
             $date = [$matches[3], $matches[2], $matches[1]];
             return implode($separator, $date);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int $month
+     * @param int $day
+     * @return bool
+     */
+    public static function isValidCalendarDate(int $month, int $day): bool
+    {
+        if ($day > 0 && $day < 30) {
+            return true;
+        }
+
+        if ($day === 30) {
+            return $month !== 2;
+        }
+
+        if ($day === 31) {
+            $monthWith31Days = [1, 3, 5, 7, 8, 10, 12];
+            return in_array($month, $monthWith31Days);
         }
 
         return false;

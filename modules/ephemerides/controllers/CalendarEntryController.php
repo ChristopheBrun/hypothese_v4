@@ -3,6 +3,7 @@
 namespace app\modules\ephemerides\controllers;
 
 use app\modules\ephemerides\EphemeridesModule;
+use app\modules\ephemerides\helpers\CalendarEntryHelper;
 use app\modules\ephemerides\models\query\CalendarEntryTagQuery;
 use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\hFile;
@@ -75,6 +76,7 @@ class CalendarEntryController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'tags' => Tag::find()->orderByLabel()->all(),
+            'dateWithNoEntries' => CalendarEntryHelper::findNextDateWithNoEntries(),
         ]);
     }
 
@@ -108,6 +110,7 @@ class CalendarEntryController extends Controller
             'dataProvider' => $dataProvider,
             'tags' => $tags,
             'filter' => EphemeridesModule::t('labels', 'D'),
+            'dateWithNoEntries' => CalendarEntryHelper::findNextDateWithNoEntries(),
         ]);
     }
 
@@ -142,6 +145,7 @@ class CalendarEntryController extends Controller
             'dataProvider' => $dataProvider,
             'tags' => $tags,
             'filter' => EphemeridesModule::t('labels', 'D+1'),
+            'dateWithNoEntries' => CalendarEntryHelper::findNextDateWithNoEntries(),
         ]);
     }
 
@@ -177,6 +181,7 @@ class CalendarEntryController extends Controller
             'dataProvider' => $dataProvider,
             'tags' => $tags,
             'filter' => EphemeridesModule::t('labels', 'D to D+2'),
+            'dateWithNoEntries' => CalendarEntryHelper::findNextDateWithNoEntries(),
         ]);
     }
 

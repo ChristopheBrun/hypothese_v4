@@ -7,7 +7,6 @@ use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\AssetsHelper;
 use app\modules\hlib\widgets\DisplayModels;
 use Carbon\Carbon;
-use yii\bootstrap\BootstrapAsset;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -19,6 +18,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider ActiveDataProvider */
 /* @var $tags Tag[] */
 /* @var $filter string */
+/* @var $dateWithNoEntries string */
 
 $this->title = EphemeridesModule::t('labels', 'Calendar Entries');
 if (isset($filter)) {
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <span class="tools-buttons">
             <?= Html::a(EphemeridesModule::t(
                 'labels',
-                "Next date with 0 entries : {date}", ['date' => '55-55']),
+                "Next date with 0 entries (mm-dd) : {date}", ['date' => $dateWithNoEntries]),
                 ['index'],
                 ['class' => 'btn btn-default', 'disabled' => true]
             ) ?>

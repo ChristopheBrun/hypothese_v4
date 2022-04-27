@@ -29,7 +29,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @return array
      * @throws Exception
      */
-    public static function getImages()
+    public static function getImages(): array
     {
         $sql = 'SELECT id, image FROM calendar_entry WHERE image IS NOT NULL AND image != \'\' ORDER BY image';
         return Yii::$app->db->createCommand($sql, ['active' => true])->queryAll();
@@ -39,7 +39,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @inheritdoc
      * @return CalendarEntry[] | array
      */
-    public function all($db = null)
+    public function all($db = null): array
     {
         return parent::all($db);
     }
@@ -47,6 +47,7 @@ class CalendarEntryQuery extends ActiveQuery
     /**
      * @inheritdoc
      * @return CalendarEntry | array | null
+     * @noinspection PhpReturnDocTypeMismatchInspection
      */
     public function one($db = null)
     {
@@ -56,7 +57,7 @@ class CalendarEntryQuery extends ActiveQuery
     /**
      * @return static
      */
-    public function enabled()
+    public function enabled(): CalendarEntryQuery
     {
         return $this->andWhere('enabled = 1');
     }
@@ -92,7 +93,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param string $format
      * @return static
      */
-    public function byDay($date, $format = 'Y-m-d')
+    public function byDay(string $date, string $format = 'Y-m-d'): CalendarEntryQuery
     {
         /** @var Carbon $date */
         $date = Carbon::createFromFormat($format, $date);
@@ -108,7 +109,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param int $day
      * @return static
      */
-    public function byMonthAndDay($month, $day)
+    public function byMonthAndDay(int $month, int $day): CalendarEntryQuery
     {
         return $this
             ->andWhere('DAY(event_date) = :day', ['day' => $day])
@@ -119,7 +120,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param string $order
      * @return static
      */
-    public function orderByDate($order = 'ASC')
+    public function orderByDate(string $order = 'ASC'): CalendarEntryQuery
     {
         return $this->addOrderBy('event_date ' . $order);
     }
@@ -130,7 +131,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param CalendarEntry $entry
      * @return $this
      */
-    public function previousInChronology(CalendarEntry $entry)
+    public function previousInChronology(CalendarEntry $entry): CalendarEntryQuery
     {
         // select * from calendar_entries
         // where event_date = $entry->event_date and id < $entry->id OR event_date < $entry->event_date
@@ -146,7 +147,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param CalendarEntry $entry
      * @return $this
      */
-    public function nextInChronology(CalendarEntry $entry)
+    public function nextInChronology(CalendarEntry $entry): CalendarEntryQuery
     {
         // select * from calendar_entries
         // where event_date = $entry->event_date and id > $entry->id OR event_date > $entry->event_date
@@ -161,12 +162,12 @@ class CalendarEntryQuery extends ActiveQuery
      * Renvoie la première éphéméride trouvée avant $date.
      *
      * @param mixed $date La date de référence. Elle doit être soit un timestamp, soit une date formatée
-     * @param null $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
+     * @param ?string $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
      * @param string $dayCompOperator
      * @return CalendarEntry|null
      * @throws Exception
      */
-    public static function lastEntryBeforeCalendarDate($date, $format = null, $dayCompOperator = '<')
+    public static function lastEntryBeforeCalendarDate($date, ?string $format = null, string $dayCompOperator = '<'): ?CalendarEntry
     {
         $date = is_integer($date) ? Carbon::createFromTimestamp($date) : Carbon::createFromFormat($format, $date);
 
@@ -184,7 +185,7 @@ class CalendarEntryQuery extends ActiveQuery
             ->query();
 
         $row = $reader->read();
-        if ($row === false) {
+        if (!$row) {
             if ($date->day != 31 && $date->month != 12) {
                 // Si aucune éphéméride disponible entre la date du jour et le 1er janvier, on recommence la recherche à partir du 31/12
                 return self::lastEntryBeforeCalendarDate('12-31', 'm-d', '<=');
@@ -225,7 +226,7 @@ class CalendarEntryQuery extends ActiveQuery
             ->query();
 
         $row = $reader->read();
-        if ($row === false) {
+        if (!$row) {
             if ($date->day != '01' && $date->month != '01') {
                 // Si aucune éphéméride disponible entre la date du jour et le 31 décembre, on recommence la recherche à partir du 01/01
                 return static::nextEntryAfterCalendarDate('01-01', 'm-d', ">=");
@@ -242,7 +243,7 @@ class CalendarEntryQuery extends ActiveQuery
      * @param int $id
      * @return $this
      */
-    public function byTagId($id)
+    public function byTagId(int $id): CalendarEntryQuery
     {
         return $this
             ->innerJoin('calendar_entry_tag cet', 'cet.calendar_entry_id = calendar_entries.id AND cet.tag_id = :tagId')
@@ -252,14 +253,40 @@ class CalendarEntryQuery extends ActiveQuery
     /**
      * Met à NULL le champ 'image' de l'éphéméride $entryId
      *
-     * @param $entryId
+     * @param int $entryId
      * @return int
      * @throws Exception
      */
-    public static function setImageAsNull($entryId)
+    public static function setImageAsNull(int $entryId): int
     {
         $sql = 'UPDATE calendar_entry SET image = NULL WHERE id = :id';
         return Yii::$app->db->createCommand($sql, ['id' => $entryId])->execute();
+    }
+
+    /**
+     * Renvoie la liste des jours calendaires ayant au moins une éphéméride active.
+     * Les jours calendaires renvoyés sont au format 'mm-dd'.
+     *
+     * @param string $sort
+     * @return array
+     * @throws Exception
+     */
+    public static function monthAndDaysWithEnabledEntries(string $sort = 'ASC'): array
+    {
+        $sql = "SELECT MONTH(event_date) AS month, DAY(event_date) AS day
+            FROM calendar_entry
+            WHERE enabled = 1
+            GROUP BY month, day
+            ORDER BY month, day $sort;
+        ";
+
+        $reader = Yii::$app->db->createCommand($sql)->query();
+        $out = [];
+        while($row = $reader->read()) {
+            $out[] = sprintf('%02d-%02d', $row['month'], $row['day']);
+        }
+
+        return $out;
     }
 
 }
