@@ -12,7 +12,7 @@ return [
     "D to D+2" => "J à J+2",
 
     "Nb References" => "Nb de références",
-    "Next date with 0 entries (mm-dd) : {date}" => "Prochaine date avec 0 éphémérides (mm-dd) : {date}",
+    "Next date with 0 entries (dd-mm) : {date}" => "Prochaine date avec 0 éphémérides (dd-mm) : {date}",
 
     "Show All" => "Afficher tout",
     "Tags"=> "Catégories",

@@ -27,6 +27,8 @@ if (isset($filter)) {
 
 $this->params['breadcrumbs'][] = $this->title;
 
+$formattedDateWithNoEntries = implode('-', array_reverse(explode('-', $dateWithNoEntries)));
+
 ?>
 <div class="calendar-entry-index">
     <?php Pjax::begin(); ?>
@@ -44,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <span class="tools-buttons">
             <?= Html::a(EphemeridesModule::t(
                 'labels',
-                "Next date with 0 entries (mm-dd) : {date}", ['date' => $dateWithNoEntries]),
+                "Next date with 0 entries (dd-mm) : {date}", ['date' => $formattedDateWithNoEntries]),
                 ['index'],
                 ['class' => 'btn btn-default', 'disabled' => true]
             ) ?>
