@@ -40,6 +40,7 @@ echo NavX::widget([
                 ['label' => "Mémos", 'url' => ['/memos']],
                 ['label' => "Path windows > linux", 'url' => ['/utilitaires/path-windows']],
                 ['label' => "Expressions régulières", 'url' => ['/utilitaires/regex']],
+                ['label' => "Encode - decode", 'url' => ['/utilitaires/encode-decode']],
                 ['label' => "Lettres et le temps", 'url' => ['/lettres'], 'visible' => Yii::$app->user->can(AppRole::SUPERADMIN),],
             ],
         ],

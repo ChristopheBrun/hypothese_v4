@@ -41,6 +41,18 @@ class UtilitairesController extends Controller
     }
 
     /**
+     * Traduit un path windows en path compatible linux
+     *
+     * @return string
+     * @internal fait en javascript directement sur la page
+     *
+     */
+    public function actionEncodeDecode(): string
+    {
+        return $this->render('encode-decode');
+    }
+
+    /**
      * Affiche les résultats de calcul d'une regex PHP
      *
      * @return string

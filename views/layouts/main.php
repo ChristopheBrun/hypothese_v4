@@ -3,13 +3,14 @@
 /**
  * Présentation standard
  *
- * @var $this \yii\web\View
+ * @var $this View
  * @var $content string
  */
 
 use app\modules\hlib\HLib;
 use app\widgets\Alert;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
@@ -37,7 +38,7 @@ AppAsset::register($this);
     <div class="container">
         <?= /** @noinspection PhpUnhandledExceptionInspection */
         Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'links' => $this->params['breadcrumbs'] ?? [],
         ]) ?>
 
         <?= /** @noinspection PhpUnhandledExceptionInspection */
@@ -55,7 +56,8 @@ AppAsset::register($this);
     </div>
 </footer>
 
-<?php $this->registerMetaTag(['name' => 'keywords', 'content' => implode(',', Yii::$app->getKeywordsMetaTags())]) ?>
+<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+$this->registerMetaTag(['name' => 'keywords', 'content' => implode(',', Yii::$app->getKeywordsMetaTags())]) ?>
 
 <?php $this->endBody() ?>
 </body>
