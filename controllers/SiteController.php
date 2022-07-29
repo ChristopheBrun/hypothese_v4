@@ -97,7 +97,7 @@ class SiteController extends Controller
         // Récupération d'une liste éventuellement filtrée selon les critères du moteur de recherche
         $searchModel = new CalendarEntrySearchForm();
 
-        // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
+        // Les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
         $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->with('tags')->all();
         CalendarEntry::orderByTagRank($dailyEntries);
 

@@ -12,8 +12,6 @@ use yii\helpers\Url;
 
 $this->title = HLib::t('labels', 'Server error');
 $this->params['breadcrumbs'][] = $this->title;
-$imgUrl = Url::base(true) . '/images/error_500.png';
-
 ?>
 
 <div class="panel panel-default" id="error-page">
@@ -34,7 +32,7 @@ $imgUrl = Url::base(true) . '/images/error_500.png';
 
         <div class="row">
             <div class="col-sm-5">
-                <?= Html::img($imgUrl, ['alt' => 'server error']) ?>
+                <?= Html::img(Url::base(true) . '/images/error_500.png', ['alt' => 'server error']) ?>
             </div>
             <div class="col-sm-7">
                 <p>

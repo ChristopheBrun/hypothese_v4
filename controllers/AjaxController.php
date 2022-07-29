@@ -25,6 +25,8 @@ class AjaxController extends Controller
                 return base64_encode($val);
             case EncodeFunctions::URL_ENCODE :
                 return urlencode($val);
+            case EncodeFunctions::RAWURL_ENCODE :
+                return rawurlencode($val);
             default :
                 return "Cette fonction n'est pas traitée ici";
         }
@@ -37,6 +39,8 @@ class AjaxController extends Controller
                 return base64_decode($val);
             case DecodeFunctions::URL_DECODE :
                 return urldecode($val);
+            case DecodeFunctions::RAWURL_DECODE :
+                return rawurldecode($val);
             default :
                 return "Cette fonction n'est pas traitée ici";
         }

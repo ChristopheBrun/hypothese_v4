@@ -8,6 +8,7 @@ class EncodeFunctions extends EnumHelper
 {
     const BASE64_ENCODE = 'base64_encode';
     const URL_ENCODE = 'urlencode';
+    const RAWURL_ENCODE = 'rawurlencode';
 
     /**
      * @return array
@@ -17,6 +18,7 @@ class EncodeFunctions extends EnumHelper
         return [
             static::BASE64_ENCODE => static::BASE64_ENCODE,
             static::URL_ENCODE => static::URL_ENCODE,
+            static::RAWURL_ENCODE => static::RAWURL_ENCODE,
         ];
     }
 

@@ -7,6 +7,7 @@ use app\modules\ephemerides\widgets\DisplayCalendarEntries;
 use app\modules\user\lib\enums\AppRole;
 use Carbon\Carbon;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * Page d'accueil du site
@@ -34,21 +35,28 @@ $dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
     </div>
 
     <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-12">
-                <p>
-                    Bienvenue sur mon site personnel, sur lequel vous ne trouverez pas grand chose en zone publique
-                    pour le moment. Les travaux de mise à jour sont en cours et ils devraient encore trainer un peu.
-                </p>
+        <?php if (!$dailyEntries) : ?>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        Il n'y rien à voir aujourd'hui...
+                        <?= Html::img(
+                            Url::base(true) . '/images/etienne-a-cheval.png',
+                            ['alt' => 'rien à voir!', 'style' => 'float:right']
+                        ) ?>
+                    </p>
+                </div>
             </div>
-        </div>
-        <?= /** @noinspection PhpUnhandledExceptionInspection */
-        DisplayCalendarEntries::widget([
-            'models' => $dailyEntries,
-            'tagsButtonsAltRoute' => ['/site/pas-cliquer'],
-            'showAdminButton' => Yii::$app->user->can(AppRole::SUPERADMIN),
-             'showDirectLink' => true,
-        ]) ?>
+        <?php else: ?>
+            <?=
+            /** @noinspection PhpUnhandledExceptionInspection */
+            DisplayCalendarEntries::widget([
+                'models' => $dailyEntries,
+                'tagsButtonsAltRoute' => ['/site/pas-cliquer'],
+                'showAdminButton' => Yii::$app->user->can(AppRole::SUPERADMIN),
+                'showDirectLink' => true,
+            ]) ?>
+        <?php endif ?>
     </div>
 
     <div class="panel-footer">
