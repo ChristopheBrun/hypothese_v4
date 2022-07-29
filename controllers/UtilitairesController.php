@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\lib\enums\DecodeFunctions;
+use app\lib\enums\EncodeFunctions;
 use app\lib\enums\PregmatchType;
 use app\lib\helpers\UtilitairesHelper;
 use app\modules\hlib\lib\Flash;
@@ -49,7 +51,9 @@ class UtilitairesController extends Controller
      */
     public function actionEncodeDecode(): string
     {
-        return $this->render('encode-decode');
+        $listEncodeOptions = EncodeFunctions::getList();
+        $listDecodeOptions = DecodeFunctions::getList();
+        return $this->render('encode-decode', compact('listEncodeOptions', 'listDecodeOptions'));
     }
 
     /**
