@@ -24,6 +24,7 @@ Yii::$app->addKeywordsMetaTag('utilitaires');
                 <ul>
                     <li><?= Html::a('Path Windows > Linux', ['/utilitaires/path-windows']) ?></li>
                     <li><?= Html::a('Expressions régulières', ['/utilitaires/regex']) ?></li>
+                    <li><?= Html::a('Encode / décode', ['/utilitaires/encode-decode']) ?></li>
                 </ul>
             </div>
 
