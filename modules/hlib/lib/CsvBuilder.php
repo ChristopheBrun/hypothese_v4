@@ -2,8 +2,9 @@
 
 namespace app\modules\hlib\lib;
 
-use \Exception;
+use Exception;
 use Yii;
+use yii\console\Response;
 
 /**
  * Classe permettant de construire un fichier CSV.
@@ -16,11 +17,13 @@ use Yii;
  *    la méthode endLine() qui enregistre son contenu dans le buffer interne.
  *    ** une fois toutes les lignes construites, un appel à la méthode end()
  */
+//
 //[...]
 //$builder->begin();
+//$builder->setColumns($columnsNames);
 //while ($row = $result->fetch_assoc()) {
 //    $builder->beginLine();
-//    foreach ($builder->headerColumns as $column) {
+//    foreach ($columnsNames as $column) {
 //        $builder->set($column, $row[$column]);
 //    }
 //    $builder->endLine();
@@ -29,83 +32,54 @@ use Yii;
 //$builder->saveToFile($outputFile));
 //
 
-class CSVBuilder
+class CsvBuilder
 {
     /**
-     * @var array string[] Ligne CSV correspondant à une ligne du fichier à construire
+     * @var ?array string[] Ligne CSV correspondant à une ligne du fichier à construire
      */
-    protected $csvLines = null;
-
-    /**
-     * @var string Valeur par défaut pour les champs du tableau associatif
-     */
-    protected $defVal;
-
-    /**
-     * @var string Séparateur de champs à utiliser dans le CSV
-     */
-    protected $fieldSep;
-
-    /**
-     * @var string Séparateur de lignes à utiliser dans le CSV
-     */
-    protected $eol;
-
-    /** @var bool */
-    private $ready = false;
-
-    /** @var bool  */
-    private $utf8Encode;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Renvoie la liste des lignes du CSV. NB : chaque ligne est un tableau associatif [nom_col_1 => valeur_1, nom_col_2 => valeur_2, ...]
-     * @return array
-     */
-    public function getLines()
-    {
-        return $this->csvLines;
-    }
-
-    /**
-     * Renvoie true si le CSV a été entièrement construit (ce qui se manifeste dans le code par un appel à la métode end())
-     * @return boolean
-     */
-    public function isReady()
-    {
-        return $this->ready;
-    }
-
-    /**
-     * @return string BOM UTF-8 (permet notamment de forcer le bon encodage sous Excel).
-     */
-    private function bom()
-    {
-        return $this->utf8Encode ? $utf8_with_bom = chr(239) . chr(187) . chr(191) : '';
-    }
+    protected ?array $csvLines = null;
 
     /**
      * @var array Liste des noms des colonnes du CSV. Leur libellé permet d'identifier une colonne et de renseigner la ligne des en-têtes
      */
-    protected $columns = array();
+    protected array $columns = [];
 
     /**
-     * @var array Ligne en cours de traitement.
+     * @var string Valeur par défaut pour les champs du tableau associatif
+     */
+    protected string $defVal;
+
+    /**
+     * @var string Séparateur de champs à utiliser dans le CSV
+     */
+    protected string $fieldSep;
+
+    /**
+     * @var string Séparateur de lignes à utiliser dans le CSV
+     */
+    protected string $eol;
+
+    private bool $ready = false;
+    private bool $utf8Encode;
+
+    /**
+     * @var ?array Ligne en cours de traitement.
      * NB : une ligne est un tableau associatif [$key => $value] où $key fait partie des noms de colonnes qui ont été déclarés dans setColumns().
      */
-    protected $currentLine = null;
+    protected ?array $currentLine = null;
+
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructeur
-     * @param string  $fieldSep Séparateur de champs à utiliser pour le CSV
-     * @param string  $eol Séparateur de lignes à utiliser pour le CSV
-     * @param string  $defVal Valeur par défaut pour les champs du tableau associatif
+     * @param string $fieldSep Séparateur de champs à utiliser pour le CSV
+     * @param string $eol Séparateur de lignes à utiliser pour le CSV
+     * @param string $defVal Valeur par défaut pour les champs du tableau associatif
      * @param boolean $utfEncode
      */
-    public function __construct($fieldSep = "\t", $eol = "\n", $defVal = "", $utfEncode = false)
+    public function __construct(string $fieldSep = "\t", string $eol = "\n", string $defVal = "", bool $utfEncode = false)
     {
         $this->defVal = $defVal;
         $this->fieldSep = $fieldSep;
@@ -114,11 +88,37 @@ class CSVBuilder
     }
 
     /**
+     * Renvoie la liste des lignes du CSV. NB : chaque ligne est un tableau associatif [nom_col_1 => valeur_1, nom_col_2 => valeur_2, ...]
+     * @return ?array
+     */
+    public function getLines(): ?array
+    {
+        return $this->csvLines;
+    }
+
+    /**
+     * Renvoie true si le CSV a été entièrement construit (ce qui se manifeste dans le code par un appel à la métode end())
+     * @return boolean
+     */
+    public function isReady(): bool
+    {
+        return $this->ready;
+    }
+
+    /**
+     * @return string BOM UTF-8 (permet notamment de forcer le bon encodage sous Excel).
+     */
+    private function bom(): string
+    {
+        return $this->utf8Encode ? $utf8_with_bom = chr(239) . chr(187) . chr(191) : '';
+    }
+
+    /**
      * Enregistre la liste des en-têtes des colonnes du CSV.
      * @param string[] $cols
-     * @return CSVBuilder
+     * @return CsvBuilder
      */
-    public function setColumns(array $cols)
+    public function setColumns(array $cols): CsvBuilder
     {
         $this->columns = $cols;
         return $this;
@@ -126,9 +126,9 @@ class CSVBuilder
 
     /**
      * @param string $fieldSep
-     * @return CSVBuilder
+     * @return CsvBuilder
      */
-    public function setFieldSeparator($fieldSep)
+    public function setFieldSeparator(string $fieldSep): CsvBuilder
     {
         $this->fieldSep = $fieldSep;
         return $this;
@@ -136,9 +136,9 @@ class CSVBuilder
 
     /**
      * @param $defVal
-     * @return CSVBuilder
+     * @return CsvBuilder
      */
-    public function setDefaultValue($defVal)
+    public function setDefaultValue(string $defVal): CsvBuilder
     {
         $this->defVal = $defVal;
         return $this;
@@ -146,9 +146,9 @@ class CSVBuilder
 
     /**
      * @param $eol
-     * @return CSVBuilder
+     * @return CsvBuilder
      */
-    public function setEol($eol)
+    public function setEol(string $eol): CsvBuilder
     {
         $this->eol = $eol;
         return $this;
@@ -157,7 +157,7 @@ class CSVBuilder
     /**
      * Prépare une nouvelle ligne du CSV
      */
-    public function beginLine()
+    public function beginLine(): void
     {
         $this->currentLine = [];
         foreach ($this->columns as $key) {
@@ -168,7 +168,7 @@ class CSVBuilder
     /**
      * La ligne en cours de traitement est terminée : on l'ajoute au tableau des lignes du CSV.
      */
-    public function endLine()
+    public function endLine(): void
     {
         $line = implode($this->fieldSep, $this->currentLine);
         $this->csvLines[] = $this->utf8Encode ? utf8_encode($line) : $line;
@@ -182,7 +182,7 @@ class CSVBuilder
      * @return bool
      * @throws Exception
      */
-    public function set($key, $value = '')
+    public function set(string $key, string $value = ''): bool
     {
         if (!array_key_exists($key, $this->currentLine)) {
             throw new Exception(__FILE__ . " ligne " . __LINE__ . " : " . __METHOD__ . " : colonne inconnue : $key dans " . print_r($this->currentLine, true));
@@ -195,7 +195,7 @@ class CSVBuilder
     /**
      * Initialisations
      */
-    public function begin()
+    public function begin(): void
     {
         // On enregistre la ligne de header (qui contient les libellés des colonnes)
         $this->beginLine();
@@ -208,18 +208,17 @@ class CSVBuilder
     /**
      * Fin des traitements
      */
-    public function end()
+    public function end(): void
     {
         $this->ready = true;
     }
 
     /**
-     * Une fois que la liste des lignes du CSV a été construite, on peut demander la construction du fichier CSV
-     *
+     * Sauvegarde le CSV dans le fichier $filename
      * @param string $filename Nom du fichier .csv à fabriquer
      * @throws Exception
      */
-    public function saveToFile($filename)
+    public function saveToFile(string $filename): void
     {
         if (!$this->ready) {
             throw new Exception("Le CSV n'est pas entièrement construit");
@@ -242,13 +241,12 @@ class CSVBuilder
     }
 
     /**
-     * Une fois que la liste des lignes du CSV a été construite, on peut demander la construction du fichier CSV
-     *
+     * Envoie le CSV dans le navigateur
      * @param string $filename Nom du fichier .csv à fabriquer
-     * @return \yii\console\Response|\yii\web\Response
+     * @return Response|\yii\web\Response
      * @throws Exception
      */
-    public function sendToNavigator($filename)
+    public function sendToNavigator(string $filename): Response
     {
         if (!$this->ready) {
             throw new Exception("Le CSV n'est pas entièrement construit");
@@ -263,12 +261,11 @@ class CSVBuilder
 
     /**
      * Une fois que la liste des lignes du CSV a été construite, on peut demander la construction du fichier CSV
-     *
      * @param bool $usePrefix
      * @return string
      * @throws Exception
      */
-    public function outputAsString($usePrefix = true)
+    public function outputAsString(bool $usePrefix = true): string
     {
         if (!$this->ready) {
             throw new Exception("Le CSV n'est pas entièrement construit");

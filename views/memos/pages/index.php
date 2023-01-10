@@ -9,7 +9,7 @@ Yii::$app->addKeywordsMetaTag('memos');
 
 ?>
 
-<div class="panel panel-default" id="memos-index">
+<div class="panel panel-default">
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">
@@ -24,6 +24,7 @@ Yii::$app->addKeywordsMetaTag('memos');
                 <ul>
                     <li><?= Html::a('Console Windows / Power Shell', ['/memos/console-windows']) ?></li>
                     <li><?= Html::a('Configuration PHP', ['/memos/config-php']) ?></li>
+                    <li><?= Html::a('Commandes Git', ['/memos/serveur-php']) ?></li>
                 </ul>
             </div>
 

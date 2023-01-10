@@ -19,7 +19,7 @@ JS, View::POS_END);
 
 ?>
 
-<div class="panel panel-default" id="memos-config-php">
+<div class="panel panel-default">
     <div class="panel-heading">
         <div class="row">
             <div class="col-sm-12">

@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 use yii\web\View;
 
-$this->title = "Console Windows / Power Shell";
-$this->params['breadcrumbs'][] = ['label'=> 'Mémos', 'url' => ['index']];
+$this->title = "Commandes Git";
+$this->params['breadcrumbs'][] = ['label'=> 'Mémos', 'url' => ['git']];
 $this->params['breadcrumbs'][] = $this->title;
 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-Yii::$app->addKeywordsMetaTags(['Windows', 'console', 'Power Shell', "Variable d'environnement"]);
+Yii::$app->addKeywordsMetaTags(['Git']);
 
 // @see https://highlightjs.org/download/
 $this->registerCssFile('@web/js/highlight/styles/agate.css');
@@ -31,7 +31,7 @@ JS, View::POS_END);
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Afficher une variable d'environnement</h2>
+                <h2>Gestion des branches</h2>
                 <ul>
                     <li>
                         Une bonne explication de l'utilisation du Power Shell est disponible sur cette page :
@@ -78,7 +78,7 @@ JS, View::POS_END);
         </div>
     </div>
 
-    <?= $this->render('/site/_inner-footer', ['dateMaj' => '21/12/2020']) ?>
+    <?= $this->render('/site/_inner-footer', ['dateMaj' => '05/10/2022']) ?>
 
 </div>
 
