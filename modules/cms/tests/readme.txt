@@ -1,1 +1,0 @@
-Copier le contenu du répertoire codeception danss le répertoire de test de l'application

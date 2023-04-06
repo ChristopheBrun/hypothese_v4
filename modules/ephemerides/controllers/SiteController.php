@@ -2,7 +2,6 @@
 
 namespace app\modules\ephemerides\controllers;
 
-use app\modules\cms\models\WebPage;
 use app\modules\ephemerides\models\CalendarEntry;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
@@ -11,10 +10,12 @@ use app\modules\hlib\components\actions\ErrorAction;
 use app\modules\hlib\helpers\h;
 use Yii;
 use yii\captcha\CaptchaAction;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use app\models\ContactForm;
+use yii\web\Response;
 
 /**
  * Class SiteController
@@ -22,12 +23,9 @@ use app\models\ContactForm;
  */
 class SiteController extends Controller
 {
-    public $enableGoogleAnalytics = false;
+    public bool $enableGoogleAnalytics = false;
 
-    /**
-     * @return array
-     */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             // En frontend, seule l'action de test est réservée à l'admin, les autres sont accessibles à tout le monde
@@ -49,10 +47,7 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
@@ -65,79 +60,43 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Page d'accueil du site
-     *
-     * @return string
-     * @throws \yii\db\Exception
-     */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         // Récupération d'une liste éventuellement filtrée selon les critères du moteur de recherche
         $searchModel = new CalendarEntrySearchForm();
 
-        // date de la dernière mise à jour sur des éphémérides
-        $lastUpdatedEntry = CalendarEntry::find()->lastUpdated();
-
         // les éphémérides du jour (avec les tables associées pour limiter le nombre de requêtes)
         $dailyEntries = CalendarEntry::find()->enabled()->byDay(date('Y-m-d'))->orderByDate()->all();
 
-        $previousEntry = $nextEntry = null;
-        if (!count($dailyEntries)) {
-            $previousEntry = CalendarEntry::find()->lastEntryBeforeCalendarDate(time());
-            $nextEntry = CalendarEntry::find()->nextEntryAfterCalendarDate(time());
-        }
-
         $tags = ArrayHelper::map(Tag::find()->orderByLabel()->all(), 'id', 'label');
-        $page = WebPage::find()->byCode('Accueil')->one();
-        return $this->render('index', compact('lastUpdatedEntry', 'dailyEntries', 'previousEntry', 'nextEntry', 'page', 'searchModel', 'tags'));
+        return $this->render('index', compact('dailyEntries', 'searchModel', 'tags'));
     }
 
-    /**
-     * Affiche ou traite le formulaire de contact
-     *
-     * @return string|\yii\web\Response
-     */
-    public function actionContact()
+    public function actionContact(): Response|string
     {
         $model = new ContactForm();
-        $mailTo = h::safeRecipientEmail(Yii::$app->params['adminEmail']);
 
-        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->contact($mailTo)) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->sendMail()) {
             // Formulaire soumis sans erreur
             Yii::$app->session->setFlash('contactFormSubmitted');
             return $this->refresh();
         }
-        else {
-            // Affichage initial ou ré-affichage après erreur de validation
-            $page = WebPage::find()->byCode('Contact')->one();
-            return $this->render('contact', compact('model', 'page'));
-        }
+
+        // Affichage initial ou ré-affichage après erreur de validation
+        return $this->render('contact', compact('model'));
     }
 
-    /**
-     * Affiche la page de présentation du site
-     *
-     * @return string
-     */
-    public function actionAbout()
+    public function actionAbout(): string
     {
-        $page = WebPage::find()->byCode('Presentation')->one();
-        return $this->render('about', compact('page'));
+        return $this->render('about');
     }
 
-    /**
-     * @return string
-     */
-    public function actionOffline()
+    public function actionOffline(): string
     {
         return $this->renderPartial('offline');
     }
 
-    /**
-     * @return string
-     */
-    public function actionTest()
+    public function actionTest(): string
     {
         return $this->render('test');
     }

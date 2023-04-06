@@ -12,7 +12,7 @@ use app\modules\hlib\HLib;
  */
 class ImageStatus extends EnumHelper
 {
-        const ST_ALL = 'all';
+    const ST_ALL = 'all';
     const ST_WITH = 'with';
     const ST_WITHOUT = 'without';
 

@@ -8,10 +8,11 @@ use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
+use app\modules\hlib\helpers\DateHelper;
 use app\modules\hlib\helpers\hArray;
 use app\modules\hlib\helpers\hString;
 use app\modules\hlib\interfaces\EnabledInterface;
-use Carbon\Carbon;
+use DateTime;
 use SimpleXMLElement;
 use yii\base\InvalidConfigException;
 use yii\behaviors\TimestampBehavior;
@@ -83,11 +84,11 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     public function rules(): array
     {
         return [
-            ['event_date',
-                'filter', 'filter' => function ($value) {
-                // en entrée : dd-MM-yyyy ; en sortie : format compatible SQL
-                return (new Carbon($value))->toDateString();
-            }],
+//            ['event_date',
+//                'filter', 'filter' => function ($value) {
+//                // en entrée : dd-MM-yyyy ; en sortie : format compatible SQL
+//                return DateHelper::dateFRToSQL($value, '-');
+//            }],
             // required
             [['title', 'event_date'],
                 'required'],
@@ -171,7 +172,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
 
     /**
      * Renvoie une instance de l'ActiveQuery associée à cette classe.
-     *
      * @inheritdoc
      * @return CalendarEntryQuery the active query used by this AR class.
      */
@@ -182,7 +182,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
 
     /**
      * Déclaration de la relation 1-n avec la table d'association calendar_entry_tag
-     *
      * @return ActiveQuery
      */
     public function getCalendarEntryTags(): ActiveQuery
@@ -192,7 +191,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
 
     /**
      * Déclaration de la relation n-n avec la table tags
-     *
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
@@ -207,7 +205,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
 
     /**
      * Renvoie la liste des identifiants des tags associés à $this
-     *
      * @return array
      */
     public function getTagsIds(): array
@@ -217,7 +214,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
 
     /**
      * Renvoie la liste des noms des tags associés à $this
-     *
      * @return array
      */
     public function getTagsNames(): array
@@ -228,47 +224,34 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * Calcule un 'slug' pour cette éphéméride.
      * Le format du slug est : date de l'événement (yyyy-mm-dd) - espace - titre
-     *
      * @return string
      */
     public function getSlug(): string
     {
-        // $this->event_date est au format SQL : 2010-08-20 00:00:00
+        // $this->event_date est au format SQL : 2010-08-20
         // Pour le slug, seule la partie 'date' nous intéresse, la partie 'heure' doit être supprimée
-        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
-        return Inflector::slug($date->toDateString() . ' ' . $this->title);
+        $date = DateTime::createFromFormat('Y-m-d', $this->event_date);
+        return Inflector::slug($date->format('Y-m-d') . ' ' . $this->title);
     }
 
-    /**
-     * @return int
-     */
     public function year(): int
     {
-        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
-        return $date->year;
+        $date = DateTime::createFromFormat('Y-m-d', $this->event_date);
+        return $date->format('Y');
     }
 
-    /**
-     * @return int
-     */
     public function month(): int
     {
-        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
-        return $date->month;
+        $date = DateTime::createFromFormat('Y-m-d', $this->event_date);
+        return $date->format('m');
     }
 
-    /**
-     * @return int
-     */
     public function day(): int
     {
-        $date = Carbon::createFromFormat('Y-m-d', $this->event_date);
-        return $date->day;
+        $date = DateTime::createFromFormat('Y-m-d', $this->event_date);
+        return $date->format('d');
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -277,7 +260,6 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
     /**
      * Classe un tableau d'éphémérides selon le rang attribué à ses catégories.
      * On ne garde que le plus bas - donc le plus prioritaire - des rangs trouvés.
-     *
      * @param CalendarEntry[] $calendarEntries
      * @internal Sert essentiellement àordonner les éphémérides par grands thèmes : Musique, sciences, etc...
      */
@@ -295,17 +277,11 @@ class CalendarEntry extends ActiveRecord implements EnabledInterface
         });
     }
 
-    /**
-     * @return string
-     */
     public function getUrlShow(): string
     {
         return Url::to(['/ephemerides/calendar-entry/show', 'id' => $this->id], true);
     }
 
-    /**
-     * @return string
-     */
     public function getUrlView(): string
     {
         return Url::to(['/ephemerides/calendar-entry/view', 'id' => $this->id], true);

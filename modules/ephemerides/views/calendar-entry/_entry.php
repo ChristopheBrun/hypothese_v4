@@ -9,10 +9,14 @@
  */
 
 use app\modules\ephemerides\models\CalendarEntry;
-use app\modules\hlib\helpers\hDate;
+use app\modules\hlib\helpers\DateHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
+
+$dateStr = DateTimeImmutable::createFromFormat('Y-m-d', $entry->event_date)->format('%d %B %Y');
+/** @noinspection PhpUnhandledExceptionInspection */
+$dateStr = DateHelper::dateSQLToLocalized($entry->event_date);
 
 ?>
 <div class="calendar-entry-block">
@@ -22,7 +26,7 @@ use yii\web\View;
             <div class="event-date">
                 <?=
                 // WARNING : formatLocalized() fonctionne bien sous UNIX en production mais ne remonte pas avant le 01/01/1970 sous windows
-                ucfirst(utf8_encode(hDate::formatLocalized($entry->event_date, '%d %B %Y')));
+                ucfirst(utf8_encode($dateStr));
                 ?>
             </div>
             <div>

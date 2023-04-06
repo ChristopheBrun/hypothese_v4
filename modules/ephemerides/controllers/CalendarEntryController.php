@@ -11,7 +11,9 @@ use app\modules\hlib\helpers\hImage;
 use app\modules\hlib\HLib;
 use app\modules\hlib\lib\Flash;
 use app\modules\user\lib\enums\AppRole;
-use Carbon\Carbon;
+use DateInterval;
+use DateTime;
+use DateTimeImmutable;
 use Exception;
 use Throwable;
 use Yii;
@@ -86,7 +88,7 @@ class CalendarEntryController extends Controller
      * @return string|Response
      * @throws Exception
      */
-    public function actionIndexD()
+    public function actionIndexD(): Response|string
     {
         // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
         if (ArrayHelper::getValue(Yii::$app->request->queryParams, 'event_date')) {
@@ -98,9 +100,9 @@ class CalendarEntryController extends Controller
         $searchModel = new CalendarEntrySearchForm();
 
         $dateParams = [];
-        $date = new Carbon();
+        $date = new DateTimeImmutable();
         /** @noinspection DuplicatedCode */
-        $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
+        $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->format('d'), 'month' => $date->format('m')];
         $params = ArrayHelper::merge(Yii::$app->request->queryParams, $dateParams);
 
         $dataProvider = $searchModel->search($params);
@@ -120,7 +122,7 @@ class CalendarEntryController extends Controller
      * @return string|Response
      * @throws Exception
      */
-    public function actionIndexD1()
+    public function actionIndexD1(): Response|string
     {
         // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
         if (ArrayHelper::getValue(Yii::$app->request->queryParams, 'event_date')) {
@@ -132,10 +134,10 @@ class CalendarEntryController extends Controller
         $searchModel = new CalendarEntrySearchForm();
 
         $dateParams = [];
-        $date = new Carbon();
-        $date->addDay();
+        $date = new DateTime();
+        $date->add(new DateInterval('P1D'));
         /** @noinspection DuplicatedCode */
-        $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
+        $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->format('d'), 'month' => $date->format('m')];
         $params = ArrayHelper::merge(Yii::$app->request->queryParams, $dateParams);
 
         $dataProvider = $searchModel->search($params);
@@ -155,7 +157,7 @@ class CalendarEntryController extends Controller
      * @return Response|string
      * @throws Exception
      */
-    public function actionIndexD2()
+    public function actionIndexD2(): Response|string
     {
         // S'il y a un filtre demandé manuellement sur la date, il faut revenir à l'index par défaut
         if (ArrayHelper::getValue(Yii::$app->request->queryParams, 'event_date')) {
@@ -167,10 +169,10 @@ class CalendarEntryController extends Controller
         $searchModel = new CalendarEntrySearchForm();
 
         $dateParams = [];
-        $date = new Carbon();
+        $date = new DateTime();
         for ($i = 0; $i < 3; ++$i) {
-            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->day, 'month' => $date->month];
-            $date->addDay();
+            $dateParams[$searchModel->formName()]['dateParams'][] = ['day' => $date->format('d'), 'month' => $date->format('m')];
+            $date->add(new DateInterval('P1D'));
         }
         $params = ArrayHelper::merge(Yii::$app->request->queryParams, $dateParams);
 
@@ -219,7 +221,7 @@ class CalendarEntryController extends Controller
      *
      * @return Response|string
      */
-    public function actionCreate()
+    public function actionCreate(): Response|string
     {
         $model = new CalendarEntry();
 
@@ -240,7 +242,7 @@ class CalendarEntryController extends Controller
      * @return Response|string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
 
@@ -436,7 +438,7 @@ class CalendarEntryController extends Controller
 
             $model->deleteImageFiles();
             Flash::success(HLib::t('messages', 'Delete success'));
-        } catch (Throwable $x) {
+        } catch (Throwable) {
             Flash::warning(HLib::t('messages', 'This object is referenced by another object. Deletion failed'));
         }
 

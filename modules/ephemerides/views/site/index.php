@@ -1,8 +1,6 @@
 <?php
-use app\modules\cms\models\WebPage;
 use app\modules\ephemerides\models\CalendarEntry as CalendarEntryAlias;
 use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
-use Carbon\Carbon;
 
 /**
  * Page d'accueil de l'ancien site
@@ -18,12 +16,8 @@ use Carbon\Carbon;
  * @var CalendarEntryAlias $nextEntry CalendarEntry null, renseigné seulement si $dailyEntries est vide
  * @var CalendarEntrySearchForm $searchModel
  * @var array                   $tags [Tag]
- * @var WebPage                 $page
  */
 
-$this->title = $page->title;
-$this->registerMetaTag(['description' => $page->meta_description]);
-$text = $page->getText('Accueil');
 
 ?>
 <div class="row">
@@ -41,7 +35,7 @@ $text = $page->getText('Accueil');
 
             <div class="row">
                 <div class="col-sm-12" id="today-block">
-                    <div class="current-date"><?= ucfirst(utf8_encode(Carbon::now()->formatLocalized('%A %d %B %Y'))); ?></div>
+                    <div class="current-date"><?= ucfirst(utf8_encode((new DateTimeImmutable('now'))->format('%A %d %B %Y'))); ?></div>
                 </div>
             </div>
 

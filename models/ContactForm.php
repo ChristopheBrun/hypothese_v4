@@ -16,9 +16,6 @@ class ContactForm extends Model
     public string $body = '';
     public string $verifyCode = '';
 
-    /**
-     * @return array the validation rules.
-     */
     public function rules(): array
     {
         return [
@@ -40,9 +37,6 @@ class ContactForm extends Model
         ];
     }
 
-    /**
-     * @return array customized attribute labels
-     */
     public function attributeLabels(): array
     {
         return [
@@ -56,7 +50,6 @@ class ContactForm extends Model
 
     /**
      * Envoie le mail à l'administrateur.
-     *
      * @return bool
      */
     public function sendMail(): bool

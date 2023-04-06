@@ -5,13 +5,11 @@ use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
 use app\modules\ephemerides\widgets\DisplayCalendarEntries;
 use app\modules\user\lib\enums\AppRole;
-use Carbon\Carbon;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
  * Page d'accueil du site
- *
  * @var CalendarEntrySearchForm $searchModel
  * @var CalendarEntry[] $dailyEntries
  * @var Tag[] $tags
@@ -20,8 +18,6 @@ use yii\helpers\Url;
 $this->title = Yii::$app->name;
 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 Yii::$app->addKeywordsMetaTags(['PHP']);
-
-$dateStr = Carbon::now()->isoFormat('%A %d %B %Y');
 
 ?>
 

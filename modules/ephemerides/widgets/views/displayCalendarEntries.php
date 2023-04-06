@@ -1,8 +1,8 @@
 <?php
 
 use app\modules\ephemerides\models\CalendarEntry;
+use app\modules\hlib\helpers\DateHelper;
 use app\modules\hlib\helpers\hString;
-use Carbon\Carbon;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -57,8 +57,10 @@ JS;
                 <div class="event-date">
                     <i class="far fa-calendar-alt"></i>
                     <?php
-                    $carbon = new Carbon($entry->event_date, 'Europe/Paris');
-                    echo hString::forceUTF8($carbon->formatLocalized('%d %B %Y'));
+                    /** @noinspection PhpUnhandledExceptionInspection */
+                    $date = new DateTimeImmutable($entry->event_date, new DateTimeZone('Europe/Paris'));
+//                    echo hString::forceUTF8($date->format('%d %B %Y'));
+                    echo hString::forceUTF8(DateHelper::dateSQLToLocalized($entry->event_date));
                     ?>
                 </div>
 

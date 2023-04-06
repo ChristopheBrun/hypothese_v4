@@ -16,6 +16,4 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         Vous êtes sur la page "Présentation". Ca pourrait être pire.
     </p>
-
-    <code><?= __FILE__ ?></code>
 </div>

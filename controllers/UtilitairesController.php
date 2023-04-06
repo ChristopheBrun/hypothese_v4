@@ -77,15 +77,26 @@ class UtilitairesController extends Controller
                 $pregmatch = Yii::$app->request->post('pregmatch');
                 $parentheses = UtilitairesHelper::parseParenthesesRegex($regex);
 
-                $result =
-                    $pregmatch == PregmatchType::SIMPLE ?
-                        preg_match($regex, $string, $matches) : preg_match_all($regex, $string, $matches);
-
-                if ($result === false) {
-                    Flash::error("Une erreur est survenue dans le traitement de l'expression régulière");
+                $check = $pregmatch == PregmatchType::SIMPLE ?
+                    @preg_match($regex, '', $matches) :
+                    @preg_match_all($regex, '', $matches);
+                if ($check === false) {
+                    Flash::error("Expression régulière invalide");
+                    $result = '';
+                    $matches = [];
                 } else {
-                    Flash::success("Chaine analysée");
+                    $result =
+                        $pregmatch == PregmatchType::SIMPLE ?
+                            preg_match($regex, $string, $matches) :
+                            preg_match_all($regex, $string, $matches);
+
+                    if ($result === false) {
+                        Flash::error("Une erreur est survenue dans le traitement de l'expression régulière");
+                    } else {
+                        Flash::success("Chaine analysée");
+                    }
                 }
+
             }
         } catch (Exception $x) {
             Yii::error($x->getMessage());

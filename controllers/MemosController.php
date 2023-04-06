@@ -28,10 +28,9 @@ class MemosController extends Controller
                 'class' => ViewAction::class,
                 'defaultView' => 'config-php',
             ],
-            'serveur-php' => [
+            'postgre' => [
                 'class' => ViewAction::class,
-                'defaultView' => 'serveur-php',
-                'defaultView' => 'serveur-php',
+                'defaultView' => 'postgre',
             ],
         ];
     }

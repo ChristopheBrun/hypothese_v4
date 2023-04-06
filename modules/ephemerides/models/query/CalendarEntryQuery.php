@@ -3,7 +3,7 @@
 namespace app\modules\ephemerides\models\query;
 
 use app\modules\ephemerides\models\CalendarEntry;
-use Carbon\Carbon;
+use DateTimeImmutable;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Exception;
@@ -15,9 +15,6 @@ use yii\db\Exception;
  */
 class CalendarEntryQuery extends ActiveQuery
 {
-    /**
-     * @inheritdoc
-     */
     public function __construct($config = [])
     {
         parent::__construct(CalendarEntry::class, $config);
@@ -25,7 +22,6 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Renvoie les noms des images classés par ordre alphabétique et indexés par l'identifiant de l'éphéméride
-     *
      * @return array
      * @throws Exception
      */
@@ -36,27 +32,18 @@ class CalendarEntryQuery extends ActiveQuery
     }
 
     /**
-     * @inheritdoc
-     * @return CalendarEntry[] | array
+     * @return CalendarEntry[]
      */
     public function all($db = null): array
     {
         return parent::all($db);
     }
 
-    /**
-     * @inheritdoc
-     * @return CalendarEntry | array | null
-     * @noinspection PhpReturnDocTypeMismatchInspection
-     */
-    public function one($db = null)
+    public function one($db = null): array|CalendarEntry|null
     {
         return parent::one($db);
     }
 
-    /**
-     * @return static
-     */
     public function enabled(): CalendarEntryQuery
     {
         return $this->andWhere('enabled = 1');
@@ -64,17 +51,15 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Renvoie la dernière éphémérides mise à jour
-     *
      * @return CalendarEntry|array|null
      */
-    public function lastUpdated()
+    public function lastUpdated(): array|CalendarEntry|null
     {
         return $this->enabled()->addOrderBy('updated_at DESC')->limit(1)->one();
     }
 
     /**
      * Renvoie le nombre de jours calendaires pour lesquels existe au moins une éphéméride active
-     *
      * @return int
      * @throws Exception
      */
@@ -88,23 +73,20 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Sélectionne les éphémérides du jour calendaire (mois/jour) correspondant à $date
-     *
      * @param string $date
      * @param string $format
      * @return static
      */
     public function byDay(string $date, string $format = 'Y-m-d'): CalendarEntryQuery
     {
-        /** @var Carbon $date */
-        $date = Carbon::createFromFormat($format, $date);
+        $date = DateTimeImmutable::createFromFormat($format, $date);
         return $this
-            ->andWhere('DAY(event_date) = :day', ['day' => $date->day])
-            ->andWhere('MONTH(event_date) = :month', ['month' => $date->month]);
+            ->andWhere('DAY(event_date) = :day', ['day' => $date->format('d')])
+            ->andWhere('MONTH(event_date) = :month', ['month' => $date->format('m')]);
     }
 
     /**
      * Sélectionne les éphémérides du jour calendaire (mois/jour) correspondant à $date
-     *
      * @param int $month
      * @param int $day
      * @return static
@@ -116,10 +98,6 @@ class CalendarEntryQuery extends ActiveQuery
             ->andWhere('MONTH(event_date) = :month', ['month' => $month]);
     }
 
-    /**
-     * @param string $order
-     * @return static
-     */
     public function orderByDate(string $order = 'ASC'): CalendarEntryQuery
     {
         return $this->addOrderBy('event_date ' . $order);
@@ -127,7 +105,6 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Sélectionne les entrées précédant $entry en les classant par ordre chronologique décroissant
-     *
      * @param CalendarEntry $entry
      * @return $this
      */
@@ -143,7 +120,6 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Sélectionne les entrées suivant $entry en les classant par ordre chronologique croissant
-     *
      * @param CalendarEntry $entry
      * @return $this
      */
@@ -160,16 +136,18 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Renvoie la première éphéméride trouvée avant $date.
-     *
      * @param mixed $date La date de référence. Elle doit être soit un timestamp, soit une date formatée
-     * @param ?string $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
+     * @param ?string $format Si la date est formatée, le format est passé en argument
      * @param string $dayCompOperator
      * @return CalendarEntry|null
      * @throws Exception
      */
-    public static function lastEntryBeforeCalendarDate($date, ?string $format = null, string $dayCompOperator = '<'): ?CalendarEntry
+    public static function lastEntryBeforeCalendarDate(
+        mixed   $date,
+        ?string $format = null,
+        string  $dayCompOperator = '<'): ?CalendarEntry
     {
-        $date = is_integer($date) ? Carbon::createFromTimestamp($date) : Carbon::createFromFormat($format, $date);
+        $date = is_integer($date) ? (new DateTimeImmutable())->setTimestamp($date) : DateTimeImmutable::createFromFormat($format, $date);
 
         $dayComp = "DAY(event_date) $dayCompOperator :day";
         $sql = "SELECT *, 100 * MONTH(event_date) + DAY(event_date) AS day_rank
@@ -181,12 +159,12 @@ class CalendarEntryQuery extends ActiveQuery
             LIMIT 1";
 
         $reader = Yii::$app->db
-            ->createCommand($sql, ['active' => true, 'day' => $date->day, 'month' => $date->month])
+            ->createCommand($sql, ['active' => true, 'day' => $date->format('d'), 'month' => $date->format('m')])
             ->query();
 
         $row = $reader->read();
         if (!$row) {
-            if ($date->day != 31 && $date->month != 12) {
+            if ($date->format('d') != 31 && $date->format('m') != 12) {
                 // Si aucune éphéméride disponible entre la date du jour et le 1er janvier, on recommence la recherche à partir du 31/12
                 return self::lastEntryBeforeCalendarDate('12-31', 'm-d', '<=');
             } else {
@@ -200,16 +178,18 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Renvoie la première éphéméride trouvée après $date.
-     *
      * @param mixed $date La date de référence. Elle doit être soit un timestamp, soit une date formatée
      * @param ?string $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
      * @param string $dayCompOperator
      * @return ?CalendarEntry
      * @throws Exception
      */
-    public static function nextEntryAfterCalendarDate($date, ?string $format = null, string $dayCompOperator = '>'): ?CalendarEntry
+    public static function nextEntryAfterCalendarDate(
+        mixed   $date,
+        ?string $format = null,
+        string  $dayCompOperator = '>'): ?CalendarEntry
     {
-        $date = is_integer($date) ? Carbon::createFromTimestamp($date) : Carbon::createFromFormat($format, $date);
+        $date = is_integer($date) ? (new DateTimeImmutable())->setTimestamp($date) : DateTimeImmutable::createFromFormat($format, $date);
 
         $dayComp = "DAY(event_date) $dayCompOperator :day";
         $sql = "SELECT *, 100 * MONTH(event_date) + DAY(event_date) AS day_rank
@@ -222,12 +202,12 @@ class CalendarEntryQuery extends ActiveQuery
         ";
 
         $reader = Yii::$app->db
-            ->createCommand($sql, ['active' => true, 'day' => $date->day, 'month' => $date->month])
+            ->createCommand($sql, ['active' => true, 'day' => $date->format('d'), 'month' => $date->format('m')])
             ->query();
 
         $row = $reader->read();
         if (!$row) {
-            if ($date->day != '01' && $date->month != '01') {
+            if ($date->format('d') !== '01' && $date->format('m') !== '01') {
                 // Si aucune éphéméride disponible entre la date du jour et le 31 décembre, on recommence la recherche à partir du 01/01
                 return static::nextEntryAfterCalendarDate('01-01', 'm-d', ">=");
             } else {
@@ -239,10 +219,6 @@ class CalendarEntryQuery extends ActiveQuery
         }
     }
 
-    /**
-     * @param int $id
-     * @return $this
-     */
     public function byTagId(int $id): CalendarEntryQuery
     {
         return $this
@@ -252,7 +228,6 @@ class CalendarEntryQuery extends ActiveQuery
 
     /**
      * Met à NULL le champ 'image' de l'éphéméride $entryId
-     *
      * @param int $entryId
      * @return int
      * @throws Exception
@@ -266,7 +241,6 @@ class CalendarEntryQuery extends ActiveQuery
     /**
      * Renvoie la liste des jours calendaires ayant au moins une éphéméride active.
      * Les jours calendaires renvoyés sont au format 'mm-dd'.
-     *
      * @param string $sort
      * @return array
      * @throws Exception
@@ -282,7 +256,7 @@ class CalendarEntryQuery extends ActiveQuery
 
         $reader = Yii::$app->db->createCommand($sql)->query();
         $out = [];
-        while($row = $reader->read()) {
+        while ($row = $reader->read()) {
             $out[] = sprintf('%02d-%02d', $row['month'], $row['day']);
         }
 

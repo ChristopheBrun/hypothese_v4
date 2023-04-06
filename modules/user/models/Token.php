@@ -3,9 +3,11 @@
 namespace app\modules\user\models;
 
 use app\modules\user\models\query\TokenQuery;
-use Carbon\Carbon;
+use DateInterval;
+use DateTimeImmutable;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -13,27 +15,21 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $user_id
- * @property string  $code
+ * @property string $code
  * @property integer $type
- * @property string  $created_at
- * @property string  $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  *
- * @property User    $user
+ * @property User $user
  */
 class Token extends ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'token';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'code'], 'required'],
@@ -44,10 +40,7 @@ class Token extends ActiveRecord
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array_merge(
             parent::behaviors(), [
@@ -61,10 +54,7 @@ class Token extends ActiveRecord
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('labels', 'ID'),
@@ -76,19 +66,12 @@ class Token extends ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    /**
-     * @inheritdoc
-     * @return TokenQuery the active query used by this AR class.
-     */
-    public static function find()
+    public static function find(): TokenQuery
     {
         return new TokenQuery(get_called_class());
     }
@@ -97,12 +80,7 @@ class Token extends ActiveRecord
     ////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @param int $userId
-     * @param int $type @see TokenType
-     * @return null|static
-     */
-    public static function generateTokenForUser($userId, $type)
+    public static function generateTokenForUser(int $userId, int $type): ?static
     {
         $token = new static(['user_id' => $userId, 'type' => $type, 'code' => uniqid()]);
         if ($token->save()) {
@@ -113,19 +91,19 @@ class Token extends ActiveRecord
     }
 
     /**
-     * Cherche le jeton correspondant au critères
-     *
-     * @param int    $type
-     * @param int    $userId
+     * Cherche le jeton correspondant aux critères
+     * @param int $type
+     * @param int $userId
      * @param string $code
-     * @param int    $duration
-     * @return Token|array|null
+     * @param int $duration
+     * @return Token|null
      */
-    public static function findToken($type, $userId, $code, $duration = 0)
+    public static function findToken(int $type, int $userId, string $code, int $duration = 0): ?Token
     {
         $query = static::find()->byUser($userId)->byCode($code)->byType($type);
         if ($duration) {
-            $createdAfter = Carbon::now()->subSeconds($duration)->toDateTimeString();
+            $interval = new DateInterval('PT1S');
+            $createdAfter = (new DateTimeImmutable('now'))->sub($interval)->format('Y-m-d H:i:s');
             $query->createdAfter($createdAfter);
         }
 

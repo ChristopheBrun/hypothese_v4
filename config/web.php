@@ -68,7 +68,7 @@ $config = [
         'definitions' => require(__DIR__ . '/classMap.php'),
     ],
     'language' => 'fr-FR',
-    'version' => '4.0.03',
+    'version' => '4.1.00',
 
     //----------------------------------------------
     // Paramètres

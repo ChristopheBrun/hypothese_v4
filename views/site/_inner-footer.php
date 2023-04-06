@@ -1,7 +1,5 @@
 <?php
 
-use Carbon\Carbon;
-
 /**
  * Footer interne avec date/heure d'affichage de la page
  * @var $dateMaj string|null
@@ -14,7 +12,7 @@ use Carbon\Carbon;
             <?= isset($dateMaj) ? "Mise à jour le : $dateMaj" : '' ?>
         </div>
         <div class="col-sm-9 text-right">
-            <?= Carbon::now()->format('d/m/Y H:i:s') ?>
+            <?= (new DateTimeImmutable('now'))->format('d/m/Y H:i:s') ?>
         </div>
     </div>
 </div>

@@ -6,7 +6,6 @@ use app\modules\ephemerides\models\form\CalendarEntrySearchForm;
 use app\modules\ephemerides\models\Tag;
 use app\modules\hlib\helpers\AssetsHelper;
 use app\modules\hlib\widgets\DisplayModels;
-use Carbon\Carbon;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -62,7 +61,7 @@ $formattedDateWithNoEntries = implode('-', array_reverse(explode('-', $dateWithN
                 'attribute' => 'event_date',
                 'label' => "Date",
                 'value' => function (CalendarEntry $model) {
-                    return Carbon::parse($model->event_date)->format(CalendarEntry::DATE_FORMAT_DAY);
+                    return DateTimeImmutable::createFromFormat('Y-m-d', $model->event_date)->format(CalendarEntry::DATE_FORMAT_DAY);
                 },
                 'filter' => MaskedInput::widget(['name' => 'event_date', 'mask' => '99-99']) .
                     "<div class='hint-block'>Filtre : jj-mm</div>",
