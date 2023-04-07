@@ -179,7 +179,7 @@ class CalendarEntryQuery extends ActiveQuery
     /**
      * Renvoie la première éphéméride trouvée après $date.
      * @param mixed $date La date de référence. Elle doit être soit un timestamp, soit une date formatée
-     * @param ?string $format Si la date est formatée, le format est passé en argument pour renseigner Carbon
+     * @param ?string $format Si la date est formatée, le format est passé en argument
      * @param string $dayCompOperator
      * @return ?CalendarEntry
      * @throws Exception

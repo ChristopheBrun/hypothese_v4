@@ -8,7 +8,6 @@ use app\modules\ephemerides\EphemeridesModule;
 use app\modules\ephemerides\models\query\CalendarEntryQuery;
 use app\modules\hlib\behaviors\SitemapableBehavior;
 use app\modules\hlib\behaviors\ImageOwner;
-use app\modules\hlib\helpers\DateHelper;
 use app\modules\hlib\helpers\hArray;
 use app\modules\hlib\helpers\hString;
 use app\modules\hlib\interfaces\EnabledInterface;
