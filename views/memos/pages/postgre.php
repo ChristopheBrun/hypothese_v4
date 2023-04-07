@@ -43,7 +43,7 @@ JS, View::POS_END);
                         <pre>
                             <code>
                             # Connexion au serveur
-                            ./pgsql -U monuser
+                            ./psql -U monuser
                             # Saisir le mot de passe qui vous est demandé
                             # Vous devriez maintenant avoir une invite du type 'postgres-#'
 
