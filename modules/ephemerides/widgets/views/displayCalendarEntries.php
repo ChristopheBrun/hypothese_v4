@@ -57,10 +57,12 @@ JS;
                 <div class="event-date">
                     <i class="far fa-calendar-alt"></i>
                     <?php
-                    /** @noinspection PhpUnhandledExceptionInspection */
-                    $date = new DateTimeImmutable($entry->event_date, new DateTimeZone('Europe/Paris'));
-//                    echo hString::forceUTF8($date->format('%d %B %Y'));
-                    echo hString::forceUTF8(DateHelper::dateSQLToLocalized($entry->event_date));
+                    try {
+                        $date = new DateTimeImmutable($entry->event_date, new DateTimeZone('Europe/Paris'));
+                        echo hString::forceUTF8(DateHelper::dateSQLToLocalized($entry->event_date));
+                    } catch (\Throwable $x) {
+                        echo "[...]";
+                    }
                     ?>
                 </div>
 
@@ -88,29 +90,23 @@ JS;
                     <?php endforeach ?>
                 </div>
 
-                <?php if ($showDirectLink) : ?>
+                <?php if ($showAdminButton) : ?>
                     <?= Html::a(
-                        "<i class='fas fa-link'></i>&nbsp;$entry->title",
-                        Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
-                        ['class' => 'btn btn-info frontend-link']) ?>
-                    <?php if ($showAdminButton) : ?>
-                        <button class="btn btn-default copy-link">
-                            <i class="far fa-copy"></i>&nbsp;Copier le lien
-                        </button>
-                    <?php endif ?>
+                        "<i class='fas fa-marker'></i>&nbsp;Voir la fiche en backend",
+                        Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id], true),
+                        ['class' => 'btn btn-info']) ?>
                 <?php endif ?>
 
-                <?php if ($showAdminButton) : ?>
-                    <div style="margin-top: 5px">
-                        <?= Html::a(
-                            "Voir la fiche en backend",
-                            Url::to(['/ephemerides/calendar-entry/view', 'id' => $entry->id], true),
-                            ['class' => 'btn btn-info']) ?>
-                        <?= Html::a(
-                            "Voir la fiche en frontend",
-                            Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
-                            ['class' => 'btn btn-info']) ?>
-                    </div>
+                <?php if ($showDirectLink) : ?>
+                    <?= Html::a(
+                        "<i class='fas fa-eye'></i>&nbsp;Voir la fiche",
+                        Url::to(['/ephemerides/calendar-entry/show', 'id' => $entry->id], true),
+                        ['class' => 'btn btn-info frontend-link', 'alt' => $entry->title]) ?>
+                    <?php if ($showAdminButton) : ?>
+                        <button class="btn btn-default copy-link">
+                            <i class="fas fa-link"></i>&nbsp;Copier le lien
+                        </button>
+                    <?php endif ?>
                 <?php endif ?>
             </div>
         </div>
